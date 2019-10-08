@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum FieldType
 {
-    Empty, Occupied
+    Empty, Occupied, Obstacle
 }
 
 public class FieldHandler : MonoBehaviour
@@ -12,8 +12,7 @@ public class FieldHandler : MonoBehaviour
     public static int X_SIZE = 12;
     public static int Y_SIZE = 10;
     public static FieldHandler instance;
-    public FieldType[,] fieldStates = new FieldType[X_SIZE, Y_SIZE];
-    public MouseBehaviour[,] fieldObjects = new MouseBehaviour[X_SIZE, Y_SIZE];
+    public CombatTile[,] fieldObjects = new CombatTile[X_SIZE, Y_SIZE];
     public GameObject battleTile;
 
     private void Awake()
@@ -33,25 +32,26 @@ public class FieldHandler : MonoBehaviour
         InitiateNewField();
     }
 
-    public void PutUnitOnTile(int x, int y)
+    public void PutUnitOnTile(int x, int y, UnitHandler unit)
     {
-        fieldStates[x, y] = FieldType.Occupied;
+        fieldObjects[x, y].PutUnitOnTile(unit);
     }
 
     public void RemoveUnitFromTile(int x, int y)
     {
-        fieldStates[x, y] = FieldType.Empty;
+        fieldObjects[x, y].RemoveUnitFromTile();
     }
 
-    public void GetAvailableTiles(int x, int y, int range)
+    public void GetAvailableMovementTiles(int x, int y, int range, bool asFake = false)
     {
+        ResetPossibleLocations();
         for (int i = 0; i < range; i++)
         {
             for (int j = 0; j < range - i; j++)
             {
                 try
                 {
-                    if (fieldStates[x + i, y + j] == FieldType.Empty)
+                    if (fieldObjects[x + i, y + j].fieldType == FieldType.Empty)
                         fieldObjects[x + i, y + j].SetAsSelectable();
                 }
                 catch
@@ -61,8 +61,7 @@ public class FieldHandler : MonoBehaviour
                 }
                 try
                 {
-                    
-                    if (fieldStates[x + i, y - j] == FieldType.Empty)
+                    if (fieldObjects[x + i, y - j].fieldType == FieldType.Empty)
                         fieldObjects[x + i, y - j].SetAsSelectable();
                 }
                 catch
@@ -72,7 +71,7 @@ public class FieldHandler : MonoBehaviour
                 }
                 try
                 {
-                    if (fieldStates[x - i, y - j] == FieldType.Empty)
+                    if (fieldObjects[x - i, y - j].fieldType == FieldType.Empty)
                         fieldObjects[x - i, y - j].SetAsSelectable();
                 }
                 catch
@@ -82,7 +81,61 @@ public class FieldHandler : MonoBehaviour
                 }
                 try
                 {
-                    if (fieldStates[x - i, y + j] == FieldType.Empty)
+                    if (fieldObjects[x - i, y + j].fieldType == FieldType.Empty)
+                        fieldObjects[x - i, y + j].SetAsSelectable();
+                }
+                catch
+                {
+                    Debug.Log("outofbounds");
+                    //Do nothing, we just went out of array bounds
+                }
+            }
+        }
+    }
+
+    public void GetAvailableAttackTiles(int x, int y, int range)
+    {
+        ResetPossibleLocations();
+        Debug.Log("looking for tiles to attack");
+        for (int i = 0; i < range; i++)
+        {
+            for (int j = 0; j < range - i; j++)
+            {
+                if (x == 0)
+                    j = 1;
+                try
+                {
+                    if (fieldObjects[x + i, y + j].fieldType == FieldType.Occupied)
+                        fieldObjects[x + i, y + j].SetAsSelectable();
+                }
+                catch
+                {
+                    Debug.Log("outofbounds");
+                    //Do nothing, we just went out of array bounds
+                }
+                try
+                {
+                    if (fieldObjects[x + i, y - j].fieldType == FieldType.Occupied)
+                        fieldObjects[x + i, y - j].SetAsSelectable();
+                }
+                catch
+                {
+                    Debug.Log("outofbounds");
+                    //Do nothing, we just went out of array bounds
+                }
+                try
+                {
+                    if (fieldObjects[x - i, y - j].fieldType == FieldType.Occupied)
+                        fieldObjects[x - i, y - j].SetAsSelectable();
+                }
+                catch
+                {
+                    Debug.Log("outofbounds");
+                    //Do nothing, we just went out of array bounds
+                }
+                try
+                {
+                    if (fieldObjects[x - i, y + j].fieldType == FieldType.Occupied)
                         fieldObjects[x - i, y + j].SetAsSelectable();
                 }
                 catch
@@ -99,23 +152,17 @@ public class FieldHandler : MonoBehaviour
         int x = 0;
         int y = 0;
 
-        if (fieldObjects[0,0] != null)
+        if (fieldObjects[0, 0] != null)
         {
-            foreach (FieldType tile in fieldStates)
+            foreach (CombatTile tile in fieldObjects)
             {
-                Destroy(battleTile);
-
-                x = (x + 1) % 12;
-                if (x == 0)
-                    y = (y + 1) % 10;
+                Destroy(tile);
             }
-            x = 0;
-            y = 0;
         }
 
-        foreach (FieldType tile in fieldStates)
+        foreach (CombatTile tile in fieldObjects)
         {
-            fieldObjects[x, y] = Instantiate(battleTile, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<MouseBehaviour>();
+            fieldObjects[x, y] = Instantiate(battleTile, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<CombatTile>();
             fieldObjects[x, y].SetPositionValues(x, y);
 
             x = (x + 1) % 12;
@@ -126,7 +173,7 @@ public class FieldHandler : MonoBehaviour
 
     public void ResetPossibleLocations()
     {
-        foreach (MouseBehaviour tile in fieldObjects)
+        foreach (CombatTile tile in fieldObjects)
         {
             tile.SetAsNotSelectable();
         }
