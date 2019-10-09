@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5776726455004917227}
   - component: {fileID: 5776726455004917224}
   - component: {fileID: 5776726455004917225}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: TestUnit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,3 +92,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitBase: {fileID: 11400000, guid: 61ba6b44d13d7e74e850d5348fbd12e9, type: 2}
+  amountOfUnits: 1

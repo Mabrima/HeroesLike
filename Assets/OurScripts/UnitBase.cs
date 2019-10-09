@@ -6,17 +6,19 @@ using UnityEngine;
 public class UnitBase : ScriptableObject
 {
 
-    public int health;
+    public int baseHealth;
     public int damage;
     public int speed;
     public int initiative;
     public int attack;
     public int defence;
+    public Material hurtMaterial;
+    public Material normalMaterial;
 
     private float increasePerAttack = 0.05f;
     private float decreasePerDefence = 0.025f;
 
-    public void CalculateDamage(int otherAttack, int otherDamage)
+    public int CalculateDamage(int otherAttack, int otherDamage)
     {
         float damageMultiplier = 1;
         if (otherAttack > defence)
@@ -29,7 +31,7 @@ public class UnitBase : ScriptableObject
             damageMultiplier -= Mathf.Clamp((defence - otherAttack) * decreasePerDefence, 0, .7f);
         }
 
-        health -= (int) Mathf.Max(damage * damageMultiplier, 1);
+        return (int) Mathf.Max(damage * damageMultiplier, 1);
     }
 
 }

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public Button waitButton;
     public static GameManager instance;
-    public UnitHandler[] unitsInCombat;
+    public List<UnitHandler> unitsInCombat;
     public Stack<UnitHandler> waitStack = new Stack<UnitHandler>();
     public UnitHandler currentUnit;
     public bool endTurn;
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        currentUnit = unitsInCombat[combatCounter % unitsInCombat.Length];
+        currentUnit = unitsInCombat[combatCounter];
         StartCoroutine(StartUp());
     }
 
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         if (endTurn)
         {
-            if (combatCounter % unitsInCombat.Length == 0 && waitStack.Count > 0)
+            if (combatCounter == unitsInCombat.Count-1 && waitStack.Count > 0)
             {
                 Debug.Log("popping wait");
                 SetCannotWait();
@@ -60,8 +60,20 @@ public class GameManager : MonoBehaviour
                 endTurn = false;
                 return;
             }
-            combatCounter++;
-            currentUnit = unitsInCombat[combatCounter % unitsInCombat.Length];
+            combatCounter = (combatCounter + 1 % unitsInCombat.Count);
+            bool found = false;
+            while (!found)
+            {
+                currentUnit = unitsInCombat[combatCounter % unitsInCombat.Count];
+                if (currentUnit.totalHealth <= 0)
+                {
+                    unitsInCombat.Remove(currentUnit);
+                }
+                else
+                {
+                    found = true;
+                } 
+            }
             currentUnit.GetAvailableMovementTiles();
             endTurn = false;
             waitButton.interactable = true;
@@ -86,15 +98,23 @@ public class GameManager : MonoBehaviour
         waitStack.Push(currentUnit);
         endTurn = true;
     }
-
     public void CombatAttack(UnitHandler unit)
     {
-        unit.unitBase.CalculateDamage(currentUnit.unitBase.attack, currentUnit.unitBase.damage);
+        unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.damage);
+        endTurn = true;
     }
 
     public void SetCannotWait()
     {
         waitButton.interactable = false;
+    }
+
+    private void ForwardInitiative()
+    {
+        foreach (UnitHandler unit in unitsInCombat)
+        {
+
+        }
     }
 
 }

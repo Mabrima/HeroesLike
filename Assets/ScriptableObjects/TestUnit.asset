@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb7a64277785d34a88610eae09f2a96, type: 3}
   m_Name: TestUnit
   m_EditorClassIdentifier: 
-  health: 10
+  baseHealth: 10
   damage: 2
   speed: 5
   initiative: 10
   attack: 0
   defence: 0
+  hurtMaterial: {fileID: 2100000, guid: 455c62662ffc6384e9628acb7b0b0228, type: 2}
+  normalMaterial: {fileID: 2100000, guid: a614412b941df2141a650e67777cf5b5, type: 2}

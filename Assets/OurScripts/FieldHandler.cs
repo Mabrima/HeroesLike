@@ -44,7 +44,6 @@ public class FieldHandler : MonoBehaviour
 
     public void GetAvailableMovementTiles(int x, int y, int range, bool asFake = false)
     {
-        ResetPossibleLocations();
         for (int i = 0; i < range; i++)
         {
             for (int j = 0; j < range - i; j++)
@@ -52,41 +51,37 @@ public class FieldHandler : MonoBehaviour
                 try
                 {
                     if (fieldObjects[x + i, y + j].fieldType == FieldType.Empty)
-                        fieldObjects[x + i, y + j].SetAsSelectable();
+                        fieldObjects[x + i, y + j].SetAsSelectable(asFake);
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
                 try
                 {
                     if (fieldObjects[x + i, y - j].fieldType == FieldType.Empty)
-                        fieldObjects[x + i, y - j].SetAsSelectable();
+                        fieldObjects[x + i, y - j].SetAsSelectable(asFake);
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
                 try
                 {
                     if (fieldObjects[x - i, y - j].fieldType == FieldType.Empty)
-                        fieldObjects[x - i, y - j].SetAsSelectable();
+                        fieldObjects[x - i, y - j].SetAsSelectable(asFake);
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
                 try
                 {
                     if (fieldObjects[x - i, y + j].fieldType == FieldType.Empty)
-                        fieldObjects[x - i, y + j].SetAsSelectable();
+                        fieldObjects[x - i, y + j].SetAsSelectable(asFake);
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
             }
@@ -95,52 +90,61 @@ public class FieldHandler : MonoBehaviour
 
     public void GetAvailableAttackTiles(int x, int y, int range)
     {
-        ResetPossibleLocations();
         Debug.Log("looking for tiles to attack");
         for (int i = 0; i < range; i++)
         {
             for (int j = 0; j < range - i; j++)
             {
-                if (x == 0)
-                    j = 1;
+                if (i == 0 && j == 0)
+                {
+                    j++;
+                }
                 try
                 {
                     if (fieldObjects[x + i, y + j].fieldType == FieldType.Occupied)
+                    {
                         fieldObjects[x + i, y + j].SetAsSelectable();
+                        Debug.Log("Attempts to make attackable");
+                    }
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
                 try
                 {
                     if (fieldObjects[x + i, y - j].fieldType == FieldType.Occupied)
+                    {
                         fieldObjects[x + i, y - j].SetAsSelectable();
+                        Debug.Log("Attempts to make attackable");
+                    }
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
                 try
                 {
                     if (fieldObjects[x - i, y - j].fieldType == FieldType.Occupied)
+                    {
                         fieldObjects[x - i, y - j].SetAsSelectable();
+                        Debug.Log("Attempts to make attackable");
+                    }
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
                 try
                 {
                     if (fieldObjects[x - i, y + j].fieldType == FieldType.Occupied)
+                    {
                         fieldObjects[x - i, y + j].SetAsSelectable();
+                        Debug.Log("Attempts to make attackable");
+                    }
                 }
                 catch
                 {
-                    Debug.Log("outofbounds");
                     //Do nothing, we just went out of array bounds
                 }
             }
@@ -171,11 +175,11 @@ public class FieldHandler : MonoBehaviour
         }
     }
 
-    public void ResetPossibleLocations()
+    public void ResetPossibleLocations(bool fake = false)
     {
         foreach (CombatTile tile in fieldObjects)
         {
-            tile.SetAsNotSelectable();
+            tile.SetAsNotSelectable(fake);
         }
     }
 }

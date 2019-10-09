@@ -39,7 +39,9 @@ public class CombatTile : MonoBehaviour
     private void OnMouseExit()
     {
         if (!selectable)
+        {
             return;
+        }
         rend.material = potentialMaterial;
     }
 
@@ -47,19 +49,19 @@ public class CombatTile : MonoBehaviour
     {
         if (!selectable)
             return;
+        FieldHandler.instance.ResetPossibleLocations();
         if (fieldType == FieldType.Empty)
         {
             GameManager.instance.currentUnit.Move(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
         }
-        if (fieldType == FieldType.Occupied)
+        else if (fieldType == FieldType.Occupied)
         {
             GameManager.instance.CombatAttack(unitOnTile);
         }
-        FieldHandler.instance.ResetPossibleLocations();
 
     }
 
-    // has potential as a way of "fake" marking tiles, needs a propper revert in "setAsNotSelectAble"
+    //Fake means it can't actually be clicked, just visual.
     public void SetAsSelectable(bool fake = false)
     {
         if (!fake)
@@ -77,8 +79,14 @@ public class CombatTile : MonoBehaviour
         }
     }
 
-    public void SetAsNotSelectable()
+    //Fake removes only the "fake" ones created.
+    public void SetAsNotSelectable(bool fake = false)
     {
+        if (fake && selectable)
+        {
+            rend.material = potentialMaterial;
+            return;
+        }
         selectable = false;
         rend.material = defaultMaterial;
     }
