@@ -110,7 +110,8 @@ public class Pathfinding : MonoBehaviour
 
         foreach (ClickableTile tile in allTiles)
         {
-            tile.sphereRend.enabled = false; //Does not work weirdly. 
+            tile.sphereRend.enabled = false;
+            tile.sphereRend.material = tile.sphereStartMat;
             tile.ResetPathfindingValues();
         }
 
