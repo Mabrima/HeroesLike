@@ -9,16 +9,56 @@ public class ClickableTile : MonoBehaviour
     public int tileY;
 
     public TileData tileData;
+    public TileType tileType;
+
+    public MeshRenderer sphereRend;
+
+    public ClickableTile chosenTile;
+
+    public Material sphereStartMat;
+    public Material sphereEndMat;
+
+    public Material mouseHover;
+    public Material startMat;
 
     public bool isWalkable;
     public Vector3 position;
 
     public TileMap map;
 
+    private Player player;
+
+    private void Start()
+    {
+        startMat = transform.GetComponent<MeshRenderer>().material;
+        player = FindObjectOfType<Player>();
+        sphereRend = transform.Find("Sphere").GetComponent<MeshRenderer>();
+
+    }
     private void OnMouseUp()
     {
-        Debug.Log("Tile: " + tileX + tileY);
-        map.MovePlayerTo(tileX, tileY, this);
+        Debug.Log("On Click: " + player.isMoving);
+        if (player.isMoving == true)
+        {
+            Debug.Log("hej");
+            return;
+        }
+
+        if (!Pathfinding.INSTANCE.ChoseNextTile(this))
+        {
+            map.FindPath(tileX, tileY, this);
+        }
+           
+    }
+
+    private void OnMouseEnter()
+    {
+        transform.GetComponent<MeshRenderer>().material = mouseHover;
+    }
+
+    private void OnMouseExit()
+    {
+        transform.GetComponent<MeshRenderer>().material = startMat;
     }
 
     public ClickableTile(bool a_isWalkable, Vector3 a_pos, int a_tileX, int a_tileY)

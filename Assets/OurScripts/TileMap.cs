@@ -6,7 +6,7 @@ using System.Linq;
 public class TileMap : MonoBehaviour
 {
 
-    public GameObject player;
+    public Player player;
 
     public TileType[] tileTypes;
 
@@ -39,6 +39,7 @@ public class TileMap : MonoBehaviour
 
         GenerateMapData();
         GenerateMapVisual();
+
     }
 
     void GenerateMapData()
@@ -161,9 +162,10 @@ public class TileMap : MonoBehaviour
         return new Vector3(x, y, player.transform.position.z);
     }
 
-    public void MovePlayerTo(int x, int y, ClickableTile tile)
+    public void FindPath(int x, int y, ClickableTile tile)
     {
         //player.transform.position = TileCoordToWorldCoord(x,y);
-        Pathfinding.INSTANCE.PathfindingSlow(clickableTiles[0,0], tile);
+        Pathfinding.INSTANCE.PathfindingSlow(player.currentTileStandingOn, tile);
+        //clickableTile[0,0]
     }
 }

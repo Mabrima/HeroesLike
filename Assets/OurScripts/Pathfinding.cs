@@ -13,6 +13,10 @@ public class Pathfinding : MonoBehaviour
     List<ClickableTile> currentTileNeighbours;
     List<ClickableTile> tilePath;
 
+    public Player player;
+
+    public Stack<ClickableTile> playerPath;
+
     const int ONE_G_STEP = 10;
 
     [Range(0f, 1f)]
@@ -39,6 +43,7 @@ public class Pathfinding : MonoBehaviour
         open = new List<ClickableTile>();
         closed = new List<ClickableTile>();
         allTiles = new List<ClickableTile>();
+        playerPath = new Stack<ClickableTile>();
     }
 
     private void CalculateH(ClickableTile tile, ClickableTile goal)
@@ -88,15 +93,24 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
+    bool initialRun = true;
+
     public void PathfindingSlow(ClickableTile start, ClickableTile goal)
     {
+        
+
+        if (initialRun)
+        {
+            allTiles.AddRange(TileMap.INSTANCE.GetAllTiles());
+            initialRun = false;
+        }
+
         open.Clear();
         closed.Clear();
-        
-        allTiles.AddRange(TileMap.INSTANCE.GetAllTiles());
 
         foreach (ClickableTile tile in allTiles)
         {
+            tile.sphereRend.enabled = false; //Does not work weirdly. 
             tile.ResetPathfindingValues();
         }
 
@@ -110,19 +124,23 @@ public class Pathfinding : MonoBehaviour
 
             open.Remove(current);
             closed.Add(current);
-            //current.GetComponent<MeshRenderer>().material.color = Color.black;
 
             if (current == goal)
             {
+                playerPath.Clear();
+                current.sphereRend.material = current.sphereEndMat; //Change material of End sphere.
                 do
                 {
+                    current.sphereRend.enabled = true;
+                    playerPath.Push(current);
                     current = current.tileData.pfParent;
-                    current.GetComponent<MeshRenderer>().material.color = Color.blue;
                 }
                 while (current.tileData.pfParent != start);
-
-                Debug.Log("No Path Found");
+                playerPath.Push(current);
+                current.sphereRend.enabled = true;
+                return;
             }
+
 
             foreach (ClickableTile neighbour in current.map.GetNeighbouringTiles(current))
             {
@@ -157,6 +175,23 @@ public class Pathfinding : MonoBehaviour
 
 
         } while (open.Count > 0);
+        Debug.Log("No Path Found");
+
     }
-    
+
+    ClickableTile chosenTile;
+
+
+    public bool ChoseNextTile(ClickableTile tile)
+    {
+        if (chosenTile != null && chosenTile == tile)
+        {
+            Debug.Log("move player");
+            player.StartMovePlayer(player.isMoving);
+            return true;
+        }
+        chosenTile = tile;
+        return false;
+    }
+
 }
