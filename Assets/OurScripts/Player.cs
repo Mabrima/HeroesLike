@@ -38,9 +38,7 @@ public class Player : MonoBehaviour
             nextMove = Pathfinding.INSTANCE.playerPath.Pop(); //Get next tile in stack we want to move too.
             startTime = Time.time;
             journeyLength = Vector3.Distance(transform.position, nextMove.transform.position + tileOffset);
-        
-            nextMove.sphereRend.enabled = false; //Turn sphere off
-            nextMove.sphereRend.material = nextMove.sphereStartMat; //change sphere to start material.
+            
             lerping = true;
 
             while (lerping)
@@ -48,11 +46,17 @@ public class Player : MonoBehaviour
                 float distCovered = (Time.time - startTime) * playerSpeed;
                 float fractionOfJourney = distCovered / journeyLength;
                 if (fractionOfJourney > 0.95)
+                {
                     lerping = false;
+                }
+                    
                 transform.position = Vector3.Lerp(transform.position, nextMove.transform.position + tileOffset, fractionOfJourney);
                 
                 yield return new WaitForFixedUpdate();
+                nextMove.sphereRend.enabled = false; //Turn sphere off
+                nextMove.sphereRend.material = nextMove.sphereStartMat; //change sphere to start material.
             }
+
         }
          
         Debug.Log("moving ended");

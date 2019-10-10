@@ -94,10 +94,13 @@ public class Pathfinding : MonoBehaviour
             initialRun = false;
         }
 
+        //Clear all lists/stacks when we find a path
         open.Clear();
         closed.Clear();
+        playerPath.Clear();
 
-        foreach (ClickableTile tile in allTiles)
+
+        foreach (ClickableTile tile in allTiles) //Go through all tiles and turn spheres off and set start material and reset pf-values.
         {
             tile.sphereRend.enabled = false;
             tile.sphereRend.material = tile.sphereStartMat;
@@ -119,13 +122,12 @@ public class Pathfinding : MonoBehaviour
             {
                 playerPath.Clear();
                 current.sphereRend.material = current.sphereEndMat; //Change material of End sphere.
-                do
+                while (current.tileData.pfParent != start)
                 {
                     current.sphereRend.enabled = true;
                     playerPath.Push(current);
                     current = current.tileData.pfParent;
                 }
-                while (current.tileData.pfParent != start);
                 playerPath.Push(current);
                 current.sphereRend.enabled = true;
                 return;
@@ -170,8 +172,6 @@ public class Pathfinding : MonoBehaviour
     }
 
     ClickableTile chosenTile;
-
-
     public bool ChoseNextTile(ClickableTile tile)
     {
         if (chosenTile != null && chosenTile == tile)
@@ -180,6 +180,7 @@ public class Pathfinding : MonoBehaviour
             player.StartMovePlayer(player.isMoving);
             return true;
         }
+
         chosenTile = tile;
         return false;
     }

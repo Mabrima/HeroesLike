@@ -44,6 +44,8 @@ public class ClickableTile : MonoBehaviour
         {
             map.FindPath(tileX, tileY, this);
         }
+        
+            
            
     }
 
