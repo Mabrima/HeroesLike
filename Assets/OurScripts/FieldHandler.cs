@@ -88,12 +88,12 @@ public class FieldHandler : MonoBehaviour
         }
     }
 
-    public void GetAvailableAttackTiles(int x, int y, int range)
+    public void GetAvailableAttackTiles(int x, int y)
     {
         Debug.Log("looking for tiles to attack");
-        for (int i = 0; i < range; i++)
+        for (int i = 0; i < 2; i++)
         {
-            for (int j = 0; j < range - i; j++)
+            for (int j = 0; j < 2; j++)
             {
                 if (i == 0 && j == 0)
                 {

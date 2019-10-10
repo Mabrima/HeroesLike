@@ -16,6 +16,9 @@
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 
+#Heavy assets Remove Later
+/[Aa]ssets/HEROIC FANTASY CREATURES FULL PACK*
+
 # TextMesh Pro files
 [Aa]ssets/TextMesh*Pro/
 

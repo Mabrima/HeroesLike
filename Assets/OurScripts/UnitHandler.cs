@@ -30,7 +30,7 @@ public class UnitHandler : MonoBehaviour
         transform.position = new Vector3(x, 1, y);
         FieldHandler.instance.ResetPossibleLocations();
         FieldHandler.instance.PutUnitOnTile(x, y, this);
-        FieldHandler.instance.GetAvailableAttackTiles(x, y, 2);
+        FieldHandler.instance.GetAvailableAttackTiles(x, y);
         GameManager.instance.SetCannotWait();
     }
 
@@ -38,7 +38,7 @@ public class UnitHandler : MonoBehaviour
     {
         FieldHandler.instance.ResetPossibleLocations();
         FieldHandler.instance.GetAvailableMovementTiles(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z), unitBase.speed);
-        FieldHandler.instance.GetAvailableAttackTiles(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z), 2);
+        FieldHandler.instance.GetAvailableAttackTiles(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
     }
 
     public void GetHit(int otherAttack, int otherDamage)
