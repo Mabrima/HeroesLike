@@ -60,12 +60,21 @@ public class TileMap : MonoBehaviour
         tiles[1, 3] = 2;
         tiles[1, 4] = 2;
         tiles[1, 5] = 2;
-        tiles[5, 1] = 2;
-        tiles[5, 2] = 2;
-        tiles[5, 3] = 2;
-        tiles[5, 4] = 2;
+        tiles[2, 5] = 2;
+        tiles[3, 5] = 2;
+        tiles[4, 5] = 2;
         tiles[5, 5] = 2;
-        tiles[5, 6] = 2;
+        tiles[6, 5] = 2;
+        tiles[7, 5] = 2;
+
+
+        tiles[0, 9] = 2;
+        tiles[1, 9] = 2;
+        tiles[2, 9] = 2;
+        tiles[2, 8] = 2;
+        tiles[2, 7] = 2;
+        tiles[1, 7] = 2;
+        tiles[0, 7] = 2;
     }
     
     void GenerateMapVisual()
@@ -157,15 +166,8 @@ public class TileMap : MonoBehaviour
         return neighbouringTiles;
     }
 
-    public Vector3 TileCoordToWorldCoord(int x, int y)
-    {
-        return new Vector3(x, y, player.transform.position.z);
-    }
-
     public void FindPath(int x, int y, ClickableTile tile)
     {
-        //player.transform.position = TileCoordToWorldCoord(x,y);
-        Pathfinding.INSTANCE.PathfindingSlow(player.currentTileStandingOn, tile);
-        //clickableTile[0,0]
+        Pathfinding.INSTANCE.PathFinding(player.currentTileStandingOn, tile);
     }
 }

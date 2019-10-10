@@ -4,25 +4,14 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    ClickableTile startTile;
-    ClickableTile destinationTile;
     List<ClickableTile> open;
     List<ClickableTile> closed;
     List<ClickableTile> allTiles;
-    ClickableTile currentTile;
-    List<ClickableTile> currentTileNeighbours;
-    List<ClickableTile> tilePath;
+    public Stack<ClickableTile> playerPath;
 
     public Player player;
 
-    public Stack<ClickableTile> playerPath;
-
     const int ONE_G_STEP = 10;
-
-    [Range(0f, 1f)]
-    public float waitTime;
-
-    TileMap map;
 
     public static Pathfinding INSTANCE;
 
@@ -95,7 +84,7 @@ public class Pathfinding : MonoBehaviour
 
     bool initialRun = true;
 
-    public void PathfindingSlow(ClickableTile start, ClickableTile goal)
+    public void PathFinding(ClickableTile start, ClickableTile goal)
     {
         
 

@@ -9,11 +9,8 @@ public class ClickableTile : MonoBehaviour
     public int tileY;
 
     public TileData tileData;
-    public TileType tileType;
 
     public MeshRenderer sphereRend;
-
-    public ClickableTile chosenTile;
 
     public Material sphereStartMat;
     public Material sphereEndMat;
@@ -22,7 +19,6 @@ public class ClickableTile : MonoBehaviour
     public Material startMat;
 
     public bool isWalkable;
-    public Vector3 position;
 
     public TileMap map;
 
@@ -59,14 +55,6 @@ public class ClickableTile : MonoBehaviour
     private void OnMouseExit()
     {
         transform.GetComponent<MeshRenderer>().material = startMat;
-    }
-
-    public ClickableTile(bool a_isWalkable, Vector3 a_pos, int a_tileX, int a_tileY)
-    {
-        isWalkable = a_isWalkable;
-        position = a_pos;
-        tileX = a_tileX;
-        tileY = a_tileY;
     }
 
     public void ResetPathfindingValues()
