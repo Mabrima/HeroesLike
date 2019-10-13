@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     public List<UnitHandler> unitsInCombat;
     public Stack<UnitHandler> waitStack = new Stack<UnitHandler>();
     public UnitHandler currentUnit;
-    public bool endTurn;
+    public bool endTurn = false;
+    public bool canWait = false;
     int combatCounter = 0;
 
     public enum GameState
@@ -54,13 +55,13 @@ public class GameManager : MonoBehaviour
             if (combatCounter == unitsInCombat.Count-1 && waitStack.Count > 0)
             {
                 Debug.Log("popping wait");
-                SetCannotWait();
+                SetCannotWait(true);
                 currentUnit = waitStack.Pop();
                 currentUnit.GetAvailableMovementTiles();
                 endTurn = false;
                 return;
             }
-            combatCounter = (combatCounter + 1 % unitsInCombat.Count);
+            combatCounter = (combatCounter + 1) % unitsInCombat.Count;
             bool found = false;
             while (!found)
             {
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour
             }
             currentUnit.GetAvailableMovementTiles();
             endTurn = false;
-            waitButton.interactable = true;
+            SetCannotWait(false);
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -84,6 +85,8 @@ public class GameManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
+            if (!canWait)
+                return;
             Wait();
         }
     }
@@ -104,9 +107,10 @@ public class GameManager : MonoBehaviour
         endTurn = true;
     }
 
-    public void SetCannotWait()
+    public void SetCannotWait(bool set)
     {
-        waitButton.interactable = false;
+        waitButton.interactable = !set;
+        canWait = !set;
     }
 
     private void ForwardInitiative()

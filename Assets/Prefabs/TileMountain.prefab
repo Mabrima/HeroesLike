@@ -191,16 +191,9 @@ MonoBehaviour:
     hCost: 0
     fCost: 0
     pfParent: {fileID: 0}
-  tileType:
-    name: 
-    tileVisualPrefab: {fileID: 0}
   sphereRend: {fileID: 0}
-  chosenTile: {fileID: 0}
   sphereStartMat: {fileID: 0}
   sphereEndMat: {fileID: 0}
-  mouseHover: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
-  startMat: {fileID: 0}
-  isWalkable: 0
-  position: {x: 0, y: 0, z: 0}
   map: {fileID: 0}
-  player: {fileID: 2951717332565223900, guid: 38209f6ee162e4e45942e2baeef2bc0d, type: 3}
+  mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
+  fieldType: 0

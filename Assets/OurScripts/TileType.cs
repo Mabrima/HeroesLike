@@ -8,13 +8,13 @@ public class TileType
     public string name;
     public GameObject tileVisualPrefab;
 
-    public bool CheckIfWalkable()
+    public FieldType CheckIfWalkable()
     {
         if (name == "Mountain")
         {
-            return false;
+            return FieldType.Obstacle;
         }
 
-        return true;
+        return FieldType.Empty;
     }
 }

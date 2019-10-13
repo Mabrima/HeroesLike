@@ -194,7 +194,6 @@ MonoBehaviour:
   sphereRend: {fileID: 3866763751334120866}
   sphereStartMat: {fileID: 2100000, guid: 195a5f14570f5dc4e949fc4c6f00f999, type: 2}
   sphereEndMat: {fileID: 2100000, guid: 6955a623631a78048b6ecbadcdc4b9d5, type: 2}
-  mouseHover: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
-  startMat: {fileID: 2100000, guid: bdeeed5bc39a05f4f9135431a64cd10c, type: 2}
-  isWalkable: 0
   map: {fileID: 0}
+  mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
+  fieldType: 0

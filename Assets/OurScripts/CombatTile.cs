@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CombatTile : MonoBehaviour
+public class CombatTile : PathfindingTile
 {
-    public FieldType fieldType = FieldType.Empty;
     public Material potentialMaterial;
     public Material fakePotentialMaterial;
     public Material overLappingPotentialMaterial;
-    public Material selectedMaterial;
-    private Material defaultMaterial;
-    private MeshRenderer rend;
+
     private bool selectable = false;
     public int x;
     public int y;
@@ -19,7 +16,7 @@ public class CombatTile : MonoBehaviour
 
     private void Start()
     {
-        rend = GetComponent<MeshRenderer>();
+        base.Initiate();
         defaultMaterial = rend.material;
     }
 
@@ -33,7 +30,7 @@ public class CombatTile : MonoBehaviour
     {
         if (!selectable)
             return;
-        rend.material = selectedMaterial;
+        rend.material = mouseOverMaterial;
     }
 
     private void OnMouseExit()

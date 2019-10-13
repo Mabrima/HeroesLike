@@ -11,7 +11,7 @@ public class TileMap : MonoBehaviour
     public TileType[] tileTypes;
 
     public int[,] tiles;
-    public ClickableTile[,] clickableTiles;
+    public PathfindingTile[,] clickableTiles;
 
     int mapSizeX = 10;
     int mapSizeY = 10;
@@ -35,7 +35,7 @@ public class TileMap : MonoBehaviour
 
     void Start()
     {
-        clickableTiles = new ClickableTile[mapSizeX, mapSizeY];
+        clickableTiles = new PathfindingTile[mapSizeX, mapSizeY];
 
         GenerateMapData();
         GenerateMapVisual();
@@ -85,11 +85,11 @@ public class TileMap : MonoBehaviour
             {
                 TileType tt = tileTypes[tiles[x, y]];
 
-                ClickableTile go = Instantiate(tt.tileVisualPrefab, new Vector3(x, y, 0), Quaternion.identity).GetComponent<ClickableTile>();
+                PathfindingTile go = Instantiate(tt.tileVisualPrefab, new Vector3(x, y, 0), Quaternion.identity).GetComponent<PathfindingTile>();
                 go.tileX = x;
                 go.tileY = y;
                 go.map = this;
-                go.isWalkable = tt.CheckIfWalkable();
+                go.fieldType = tt.CheckIfWalkable();
 
                 clickableTiles[x, y] = go;
 
@@ -98,9 +98,9 @@ public class TileMap : MonoBehaviour
         }
     }
    
-    public List<ClickableTile> GetAllTiles()
+    public List<PathfindingTile> GetAllTiles()
     {
-        List<ClickableTile> all = new List<ClickableTile>();
+        List<PathfindingTile> all = new List<PathfindingTile>();
 
         for (int x = 0; x < mapSizeX; x++)
         {
@@ -113,9 +113,9 @@ public class TileMap : MonoBehaviour
         return all;
     }
 
-    public List<ClickableTile> GetNeighbouringTiles(ClickableTile a_Tile)
+    public List<PathfindingTile> GetNeighbouringTiles(PathfindingTile a_Tile)
     {
-        List<ClickableTile> neighbouringTiles = new List<ClickableTile>();
+        List<PathfindingTile> neighbouringTiles = new List<PathfindingTile>();
         int xCheck;
         int yCheck;
 
@@ -166,7 +166,7 @@ public class TileMap : MonoBehaviour
         return neighbouringTiles;
     }
 
-    public void FindPath(int x, int y, ClickableTile tile)
+    public void FindPath(int x, int y, PathfindingTile tile)
     {
         Pathfinding.INSTANCE.PathFinding(player.currentTileStandingOn, tile);
     }

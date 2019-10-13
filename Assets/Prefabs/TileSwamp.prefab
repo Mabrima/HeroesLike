@@ -116,10 +116,9 @@ MonoBehaviour:
   sphereRend: {fileID: 6078964543495901943}
   sphereStartMat: {fileID: 0}
   sphereEndMat: {fileID: 0}
-  mouseHover: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
-  startMat: {fileID: 0}
-  isWalkable: 0
   map: {fileID: 0}
+  mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
+  fieldType: 0
 --- !u!1 &7934579208015235215
 GameObject:
   m_ObjectHideFlags: 0

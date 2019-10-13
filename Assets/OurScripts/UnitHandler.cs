@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class UnitHandler : MonoBehaviour
 {
     public UnitBase unitBase;
@@ -31,7 +32,7 @@ public class UnitHandler : MonoBehaviour
         FieldHandler.instance.ResetPossibleLocations();
         FieldHandler.instance.PutUnitOnTile(x, y, this);
         FieldHandler.instance.GetAvailableAttackTiles(x, y);
-        GameManager.instance.SetCannotWait();
+        GameManager.instance.SetCannotWait(true);
     }
 
     public void GetAvailableMovementTiles()

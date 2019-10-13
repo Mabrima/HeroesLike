@@ -2,35 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickableTile : MonoBehaviour
+public class ClickableTile : PathfindingTile
 {
-
-    public int tileX;
-    public int tileY;
-
-    public TileData tileData;
-
-    public MeshRenderer sphereRend;
-
-    public Material sphereStartMat;
-    public Material sphereEndMat;
-
-    public Material mouseHover;
-    public Material startMat;
-
-    public bool isWalkable;
-
-    public TileMap map;
-
-    private Player player;
 
     private void Start()
     {
-        startMat = transform.GetComponent<MeshRenderer>().material;
+        base.Initiate();
+        defaultMaterial = rend.material;
         player = FindObjectOfType<Player>();
         sphereRend = transform.Find("Sphere").GetComponent<MeshRenderer>();
 
     }
+
     private void OnMouseUp()
     {
         Debug.Log("On Click: " + player.isMoving);
@@ -44,25 +27,18 @@ public class ClickableTile : MonoBehaviour
         {
             map.FindPath(tileX, tileY, this);
         }
-        
-            
            
     }
 
     private void OnMouseEnter()
     {
-        transform.GetComponent<MeshRenderer>().material = mouseHover;
+        rend.material = mouseOverMaterial;
     }
 
     private void OnMouseExit()
     {
-        transform.GetComponent<MeshRenderer>().material = startMat;
+        rend.material = defaultMaterial;
     }
 
-    public void ResetPathfindingValues()
-    {
-        tileData.hCost = 0;
-        tileData.gCost = 0;
-        tileData.pfParent = null;
-    }
+
 }

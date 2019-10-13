@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public ClickableTile currentTileStandingOn;
+    public PathfindingTile currentTileStandingOn;
     public float playerSpeed;
     public Vector3 tileOffset = new Vector3(0, 0, -0.75f);
 
@@ -15,10 +15,6 @@ public class Player : MonoBehaviour
     private float startTime;
     private float journeyLength;
 
-    private void Update()
-    {
-         
-    }
     public void StartMovePlayer(bool isMoving)
     {
         if (isMoving == false)
@@ -29,7 +25,7 @@ public class Player : MonoBehaviour
 
     IEnumerator MovePlayer()
     {
-        ClickableTile nextMove;
+        PathfindingTile nextMove;
         isMoving = true;
 
 
@@ -66,7 +62,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        currentTileStandingOn = other.GetComponent<ClickableTile>();
+        currentTileStandingOn = other.GetComponent<PathfindingTile>();
     }
 
 }

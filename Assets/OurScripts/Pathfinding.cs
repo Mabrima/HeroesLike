@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    List<ClickableTile> open;
-    List<ClickableTile> closed;
-    List<ClickableTile> allTiles;
-    public Stack<ClickableTile> playerPath;
+    List<PathfindingTile> open;
+    List<PathfindingTile> closed;
+    List<PathfindingTile> allTiles;
+    public Stack<PathfindingTile> playerPath;
+    PathfindingTile chosenTile;
 
     public Player player;
 
@@ -29,13 +30,13 @@ public class Pathfinding : MonoBehaviour
 
     private void Start()
     {
-        open = new List<ClickableTile>();
-        closed = new List<ClickableTile>();
-        allTiles = new List<ClickableTile>();
-        playerPath = new Stack<ClickableTile>();
+        open = new List<PathfindingTile>();
+        closed = new List<PathfindingTile>();
+        allTiles = new List<PathfindingTile>();
+        playerPath = new Stack<PathfindingTile>();
     }
 
-    private void CalculateH(ClickableTile tile, ClickableTile goal)
+    private void CalculateH(PathfindingTile tile, PathfindingTile goal)
     {
         int calculatedH = 0;
 
@@ -45,18 +46,18 @@ public class Pathfinding : MonoBehaviour
         calculatedH = (xDis + yDis) * ONE_G_STEP;
     }
 
-    private int CalculateGCost(ClickableTile calculatedTile, ClickableTile parentTile)
+    private int CalculateGCost(PathfindingTile calculatedTile, PathfindingTile parentTile)
     {
         return ONE_G_STEP;
     }
 
-    private ClickableTile FindLowestFCostTile()
+    private PathfindingTile FindLowestFCostTile()
     {
         if (open.Count > 0)
         {
-            ClickableTile smallestFTile = open[0];
+            PathfindingTile smallestFTile = open[0];
             int smallestF = smallestFTile.tileData.CalculateAndGetF();
-            foreach (ClickableTile tile in open)
+            foreach (PathfindingTile tile in open)
             {
                 if (tile.tileData.CalculateAndGetF() < smallestF)
                 {
@@ -74,9 +75,9 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    private void SetHForAll(ClickableTile theGoal)
+    private void SetHForAll(PathfindingTile theGoal)
     {
-        foreach (ClickableTile tile in allTiles)
+        foreach (PathfindingTile tile in allTiles)
         {
             CalculateH(tile, theGoal);
         }
@@ -84,10 +85,8 @@ public class Pathfinding : MonoBehaviour
 
     bool initialRun = true;
 
-    public void PathFinding(ClickableTile start, ClickableTile goal)
+    public void PathFinding(PathfindingTile start, PathfindingTile goal)
     {
-        
-
         if (initialRun)
         {
             allTiles.AddRange(TileMap.INSTANCE.GetAllTiles());
@@ -100,11 +99,12 @@ public class Pathfinding : MonoBehaviour
         playerPath.Clear();
 
 
-        foreach (ClickableTile tile in allTiles) //Go through all tiles and turn spheres off and set start material and reset pf-values.
+        foreach (PathfindingTile tile in allTiles) //Go through all tiles and turn spheres off and set start material and reset pf-values.
         {
-            tile.sphereRend.enabled = false;
-            tile.sphereRend.material = tile.sphereStartMat;
             tile.ResetPathfindingValues();
+
+            tile.sphereRend.enabled = false;   
+            tile.sphereRend.material = tile.sphereStartMat;
         }
 
         SetHForAll(goal);
@@ -113,7 +113,7 @@ public class Pathfinding : MonoBehaviour
 
         do
         {
-            ClickableTile current = FindLowestFCostTile();
+            PathfindingTile current = FindLowestFCostTile();
 
             open.Remove(current);
             closed.Add(current);
@@ -121,20 +121,23 @@ public class Pathfinding : MonoBehaviour
             if (current == goal)
             {
                 playerPath.Clear();
+
                 current.sphereRend.material = current.sphereEndMat; //Change material of End sphere.
                 while (current.tileData.pfParent != start)
                 {
-                    current.sphereRend.enabled = true;
                     playerPath.Push(current);
+
+                    current.sphereRend.enabled = true;
                     current = current.tileData.pfParent;
                 }
                 playerPath.Push(current);
+
                 current.sphereRend.enabled = true;
                 return;
             }
 
 
-            foreach (ClickableTile neighbour in current.map.GetNeighbouringTiles(current))
+            foreach (PathfindingTile neighbour in current.map.GetNeighbouringTiles(current))
             {
                 if (closed.Contains(neighbour))
                 {
@@ -142,7 +145,7 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 }
 
-                if (neighbour.isWalkable == false)
+                if (neighbour.fieldType != FieldType.Empty)
                 {
                     Debug.Log("Not walkable");
                     continue;
@@ -171,8 +174,7 @@ public class Pathfinding : MonoBehaviour
 
     }
 
-    ClickableTile chosenTile;
-    public bool ChoseNextTile(ClickableTile tile)
+    public bool ChoseNextTile(PathfindingTile tile)
     {
         if (chosenTile != null && chosenTile == tile)
         {

@@ -3,7 +3,18 @@ guid: bb0f25c5fb5395b4ead2a176de309733
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - sphereRend: {instanceID: 0}
+  - sphereStartMat: {instanceID: 0}
+  - sphereEndMat: {instanceID: 0}
+  - mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
+  - map: {instanceID: 0}
+  - potentialMaterial: {fileID: 2100000, guid: 195a5f14570f5dc4e949fc4c6f00f999, type: 2}
+  - fakePotentialMaterial: {fileID: 2100000, guid: 1cc5b33c754845047849e8dfff4a422d,
+      type: 2}
+  - overLappingPotentialMaterial: {fileID: 2100000, guid: d92ec135fcc4e47479a965746584161f,
+      type: 2}
+  - unitOnTile: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
