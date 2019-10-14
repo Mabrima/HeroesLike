@@ -88,7 +88,7 @@ public class FieldHandler : MonoBehaviour
         }
     }
 
-    public void GetAvailableAttackTiles(int x, int y)
+    public void GetAvailableAttackTiles(int x, int y, int team)
     {
         Debug.Log("looking for tiles to attack");
         for (int i = 0; i < 2; i++)
@@ -101,10 +101,9 @@ public class FieldHandler : MonoBehaviour
                 }
                 try
                 {
-                    if (fieldObjects[x + i, y + j].fieldType == FieldType.Occupied)
+                    if (fieldObjects[x + i, y + j].fieldType == FieldType.Occupied && fieldObjects[x + i, y + j].unitOnTile.team != team)
                     {
                         fieldObjects[x + i, y + j].SetAsSelectable();
-                        Debug.Log("Attempts to make attackable");
                     }
                 }
                 catch
@@ -113,10 +112,9 @@ public class FieldHandler : MonoBehaviour
                 }
                 try
                 {
-                    if (fieldObjects[x + i, y - j].fieldType == FieldType.Occupied)
+                    if (fieldObjects[x + i, y - j].fieldType == FieldType.Occupied && fieldObjects[x + i, y - j].unitOnTile.team != team)
                     {
                         fieldObjects[x + i, y - j].SetAsSelectable();
-                        Debug.Log("Attempts to make attackable");
                     }
                 }
                 catch
@@ -125,10 +123,9 @@ public class FieldHandler : MonoBehaviour
                 }
                 try
                 {
-                    if (fieldObjects[x - i, y - j].fieldType == FieldType.Occupied)
+                    if (fieldObjects[x - i, y - j].fieldType == FieldType.Occupied && fieldObjects[x - i, y - j].unitOnTile.team != team)
                     {
                         fieldObjects[x - i, y - j].SetAsSelectable();
-                        Debug.Log("Attempts to make attackable");
                     }
                 }
                 catch
@@ -137,10 +134,9 @@ public class FieldHandler : MonoBehaviour
                 }
                 try
                 {
-                    if (fieldObjects[x - i, y + j].fieldType == FieldType.Occupied)
+                    if (fieldObjects[x - i, y + j].fieldType == FieldType.Occupied && fieldObjects[x - i, y + j].unitOnTile.team != team)
                     {
                         fieldObjects[x - i, y + j].SetAsSelectable();
-                        Debug.Log("Attempts to make attackable");
                     }
                 }
                 catch

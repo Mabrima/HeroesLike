@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public Button waitButton;
+    public Text battleText;
     public static GameManager instance;
     public List<UnitHandler> unitsInCombat;
     public Stack<UnitHandler> waitStack = new Stack<UnitHandler>();
@@ -48,7 +49,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        //really doesn't need an update could be made to be called whenever it's actually relevant
         GameHandler();
+
         if (Input.GetMouseButtonUp(1))
         {
             statViewer.StopShow();
