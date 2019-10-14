@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public bool canWait = false;
     int combatCounter = 0;
 
+    public StatViewer statViewer;
+
     public enum GameState
     {
         CombatMovement, CombatAttack, 
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
+        statViewer.StopShow();
         currentUnit = unitsInCombat[combatCounter];
         StartCoroutine(StartUp());
     }
@@ -46,6 +49,10 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         GameHandler();
+        if (Input.GetMouseButtonUp(1))
+        {
+            statViewer.StopShow();
+        }
     }
 
     public void GameHandler()
@@ -103,7 +110,7 @@ public class GameManager : MonoBehaviour
     }
     public void CombatAttack(UnitHandler unit)
     {
-        unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.damage);
+        unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.damage, currentUnit.amountOfUnits);
         endTurn = true;
     }
 
@@ -117,7 +124,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (UnitHandler unit in unitsInCombat)
         {
-
+            unit.ForwardInitiative();
         }
     }
 

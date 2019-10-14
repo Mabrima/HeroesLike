@@ -12,8 +12,6 @@ public class UnitBase : ScriptableObject
     public int initiative;
     public int attack;
     public int defence;
-    public Material hurtMaterial;
-    public Material normalMaterial;
 
     private float increasePerAttack = 0.05f;
     private float decreasePerDefence = 0.025f;
@@ -31,7 +29,7 @@ public class UnitBase : ScriptableObject
             damageMultiplier -= Mathf.Clamp((defence - otherAttack) * decreasePerDefence, 0, .7f);
         }
 
-        return (int) Mathf.Max(damage * damageMultiplier, 1);
+        return (int) Mathf.Max(otherDamage * damageMultiplier, 1);
     }
 
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathfindingTile : MonoBehaviour
+public abstract class PathfindingTile : MonoBehaviour
 {
 
     public int tileX;
@@ -11,9 +11,9 @@ public class PathfindingTile : MonoBehaviour
     public TileData tileData;
 
     public MeshRenderer sphereRend; //TODO Should be moved down to clickable tile.
-    public Material sphereStartMat;
-    public Material sphereEndMat;
-    public TileMap map;
+    public Material sphereStartMat; //
+    public Material sphereEndMat; //
+    public TileMap map; //
 
     protected MeshRenderer rend;
     public Material mouseOverMaterial;
