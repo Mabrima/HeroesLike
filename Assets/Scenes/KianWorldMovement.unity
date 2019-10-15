@@ -258,6 +258,8 @@ MonoBehaviour:
   - name: Mountain
     tileVisualPrefab: {fileID: 8865256097876593051, guid: 72c80e5dac0979149b1b50dac655e950,
       type: 3}
+  mapSizeX: 20
+  mapSizeY: 20
 --- !u!4 &822561478
 Transform:
   m_ObjectHideFlags: 0
@@ -284,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ba367969eee5543a9e87b245757c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allTiles: []
   player: {fileID: 917810014}
 --- !u!1001 &838776601
 PrefabInstance:
@@ -458,13 +461,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 4.5, z: -10}
+  m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
+  m_LocalPosition: {x: 0, y: -5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,7 +481,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundary: 50
-  speed: 5
+  speed: 15
+  zoomSensitivity: 20
+  player: {fileID: 917810014}
 --- !u!1001 &2951717332254016130
 PrefabInstance:
   m_ObjectHideFlags: 0

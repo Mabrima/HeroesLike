@@ -11,6 +11,13 @@ public class MoveCamera : MonoBehaviour
     private int screenWidth;
     private int screenHeight;
 
+    float minFOV = 15f;
+    float maxFOV = 90f;
+
+    public float zoomSensitivity = 10f;
+
+    Camera mainCamera;
+
     Vector3 cameraOffset = new Vector3(0, -5, -10);
 
     public Player player;
@@ -19,6 +26,8 @@ public class MoveCamera : MonoBehaviour
     {
         screenWidth = Screen.width;
         screenHeight = Screen.height;
+
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -48,5 +57,10 @@ public class MoveCamera : MonoBehaviour
         {
             transform.position = player.transform.position + cameraOffset;
         }
+
+        float fov = mainCamera.fieldOfView;
+        fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        fov = Mathf.Clamp(fov, minFOV, maxFOV);
+        mainCamera.fieldOfView = fov;
     }
 }
