@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
             nextMove = Pathfinding.INSTANCE.playerPath.Pop(); //Get next tile in stack we want to move too.
             startTime = Time.time;
             journeyLength = Vector3.Distance(transform.position, nextMove.transform.position + tileOffset);
-            
+            RotatePlayerToTile(nextMove);
             lerping = true;
 
             while (lerping)
@@ -57,6 +57,14 @@ public class Player : MonoBehaviour
          
         Debug.Log("moving ended");
         isMoving = false;
+    }
+
+    public void RotatePlayerToTile(PathfindingTile nextMove)
+    {
+        Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.sphereRend.transform.position, Vector3.forward);
+        newRotation.x = 0f;
+        newRotation.y = 0f;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, Mathf.Infinity);
     }
 
 
