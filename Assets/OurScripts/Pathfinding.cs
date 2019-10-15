@@ -6,7 +6,7 @@ public class Pathfinding : MonoBehaviour
 {
     List<PathfindingTile> open;
     List<PathfindingTile> closed;
-    List<PathfindingTile> allTiles;
+    public List<PathfindingTile> allTiles;
     public Stack<PathfindingTile> playerPath;
     PathfindingTile chosenTile;
 
@@ -103,7 +103,7 @@ public class Pathfinding : MonoBehaviour
         {
             tile.ResetPathfindingValues();
 
-            tile.sphereRend.enabled = false;   
+            tile.sphereRend.enabled = false;
             tile.sphereRend.material = tile.sphereStartMat;
         }
 

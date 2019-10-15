@@ -13,8 +13,8 @@ public class TileMap : MonoBehaviour
     public int[,] tiles;
     public PathfindingTile[,] clickableTiles;
 
-    int mapSizeX = 10;
-    int mapSizeY = 10;
+    public int mapSizeX = 50;
+    public int mapSizeY = 50;
 
     public static TileMap INSTANCE;
 
@@ -54,7 +54,7 @@ public class TileMap : MonoBehaviour
             }
         }
 
-        tiles[1, 0] = 2;
+        /*tiles[1, 0] = 2;
         tiles[1, 1] = 2;
         tiles[1, 2] = 2;
         tiles[1, 3] = 2;
@@ -74,7 +74,7 @@ public class TileMap : MonoBehaviour
         tiles[2, 8] = 2;
         tiles[2, 7] = 2;
         tiles[1, 7] = 2;
-        tiles[0, 7] = 2;
+        tiles[0, 7] = 2;*/
     }
     
     void GenerateMapVisual()
@@ -92,8 +92,6 @@ public class TileMap : MonoBehaviour
                 go.fieldType = tt.CheckIfWalkable();
 
                 clickableTiles[x, y] = go;
-
-                
             }
         }
     }
