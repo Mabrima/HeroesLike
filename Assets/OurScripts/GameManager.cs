@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public List<UnitHandler> unitsInCombat;
     public Stack<UnitHandler> waitStack = new Stack<UnitHandler>();
+    public Stack<UnitHandler> actionStack = new Stack<UnitHandler>();
     public UnitHandler currentUnit;
     public bool endTurn = false;
     public bool canWait = false;
@@ -44,45 +45,31 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         //really doesn't need an update could be made to be called whenever it's actually relevant
-        GameHandler();
-
-        if (Input.GetMouseButtonUp(1))
+        if (endTurn)
         {
-            statViewer.StopShow();
+            NextUnitTurn();
+        }
+        
+        HandleInputs();
+    }
+
+    private void NextUnitTurn()
+    {
+        while (actionStack.Count < 1)
+        {
+            ForwardInitiatives();
+        }
+
+        currentUnit = actionStack.Pop();
+        if (unitsInCombat.Contains(currentUnit))
+        {
+            ReadyUnit();
+            endTurn = false;
         }
     }
 
-    public void GameHandler()
+    private void HandleInputs()
     {
-        if (endTurn)
-        {
-            if (combatCounter == unitsInCombat.Count-1 && waitStack.Count > 0)
-            {
-                Debug.Log("popping wait");
-                SetCannotWait(true);
-                currentUnit = waitStack.Pop();
-                currentUnit.GetAvailableMovementTiles();
-                endTurn = false;
-                return;
-            }
-            combatCounter = (combatCounter + 1) % unitsInCombat.Count;
-            bool found = false;
-            while (!found)
-            {
-                currentUnit = unitsInCombat[combatCounter % unitsInCombat.Count];
-                if (currentUnit.totalHealth <= 0)
-                {
-                    unitsInCombat.Remove(currentUnit);
-                }
-                else
-                {
-                    found = true;
-                } 
-            }
-            currentUnit.GetAvailableMovementTiles();
-            endTurn = false;
-            SetCannotWait(false);
-        }
         if (Input.GetKeyDown(KeyCode.D))
         {
             Defend();
@@ -93,6 +80,18 @@ public class GameManager : MonoBehaviour
                 return;
             Wait();
         }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            statViewer.StopShow();
+        }
+    }
+
+    private void ReadyUnit()
+    {
+        currentUnit.canRetaliate = true;
+        currentUnit.GetAvailableMovementTiles();
+        SetCannotWait(false);
     }
 
     public void Defend()
@@ -102,12 +101,17 @@ public class GameManager : MonoBehaviour
 
     public void Wait()
     {
-        waitStack.Push(currentUnit);
+        currentUnit.InitiativeWait();
         endTurn = true;
     }
     public void CombatAttack(UnitHandler unit)
     {
         unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.damage, currentUnit.amountOfUnits);
+        if (unit.canRetaliate)
+        {
+            currentUnit.GetHit(unit.unitBase.attack, unit.unitBase.damage, unit.amountOfUnits);
+            unit.canRetaliate = false;
+        }
         endTurn = true;
     }
 
@@ -117,12 +121,22 @@ public class GameManager : MonoBehaviour
         canWait = !set;
     }
 
-    private void ForwardInitiative()
+    private void ForwardInitiatives()
     {
         foreach (UnitHandler unit in unitsInCombat)
         {
             unit.ForwardInitiative();
+            if (unit.currentInitiative > 100)
+            {
+                unit.currentInitiative -= 100;
+                actionStack.Push(unit);
+            }
         }
+    }
+
+    public void RemoveUnit(UnitHandler unit)
+    {
+        unitsInCombat.Remove(unit);
     }
 
 }

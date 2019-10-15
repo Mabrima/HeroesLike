@@ -13,6 +13,7 @@ public class UnitHandler : MonoBehaviour
     public int currentUnitHealth;
     public CombatTile currentTile;
     public int team = 1;
+    public bool canRetaliate = true;
     [SerializeField] Text amountText;
     // Start is called before the first frame update
     void Start()
@@ -77,11 +78,13 @@ public class UnitHandler : MonoBehaviour
         int damageSustained = unitBase.CalculateDamage(otherAttack, otherDamage * otherAmountOfUnits);
         int amountKilled = 0;
         totalHealth -= damageSustained;
-        GameManager.instance.battleText.text = unitBase.name + " took " + damageSustained + " damage";
+        GameManager.instance.battleText.text += '\n' + unitBase.name + " " + team + " took " + damageSustained + " damage";
         if (totalHealth <= 0)
         {
             FieldHandler.instance.RemoveUnitFromTile(currentTile);
             GameManager.instance.battleText.text += "\n All units of " + unitBase.name + " died";
+            canRetaliate = false;
+            GameManager.instance.RemoveUnit(this);
             Destroy(this.gameObject);
             return;
         }
@@ -105,6 +108,11 @@ public class UnitHandler : MonoBehaviour
     public void ForwardInitiative()
     {
         currentInitiative += unitBase.initiative;
+    }
+
+    public void InitiativeWait()
+    {
+        currentInitiative = 50;
     }
 
 }
