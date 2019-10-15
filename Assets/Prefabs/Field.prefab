@@ -43,3 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d650b20df1d7a9a458f717f8410ecea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleTilePrefab: {fileID: 24656101437452538, guid: 4a441e41dc081ac44ab93f9f379b0a35,
+    type: 3}

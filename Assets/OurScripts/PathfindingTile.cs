@@ -34,4 +34,8 @@ public abstract class PathfindingTile : MonoBehaviour
         tileData.gCost = 0;
         tileData.pfParent = null;
     }
+
+    public abstract void OnMouseEnter();
+    public abstract void OnMouseExit();
+    public abstract void OnMouseUp();
 }

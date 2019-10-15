@@ -1924,11 +1924,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 785204789936239936, guid: 5eb433283164f0f4cb847b341f05fe9a,
-        type: 3}
-      propertyPath: battleTile
-      value: 
-      objectReference: {fileID: 24656101437452538, guid: 4a441e41dc081ac44ab93f9f379b0a35,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5eb433283164f0f4cb847b341f05fe9a, type: 3}

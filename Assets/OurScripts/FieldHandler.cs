@@ -13,7 +13,7 @@ public class FieldHandler : MonoBehaviour
     public static int Y_SIZE = 10;
     public static FieldHandler instance;
     public CombatTile[,] fieldObjects = new CombatTile[X_SIZE, Y_SIZE];
-    public GameObject battleTile;
+    [SerializeField] GameObject battleTilePrefab;
 
     private void Awake()
     {
@@ -32,18 +32,25 @@ public class FieldHandler : MonoBehaviour
         InitiateNewField();
     }
 
-    public void PutUnitOnTile(int x, int y, UnitHandler unit)
+    public PathfindingTile GetPathfindingTile(int x, int y)
     {
-        fieldObjects[x, y].PutUnitOnTile(unit);
+        return fieldObjects[x, y];
     }
 
-    public void RemoveUnitFromTile(int x, int y)
+    public void PutUnitOnTile(PathfindingTile tile, UnitHandler unit)
     {
-        fieldObjects[x, y].RemoveUnitFromTile();
+        fieldObjects[tile.tileX, tile.tileY].PutUnitOnTile(unit);
     }
 
-    public void GetAvailableMovementTiles(int x, int y, int range, bool asFake = false)
+    public void RemoveUnitFromTile(PathfindingTile tile)
     {
+        fieldObjects[tile.tileX, tile.tileY].RemoveUnitFromTile();
+    }
+
+    public void GetAvailableMovementTiles(PathfindingTile tile, int range, bool asFake = false)
+    {
+        int x = tile.tileX;
+        int y = tile.tileY;
         for (int i = 0; i < range; i++)
         {
             for (int j = 0; j < range - i; j++)
@@ -88,8 +95,10 @@ public class FieldHandler : MonoBehaviour
         }
     }
 
-    public void GetAvailableAttackTiles(int x, int y, int team)
+    public void GetAvailableAttackTiles(PathfindingTile tile, int team)
     {
+        int x = tile.tileX;
+        int y = tile.tileY;
         Debug.Log("looking for tiles to attack");
         for (int i = 0; i < 2; i++)
         {
@@ -162,7 +171,7 @@ public class FieldHandler : MonoBehaviour
 
         foreach (CombatTile tile in fieldObjects)
         {
-            fieldObjects[x, y] = Instantiate(battleTile, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<CombatTile>();
+            fieldObjects[x, y] = Instantiate(battleTilePrefab, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<CombatTile>();
             fieldObjects[x, y].SetPositionValues(x, y);
 
             x = (x + 1) % 12;

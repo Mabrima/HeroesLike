@@ -10,8 +10,6 @@ public class CombatTile : PathfindingTile
     public Material overLappingPotentialMaterial;
 
     private bool selectable = false;
-    public int x;
-    public int y;
     public UnitHandler unitOnTile;
 
     private void Start()
@@ -22,18 +20,18 @@ public class CombatTile : PathfindingTile
 
     public void SetPositionValues(int x, int y)
     {
-        this.x = x;
-        this.y = y;
+        tileX = x;
+        tileY = y;
     }
 
-    private void OnMouseEnter()
+    public override void OnMouseEnter()
     {
         if (!selectable)
             return;
         rend.material = mouseOverMaterial;
     }
 
-    private void OnMouseExit()
+    public override void OnMouseExit()
     {
         if (!selectable)
         {
@@ -42,14 +40,14 @@ public class CombatTile : PathfindingTile
         rend.material = potentialMaterial;
     }
 
-    private void OnMouseUp()
+    public override void OnMouseUp()
     {
         if (!selectable)
             return;
         FieldHandler.instance.ResetPossibleLocations();
         if (fieldType == FieldType.Empty)
         {
-            GameManager.instance.currentUnit.Move(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+            GameManager.instance.currentUnit.Move(this);
         }
         else if (fieldType == FieldType.Occupied)
         {

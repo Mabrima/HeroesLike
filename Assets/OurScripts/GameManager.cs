@@ -37,14 +37,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         statViewer.StopShow();
-        currentUnit = unitsInCombat[combatCounter];
-        StartCoroutine(StartUp());
-    }
-
-    IEnumerator StartUp()
-    {
-        yield return new WaitForEndOfFrame();
-        currentUnit.GetAvailableMovementTiles();
+        combatCounter = -1;
+        battleText.text = "Combat initiated, press 'D' to begin";
     }
 
     private void Update()

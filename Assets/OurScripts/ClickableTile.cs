@@ -14,7 +14,7 @@ public class ClickableTile : PathfindingTile
 
     }
 
-    private void OnMouseUp()
+    public override void OnMouseUp()
     {
         Debug.Log("On Click: " + player.isMoving);
         if (player.isMoving == true)
@@ -30,12 +30,12 @@ public class ClickableTile : PathfindingTile
            
     }
 
-    private void OnMouseEnter()
+    public override void OnMouseEnter()
     {
         rend.material = mouseOverMaterial;
     }
 
-    private void OnMouseExit()
+    public override void OnMouseExit()
     {
         rend.material = defaultMaterial;
     }

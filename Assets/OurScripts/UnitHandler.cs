@@ -11,6 +11,7 @@ public class UnitHandler : MonoBehaviour
     public int currentInitiative;
     public int totalHealth;
     public int currentUnitHealth;
+    public CombatTile currentTile;
     public int team = 1;
     [SerializeField] Text amountText;
     // Start is called before the first frame update
@@ -19,11 +20,24 @@ public class UnitHandler : MonoBehaviour
         currentUnitHealth = unitBase.baseHealth;
         totalHealth = amountOfUnits * unitBase.baseHealth;
         amountText.text = "" + amountOfUnits;
+        Invoke("FindFirstTile", .1f);
+    }
+    
+    void FindFirstTile()
+    {
+        currentTile = (CombatTile) FieldHandler.instance.GetPathfindingTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+        currentTile.PutUnitOnTile(this);
+    }
+
+    private void OnMouseUp()
+    {
+        currentTile.OnMouseUp();
     }
 
     private void OnMouseEnter()
     {
-        FieldHandler.instance.GetAvailableMovementTiles(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z), unitBase.speed, true);
+        FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed, true);
+        currentTile.OnMouseEnter();
     }
 
     private void OnMouseExit()
@@ -40,21 +54,22 @@ public class UnitHandler : MonoBehaviour
         }
     }
 
-    public void Move(int x, int y)
+    public void Move(CombatTile tile)
     {
-        FieldHandler.instance.RemoveUnitFromTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
-        transform.position = new Vector3(x, 1, y);
+        FieldHandler.instance.RemoveUnitFromTile(currentTile);
+        currentTile = tile;
+        transform.position = new Vector3(currentTile.tileX, 1, currentTile.tileY);
         FieldHandler.instance.ResetPossibleLocations();
-        FieldHandler.instance.PutUnitOnTile(x, y, this);
-        FieldHandler.instance.GetAvailableAttackTiles(x, y, team);
+        FieldHandler.instance.PutUnitOnTile(currentTile, this);
+        FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
         GameManager.instance.SetCannotWait(true);
     }
 
     public void GetAvailableMovementTiles()
     {
         FieldHandler.instance.ResetPossibleLocations();
-        FieldHandler.instance.GetAvailableMovementTiles(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z), unitBase.speed);
-        FieldHandler.instance.GetAvailableAttackTiles(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z), team);
+        FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed);
+        FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
     }
 
     public void GetHit(int otherAttack, int otherDamage, int otherAmountOfUnits)
@@ -65,7 +80,7 @@ public class UnitHandler : MonoBehaviour
         GameManager.instance.battleText.text = unitBase.name + " took " + damageSustained + " damage";
         if (totalHealth <= 0)
         {
-            FieldHandler.instance.RemoveUnitFromTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+            FieldHandler.instance.RemoveUnitFromTile(currentTile);
             GameManager.instance.battleText.text += "\n All units of " + unitBase.name + " died";
             Destroy(this.gameObject);
             return;
