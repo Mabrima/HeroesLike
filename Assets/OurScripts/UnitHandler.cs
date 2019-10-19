@@ -15,7 +15,10 @@ public class UnitHandler : MonoBehaviour
     public int team = 1;
     public bool canRetaliate = true;
     [SerializeField] Text amountText;
-    // Start is called before the first frame update
+
+    float startTime;
+    [SerializeField] float unitSpeed = 10;
+
     void Start()
     {
         currentUnitHealth = unitBase.baseHealth;
@@ -23,10 +26,10 @@ public class UnitHandler : MonoBehaviour
         amountText.text = "" + amountOfUnits;
         Invoke("FindFirstTile", .1f);
     }
-    
+
     void FindFirstTile()
     {
-        currentTile = (CombatTile) FieldHandler.instance.GetPathfindingTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+        currentTile = (CombatTile)FieldHandler.instance.GetPathfindingTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
         currentTile.PutUnitOnTile(this);
     }
 
@@ -43,12 +46,12 @@ public class UnitHandler : MonoBehaviour
 
     private void OnMouseExit()
     {
-        FieldHandler.instance.ResetPossibleLocations(true);
+        FieldHandler.instance.ResetSelectableLocations(true);
     }
 
     private void OnMouseOver()
     {
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             GameManager.instance.statViewer.UpdateStats(currentUnitHealth, unitBase.baseHealth, unitBase.attack, unitBase.defence, unitBase.damage, unitBase.damage, unitBase.speed, unitBase.initiative);
             GameManager.instance.statViewer.Show();
@@ -59,16 +62,18 @@ public class UnitHandler : MonoBehaviour
     {
         FieldHandler.instance.RemoveUnitFromTile(currentTile);
         currentTile = tile;
-        transform.position = new Vector3(currentTile.tileX, 1, currentTile.tileY);
-        FieldHandler.instance.ResetPossibleLocations();
         FieldHandler.instance.PutUnitOnTile(currentTile, this);
-        FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
+
+        startTime = Time.time;
+        StartCoroutine(MoveUnit());
         GameManager.instance.SetCannotWait(true);
     }
 
     public void GetAvailableMovementTiles()
     {
-        FieldHandler.instance.ResetPossibleLocations();
+        FieldHandler.instance.ResetSelectableLocations();
+        FieldHandler.instance.ClearParents();
+
         FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed);
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
     }
@@ -113,6 +118,54 @@ public class UnitHandler : MonoBehaviour
     public void InitiativeWait()
     {
         currentInitiative = 50;
+    }
+
+    IEnumerator MoveUnit()
+    {
+        Stack<PathfindingTile> stack = new Stack<PathfindingTile>();
+        PathfindingTile parent = currentTile;
+        while (parent != null)
+        {
+            stack.Push(parent);
+            parent = parent.tileData.pfParent;
+        }
+
+        PathfindingTile nextMove;
+
+        while (stack.Count > 0) //Go through stack of the path until its empty.
+        {
+            nextMove = stack.Pop(); //Get next tile in stack we want to move too.
+            startTime = Time.time;
+            float journeyLength = Vector3.Distance(transform.position, nextMove.transform.position);
+            //RotateUnitToTile(nextMove);
+            bool lerping = true;
+
+            while (lerping)
+            {
+                float distCovered = (Time.time - startTime) * unitSpeed;
+                float fractionOfJourney = distCovered / journeyLength;
+                if (fractionOfJourney > 0.9)
+                {
+                    lerping = false;
+                }
+
+                transform.position = Vector3.Lerp(transform.position, new Vector3(nextMove.transform.position.x, 1, nextMove.transform.position.z), fractionOfJourney);
+
+                yield return new WaitForFixedUpdate();
+            }
+
+        }
+
+        FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
+        Debug.Log("moving ended");
+    }
+
+    public void RotateUnitToTile(PathfindingTile nextMove)
+    {
+        Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.transform.position, Vector3.forward);
+        newRotation.x = 0f;
+        newRotation.y = 0f;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, Mathf.Infinity);
     }
 
 }

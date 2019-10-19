@@ -44,7 +44,7 @@ public class CombatTile : PathfindingTile
     {
         if (!selectable)
             return;
-        FieldHandler.instance.ResetPossibleLocations();
+        FieldHandler.instance.ResetSelectableLocations();
         if (fieldType == FieldType.Empty)
         {
             GameManager.instance.currentUnit.Move(this);
@@ -57,7 +57,7 @@ public class CombatTile : PathfindingTile
     }
 
     //Fake means it can't actually be clicked, just visual.
-    public void SetAsSelectable(bool fake = false)
+    public void SetAsSelectable(bool fake)
     {
         if (!fake)
         {
@@ -75,7 +75,7 @@ public class CombatTile : PathfindingTile
     }
 
     //Fake removes only the "fake" ones created.
-    public void SetAsNotSelectable(bool fake = false)
+    public void SetAsNotSelectable(bool fake)
     {
         if (fake && selectable)
         {
