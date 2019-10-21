@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
     }
     public void CombatAttack(UnitHandler unit)
     {
+        currentUnit.SetAnimatorAttacking();
         unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.damage, currentUnit.amountOfUnits);
         if (unit.canRetaliate)
         {

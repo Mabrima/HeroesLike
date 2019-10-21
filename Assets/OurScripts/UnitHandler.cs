@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Animator))]
 public class UnitHandler : MonoBehaviour
 {
     public UnitBase unitBase;
@@ -16,6 +15,7 @@ public class UnitHandler : MonoBehaviour
     public bool canRetaliate = true;
     [SerializeField] Text amountText;
 
+    Animator animator;
     float startTime;
     [SerializeField] float unitSpeed = 10;
 
@@ -25,6 +25,7 @@ public class UnitHandler : MonoBehaviour
         totalHealth = amountOfUnits * unitBase.baseHealth;
         amountText.text = "" + amountOfUnits;
         Invoke("FindFirstTile", .1f);
+        animator = GetComponent<Animator>();
     }
 
     void FindFirstTile()
@@ -64,6 +65,8 @@ public class UnitHandler : MonoBehaviour
         currentTile = tile;
         FieldHandler.instance.PutUnitOnTile(currentTile, this);
 
+        animator.SetBool("Moving", true);
+
         startTime = Time.time;
         StartCoroutine(MoveUnit());
         GameManager.instance.SetCannotWait(true);
@@ -86,14 +89,16 @@ public class UnitHandler : MonoBehaviour
         GameManager.instance.battleText.text += '\n' + unitBase.name + " " + team + " took " + damageSustained + " damage";
         if (totalHealth <= 0)
         {
+            animator.SetBool("Death", true);
             FieldHandler.instance.RemoveUnitFromTile(currentTile);
             GameManager.instance.battleText.text += "\n All units of " + unitBase.name + " died";
             canRetaliate = false;
             GameManager.instance.RemoveUnit(this);
-            Destroy(this.gameObject);
+            Invoke("KillThis", 1);
             return;
         }
 
+        animator.SetTrigger("Hit");
         //calculates how many units die and how much health is left on the top unit.
         amountKilled = Mathf.Max(damageSustained, 0) / unitBase.baseHealth;
         amountOfUnits -= amountKilled;
@@ -108,6 +113,11 @@ public class UnitHandler : MonoBehaviour
 
         GameManager.instance.battleText.text += "\n" + amountKilled + " units died";
 
+    }
+
+    private void KillThis()
+    {
+        Destroy(this.gameObject);
     }
 
     public void ForwardInitiative()
@@ -156,6 +166,7 @@ public class UnitHandler : MonoBehaviour
 
         }
 
+        animator.SetBool("Moving", false);
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
         Debug.Log("moving ended");
     }
@@ -166,6 +177,11 @@ public class UnitHandler : MonoBehaviour
         newRotation.x = 0f;
         newRotation.y = 0f;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, Mathf.Infinity);
+    }
+
+    public void SetAnimatorAttacking()
+    {
+        animator.SetTrigger("Attack");
     }
 
 }

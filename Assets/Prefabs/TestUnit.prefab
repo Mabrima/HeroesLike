@@ -342,7 +342,7 @@ Animator:
   m_GameObject: {fileID: 5776726455004917222}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4939e51690d966a488529efb95c753de, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -368,7 +368,12 @@ MonoBehaviour:
   currentInitiative: 0
   totalHealth: 0
   currentUnitHealth: 0
+  currentTile: {fileID: 0}
+  team: 1
+  canRetaliate: 1
   amountText: {fileID: 20788520}
+  animator: {fileID: 0}
+  unitSpeed: 10
 --- !u!135 &619001619
 SphereCollider:
   m_ObjectHideFlags: 0
