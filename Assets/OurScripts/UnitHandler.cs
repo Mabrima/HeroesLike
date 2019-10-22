@@ -30,7 +30,7 @@ public class UnitHandler : MonoBehaviour
 
     void FindFirstTile()
     {
-        currentTile = (CombatTile)FieldHandler.instance.GetPathfindingTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+        currentTile = (CombatTile)FieldHandler.instance.GetTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
         currentTile.PutUnitOnTile(this);
     }
 
@@ -132,15 +132,15 @@ public class UnitHandler : MonoBehaviour
 
     IEnumerator MoveUnit()
     {
-        Stack<PathfindingTile> stack = new Stack<PathfindingTile>();
-        PathfindingTile parent = currentTile;
+        Stack<CombatTile> stack = new Stack<CombatTile>();
+        CombatTile parent = currentTile;
         while (parent != null)
         {
             stack.Push(parent);
-            parent = parent.tileData.pfParent;
+            parent = parent.pfParent;
         }
 
-        PathfindingTile nextMove;
+        CombatTile nextMove;
 
         while (stack.Count > 0) //Go through stack of the path until its empty.
         {
@@ -171,7 +171,7 @@ public class UnitHandler : MonoBehaviour
         Debug.Log("moving ended");
     }
 
-    public void RotateUnitToTile(PathfindingTile nextMove)
+    public void RotateUnitToTile(CombatTile nextMove)
     {
         Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.transform.position, Vector3.forward);
         newRotation.x = 0f;

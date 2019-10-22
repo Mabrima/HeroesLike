@@ -2,8 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickableTile : PathfindingTile
+public class ClickableTile : MonoBehaviour
 {
+    public int tileX;
+    public int tileY;
+
+    public TileData tileData;
+
+    public MeshRenderer sphereRend; //TODO Should be moved down to clickable tile.
+    public Material sphereStartMat; //
+    public Material sphereEndMat; //
+    public TileMap map; //
+
+    protected MeshRenderer rend;
+    public Material mouseOverMaterial;
+    protected Material defaultMaterial;
+
+    public FieldType fieldType = FieldType.Empty;
+
+    protected Player player;
 
     public Texture2D blockedPathIcon;
     public Texture2D walkHereIcon;
@@ -13,14 +30,21 @@ public class ClickableTile : PathfindingTile
 
     private void Start()
     {
-        base.Initiate();
+        rend = GetComponent<MeshRenderer>();
         defaultMaterial = rend.material;
         player = FindObjectOfType<Player>();
         sphereRend = transform.Find("Sphere").GetComponent<MeshRenderer>();
 
     }
 
-    public override void OnMouseUp()
+    public void ResetPathfindingValues()
+    {
+        tileData.hCost = 0;
+        tileData.gCost = 0;
+        tileData.pfParent = null;
+    }
+
+    public void OnMouseUp()
     {
         if (player.isMoving == true)
         {
@@ -34,7 +58,7 @@ public class ClickableTile : PathfindingTile
            
     }
 
-    public override void OnMouseEnter()
+    public void OnMouseEnter()
     {
         rend.material = mouseOverMaterial;
         if (fieldType == FieldType.Obstacle)
@@ -59,7 +83,7 @@ public class ClickableTile : PathfindingTile
         }
     }
 
-    public override void OnMouseExit()
+    public void OnMouseExit()
     {
         rend.material = defaultMaterial;
         Cursor.SetCursor(null, Vector2.zero, cursorMode);

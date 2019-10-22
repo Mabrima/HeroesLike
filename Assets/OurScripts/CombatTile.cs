@@ -3,35 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CombatTile : PathfindingTile
+public class CombatTile : MonoBehaviour
 {
-    public Material potentialMaterial;
-    public Material fakePotentialMaterial;
-    public Material overLappingPotentialMaterial;
+    [SerializeField] Material potentialMaterial;
+    [SerializeField] Material fakePotentialMaterial;
+    [SerializeField] Material overLappingPotentialMaterial;
+    [SerializeField] Material mouseOverMaterial;
+    Material defaultMaterial;
+
+    public CombatTile pfParent;
+    public CombatTile perishableParent;
+
+    public Vector2Int position;
+
+    public FieldType fieldType;
+    public MeshRenderer rend;
 
     private bool selectable = false;
     public UnitHandler unitOnTile;
 
     private void Start()
     {
-        base.Initiate();
+        rend = GetComponent<MeshRenderer>();
         defaultMaterial = rend.material;
     }
 
     public void SetPositionValues(int x, int y)
     {
-        tileX = x;
-        tileY = y;
+        position.x = x;
+        position.y = y;
     }
 
-    public override void OnMouseEnter()
+    public void OnMouseEnter()
     {
         if (!selectable)
             return;
         rend.material = mouseOverMaterial;
     }
 
-    public override void OnMouseExit()
+    public void OnMouseExit()
     {
         if (!selectable)
         {
@@ -40,7 +50,7 @@ public class CombatTile : PathfindingTile
         rend.material = potentialMaterial;
     }
 
-    public override void OnMouseUp()
+    public void OnMouseUp()
     {
         if (!selectable)
             return;

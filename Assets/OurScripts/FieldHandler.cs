@@ -14,8 +14,8 @@ public class FieldHandler : MonoBehaviour
     public static FieldHandler instance;
     public CombatTile[,] fieldObjects = new CombatTile[X_SIZE, Y_SIZE];
     [SerializeField] GameObject battleTilePrefab;
-    List<PathfindingTile> neighbourList1 = new List<PathfindingTile>();
-    List<PathfindingTile> neighbourList2 = new List<PathfindingTile>();
+    List<CombatTile> neighbourList1 = new List<CombatTile>();
+    List<CombatTile> neighbourList2 = new List<CombatTile>();
 
     private void Awake()
     {
@@ -34,22 +34,22 @@ public class FieldHandler : MonoBehaviour
         InitiateNewField();
     }
 
-    public PathfindingTile GetPathfindingTile(int x, int y)
+    public CombatTile GetTile(int x, int y)
     {
         return fieldObjects[x, y];
     }
 
-    public void PutUnitOnTile(PathfindingTile tile, UnitHandler unit)
+    public void PutUnitOnTile(CombatTile tile, UnitHandler unit)
     {
-        fieldObjects[tile.tileX, tile.tileY].PutUnitOnTile(unit);
+        fieldObjects[tile.position.x, tile.position.y].PutUnitOnTile(unit);
     }
 
-    public void RemoveUnitFromTile(PathfindingTile tile)
+    public void RemoveUnitFromTile(CombatTile tile)
     {
-        fieldObjects[tile.tileX, tile.tileY].RemoveUnitFromTile();
+        fieldObjects[tile.position.x, tile.position.y].RemoveUnitFromTile();
     }
 
-    public void GetAvailableMovementTiles(PathfindingTile tile, int range, bool asFake = false)
+    public void GetAvailableMovementTiles(CombatTile tile, int range, bool asFake = false)
     {
         neighbourList1.Clear();
         neighbourList2.Clear();
@@ -68,12 +68,12 @@ public class FieldHandler : MonoBehaviour
         }
     }
 
-    private void GetNeighbours(List<PathfindingTile> useList, List<PathfindingTile> addList, bool asFake)
+    private void GetNeighbours(List<CombatTile> useList, List<CombatTile> addList, bool asFake)
     {
-        foreach (PathfindingTile tile in useList)
+        foreach (CombatTile tile in useList)
         {
-            int x = tile.tileX;
-            int y = tile.tileY;
+            int x = tile.position.x;
+            int y = tile.position.y;
             for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
@@ -86,19 +86,19 @@ public class FieldHandler : MonoBehaviour
                         CombatTile neighbourTile = fieldObjects[x + i, y + j];
                         if (!asFake)
                         {
-                            if (neighbourTile.fieldType == FieldType.Empty && neighbourTile.tileData.pfParent == null)
+                            if (neighbourTile.fieldType == FieldType.Empty && neighbourTile.pfParent == null)
                             {
                                 neighbourTile.SetAsSelectable(asFake);
-                                neighbourTile.tileData.pfParent = tile;
+                                neighbourTile.pfParent = tile;
                                 addList.Add(neighbourTile);
                             }
                         }
                         else
                         {
-                            if (neighbourTile.fieldType == FieldType.Empty && neighbourTile.tileData.perishableParent == null)
+                            if (neighbourTile.fieldType == FieldType.Empty && neighbourTile.perishableParent == null)
                             {
                                 neighbourTile.SetAsSelectable(asFake);
-                                neighbourTile.tileData.perishableParent = tile;
+                                neighbourTile.perishableParent = tile;
                                 addList.Add(neighbourTile);
                             }
                         }
@@ -114,10 +114,10 @@ public class FieldHandler : MonoBehaviour
     }
 
 
-    public void GetAvailableAttackTiles(PathfindingTile tile, int team)
+    public void GetAvailableAttackTiles(CombatTile tile, int team)
     {
-        int x = tile.tileX;
-        int y = tile.tileY;
+        int x = tile.position.x;
+        int y = tile.position.y;
         Debug.Log("looking for tiles to attack");
         for (int i = 0; i < 2; i++)
         {
@@ -204,7 +204,7 @@ public class FieldHandler : MonoBehaviour
         foreach (CombatTile tile in fieldObjects)
         {
             tile.SetAsNotSelectable(fake);
-            tile.tileData.perishableParent = null;
+            tile.perishableParent = null;
         }
     }
 
@@ -212,15 +212,15 @@ public class FieldHandler : MonoBehaviour
     {
         foreach (CombatTile tile in fieldObjects)
         {
-            tile.tileData.pfParent = null;
+            tile.pfParent = null;
         }
     }
 
 
-    public void FlyGetAvailableMovementTiles(PathfindingTile tile, int range, bool asFake = false)
+    public void FlyGetAvailableMovementTiles(CombatTile tile, int range, bool asFake = false)
     {
-        int x = tile.tileX;
-        int y = tile.tileY;
+        int x = tile.position.x;
+        int y = tile.position.y;
         for (int i = 0; i < range; i++)
         {
             for (int j = 0; j < range - i; j++)

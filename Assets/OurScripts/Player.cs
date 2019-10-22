@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public PathfindingTile currentTileStandingOn;
+    public ClickableTile currentTileStandingOn;
     public float playerSpeed;
     private Vector3 tileOffset = new Vector3(0, 0, -0.5f);
 
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
 
     IEnumerator MovePlayer()
     {
-        PathfindingTile nextMove;
+        ClickableTile nextMove;
         isMoving = true;
 
 
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
         isMoving = false;
     }
 
-    public void RotatePlayerToTile(PathfindingTile nextMove)
+    public void RotatePlayerToTile(ClickableTile nextMove)
     {
         Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.sphereRend.transform.position, Vector3.forward);
         newRotation.x = 0f;
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        currentTileStandingOn = other.GetComponent<PathfindingTile>();
+        currentTileStandingOn = other.GetComponent<ClickableTile>();
     }
 
 }

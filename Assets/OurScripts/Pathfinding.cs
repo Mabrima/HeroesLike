@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    List<PathfindingTile> open;
-    List<PathfindingTile> closed;
-    public List<PathfindingTile> allTiles;
-    public Stack<PathfindingTile> playerPath;
-    PathfindingTile chosenTile;
+    List<ClickableTile> open;
+    List<ClickableTile> closed;
+    public List<ClickableTile> allTiles;
+    public Stack<ClickableTile> playerPath;
+    ClickableTile chosenTile;
 
     public Player player;
 
@@ -30,13 +30,13 @@ public class Pathfinding : MonoBehaviour
 
     private void Start()
     {
-        open = new List<PathfindingTile>();
-        closed = new List<PathfindingTile>();
-        allTiles = new List<PathfindingTile>();
-        playerPath = new Stack<PathfindingTile>();
+        open = new List<ClickableTile>();
+        closed = new List<ClickableTile>();
+        allTiles = new List<ClickableTile>();
+        playerPath = new Stack<ClickableTile>();
     }
 
-    private void CalculateH(PathfindingTile tile, PathfindingTile goal)
+    private void CalculateH(ClickableTile tile, ClickableTile goal)
     {
         int calculatedH = 0;
 
@@ -46,18 +46,18 @@ public class Pathfinding : MonoBehaviour
         calculatedH = (xDis + yDis) * ONE_G_STEP;
     }
 
-    private int CalculateGCost(PathfindingTile calculatedTile, PathfindingTile parentTile)
+    private int CalculateGCost(ClickableTile calculatedTile, ClickableTile parentTile)
     {
         return ONE_G_STEP;
     }
 
-    private PathfindingTile FindLowestFCostTile()
+    private ClickableTile FindLowestFCostTile()
     {
         if (open.Count > 0)
         {
-            PathfindingTile smallestFTile = open[0];
+            ClickableTile smallestFTile = open[0];
             int smallestF = smallestFTile.tileData.CalculateAndGetF();
-            foreach (PathfindingTile tile in open)
+            foreach (ClickableTile tile in open)
             {
                 if (tile.tileData.CalculateAndGetF() < smallestF)
                 {
@@ -75,9 +75,9 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    private void SetHForAll(PathfindingTile theGoal)
+    private void SetHForAll(ClickableTile theGoal)
     {
-        foreach (PathfindingTile tile in allTiles)
+        foreach (ClickableTile tile in allTiles)
         {
             CalculateH(tile, theGoal);
         }
@@ -85,7 +85,7 @@ public class Pathfinding : MonoBehaviour
 
     bool initialRun = true;
 
-    public void PathFinding(PathfindingTile start, PathfindingTile goal)
+    public void PathFinding(ClickableTile start, ClickableTile goal)
     {
         if (initialRun)
         {
@@ -99,7 +99,7 @@ public class Pathfinding : MonoBehaviour
         playerPath.Clear();
 
 
-        foreach (PathfindingTile tile in allTiles) //Go through all tiles and turn spheres off and set start material and reset pf-values.
+        foreach (ClickableTile tile in allTiles) //Go through all tiles and turn spheres off and set start material and reset pf-values.
         {
             tile.ResetPathfindingValues();
 
@@ -113,7 +113,7 @@ public class Pathfinding : MonoBehaviour
 
         do
         {
-            PathfindingTile current = FindLowestFCostTile();
+            ClickableTile current = FindLowestFCostTile();
 
             open.Remove(current);
             closed.Add(current);
@@ -137,7 +137,7 @@ public class Pathfinding : MonoBehaviour
             }
 
 
-            foreach (PathfindingTile neighbour in current.map.GetNeighbouringTiles(current))
+            foreach (ClickableTile neighbour in current.map.GetNeighbouringTiles(current))
             {
                 if (closed.Contains(neighbour))
                 {
@@ -174,7 +174,7 @@ public class Pathfinding : MonoBehaviour
 
     }
 
-    public bool ChoseNextTile(PathfindingTile tile)
+    public bool ChoseNextTile(ClickableTile tile)
     {
         if (chosenTile != null && chosenTile == tile)
         {

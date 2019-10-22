@@ -8,8 +8,7 @@ public class TileData
     public int hCost;
     public int fCost;
 
-    public PathfindingTile pfParent;
-    public PathfindingTile perishableParent;
+    public ClickableTile pfParent;
 
     public int CalculateAndGetF()
     {
