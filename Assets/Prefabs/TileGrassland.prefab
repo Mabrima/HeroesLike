@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502876610552519506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.75}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 5427313241313294859}
@@ -191,9 +191,14 @@ MonoBehaviour:
     hCost: 0
     fCost: 0
     pfParent: {fileID: 0}
+    perishableParent: {fileID: 0}
   sphereRend: {fileID: 3866763751334120866}
   sphereStartMat: {fileID: 2100000, guid: 195a5f14570f5dc4e949fc4c6f00f999, type: 2}
   sphereEndMat: {fileID: 2100000, guid: 6955a623631a78048b6ecbadcdc4b9d5, type: 2}
   map: {fileID: 0}
   mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
   fieldType: 0
+  blockedPathIcon: {fileID: 2800000, guid: 00046408e0bd9d74aa6cbd895fea1ab7, type: 3}
+  walkHereIcon: {fileID: 2800000, guid: d71254939d0b53a4fa83ba4f65b63251, type: 3}
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}

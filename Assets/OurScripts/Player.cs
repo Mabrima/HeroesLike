@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     public PathfindingTile currentTileStandingOn;
     public float playerSpeed;
-    public Vector3 tileOffset = new Vector3(0, 0, -0.75f);
+    private Vector3 tileOffset = new Vector3(0, 0, -0.5f);
+
+    public RectTransform armyWindow;
+    public Texture2D armyIcon;
 
     public bool isMoving;
 
@@ -14,6 +18,31 @@ public class Player : MonoBehaviour
 
     private float startTime;
     private float journeyLength;
+
+    bool showArmy = false;
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.CompareTag("Player") && showArmy == false)
+                {
+                    showArmy = true;
+                    ShowArmy();
+                }
+                else if (hit.transform.CompareTag("Player") && showArmy == true)
+                {
+                    showArmy = false;
+                    ShowArmy();
+                }
+            }
+        }
+    }
 
     public void StartMovePlayer(bool isMoving)
     {
@@ -54,8 +83,6 @@ public class Player : MonoBehaviour
             }
 
         }
-         
-        Debug.Log("moving ended");
         isMoving = false;
     }
 
@@ -65,6 +92,23 @@ public class Player : MonoBehaviour
         newRotation.x = 0f;
         newRotation.y = 0f;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, Mathf.Infinity);
+    }
+
+    public void ShowArmy()
+    {
+        if (showArmy == true)
+        {
+            armyWindow.gameObject.SetActive(true);
+        }
+        else if (showArmy == false)
+        {
+            armyWindow.gameObject.SetActive(false);
+        }
+        
+    }
+    private void OnMouseOver()
+    {
+       Cursor.SetCursor(armyIcon, Vector2.zero, CursorMode.Auto);
     }
 
 

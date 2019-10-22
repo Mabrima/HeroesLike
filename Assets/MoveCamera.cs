@@ -5,14 +5,16 @@ using System.Linq;
 
 public class MoveCamera : MonoBehaviour
 {
-    public int boundary = 25;
-    public float speed;
+    public int boundary;
+    public float cameraMoveSpeed;
 
     private int screenWidth;
     private int screenHeight;
+    private Rect screenArea;
 
-    float minFOV = 15f;
-    float maxFOV = 90f;
+
+    public float minZoom = 15f;
+    public float maxZoom = 90f;
 
     public float zoomSensitivity = 10f;
 
@@ -26,31 +28,46 @@ public class MoveCamera : MonoBehaviour
     {
         screenWidth = Screen.width;
         screenHeight = Screen.height;
-
+        screenArea = new Rect(0, 0, screenWidth, screenHeight);
         mainCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.mousePosition.x > screenWidth - boundary && transform.position.x < TileMap.INSTANCE.mapSizeX-1)
+        
+        if (screenArea.Contains(Input.mousePosition)) //If our mouse is in our "Screen Area".
         {
-           transform.position += new Vector3(speed, 0, 0) * Time.deltaTime;
-        }
+            if (Input.mousePosition.x > screenWidth - boundary && transform.position.x < TileMap.INSTANCE.mapSizeX - 1)
+            {
+                //RIGHT
+                transform.position += new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
+            }
 
-        if (Input.mousePosition.x < 0 + boundary && transform.position.x > TileMap.INSTANCE.clickableTiles[0, 0].tileX)
-        {
-            transform.position -= new Vector3(speed, 0, 0) * Time.deltaTime;
-        }
+            if (Input.mousePosition.x < 0 + boundary && transform.position.x > TileMap.INSTANCE.clickableTiles[0, 0].tileX)
+            {
+                //LEFT
+                Debug.Log("LEFT");
+                transform.position -= new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
+            }
 
-        if (Input.mousePosition.y > screenHeight - boundary && transform.position.y < TileMap.INSTANCE.mapSizeY / 2)
-        {
-            transform.position += new Vector3(0, speed, 0) * Time.deltaTime;
-        }
+            if (Input.mousePosition.y > screenHeight - boundary && transform.position.y < TileMap.INSTANCE.mapSizeY / 2)
+            {
+                //UP
+                transform.position += new Vector3(0, cameraMoveSpeed, 0) * Time.deltaTime;
+            }
 
-        if (Input.mousePosition.y < 0 + boundary && transform.position.y > TileMap.INSTANCE.clickableTiles[0, 0].tileY - (TileMap.INSTANCE.mapSizeY / 4))
-        {
-            transform.position -= new Vector3(0, speed, 0) * Time.deltaTime;
+            if (Input.mousePosition.y < 0 + boundary && transform.position.y > TileMap.INSTANCE.clickableTiles[0, 0].tileY - (TileMap.INSTANCE.mapSizeY / 4))
+            {
+                //DOWN
+                Debug.Log("DOWN");
+                transform.position -= new Vector3(0, cameraMoveSpeed, 0) * Time.deltaTime;
+            }
+
+            float fov = mainCamera.fieldOfView;
+            fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+            fov = Mathf.Clamp(fov, minZoom, maxZoom);
+            mainCamera.fieldOfView = fov;
         }
 
         if (Input.GetButton("Jump"))
@@ -58,9 +75,6 @@ public class MoveCamera : MonoBehaviour
             transform.position = player.transform.position + cameraOffset;
         }
 
-        float fov = mainCamera.fieldOfView;
-        fov -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
-        fov = Mathf.Clamp(fov, minFOV, maxFOV);
-        mainCamera.fieldOfView = fov;
+        
     }
 }
