@@ -48,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTileStandingOn: {fileID: 0}
   playerSpeed: 10
-  tileOffset: {x: 0, y: 0, z: -0.5}
   armyWindow: {fileID: 0}
+  armyIcon: {fileID: 0}
   isMoving: 0
   lerping: 0
 --- !u!54 &2951717332565223906
@@ -78,10 +78,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.31
+  m_Radius: 0.59974915
   m_Height: 5
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -2.4}
+  m_Center: {x: 0, y: 0.28974915, z: -2.4}
 --- !u!1001 &2951717332543862171
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -47,7 +47,6 @@ public class MoveCamera : MonoBehaviour
             if (Input.mousePosition.x < 0 + boundary && transform.position.x > TileMap.INSTANCE.clickableTiles[0, 0].tileX)
             {
                 //LEFT
-                Debug.Log("LEFT");
                 transform.position -= new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
             }
 
@@ -60,7 +59,6 @@ public class MoveCamera : MonoBehaviour
             if (Input.mousePosition.y < 0 + boundary && transform.position.y > TileMap.INSTANCE.clickableTiles[0, 0].tileY - (TileMap.INSTANCE.mapSizeY / 4))
             {
                 //DOWN
-                Debug.Log("DOWN");
                 transform.position -= new Vector3(0, cameraMoveSpeed, 0) * Time.deltaTime;
             }
 
