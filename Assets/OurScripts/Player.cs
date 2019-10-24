@@ -13,11 +13,14 @@ public class Player : MonoBehaviour
     public Texture2D armyIcon;
 
     public bool isMoving;
+    public int team;
 
     public bool lerping;
 
     private float startTime;
     private float journeyLength;
+
+    public List<UnitHandler> units = new List<UnitHandler>();
 
     bool showArmy = false;
 

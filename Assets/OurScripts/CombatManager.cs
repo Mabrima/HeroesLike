@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class CombatManager : MonoBehaviour
 {
     public Button waitButton;
     public Text battleText;
-    public static GameManager instance;
+    public static CombatManager instance;
     public List<UnitHandler> unitsInCombat;
     public Stack<UnitHandler> waitStack = new Stack<UnitHandler>();
     public Stack<UnitHandler> actionStack = new Stack<UnitHandler>();
@@ -40,6 +40,11 @@ public class GameManager : MonoBehaviour
         statViewer.StopShow();
         combatCounter = -1;
         battleText.text = "Combat initiated, press 'D' to begin";
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+
+        InitiateUnits(players[0].GetComponent<Player>().units, players[1].GetComponent<Player>().units);
+
     }
 
     private void Update()
@@ -51,6 +56,30 @@ public class GameManager : MonoBehaviour
         }
         
         HandleInputs();
+    }
+
+    private void InitiateUnits(List<UnitHandler> units1, List<UnitHandler> units2)
+    {
+        int maxX = FieldHandler.X_SIZE-1;
+        int maxY = FieldHandler.Y_SIZE-1;
+        int i = 0;
+        foreach (UnitHandler unit in units1)
+        {
+            int posX = 0;
+            int posY = (maxY / (units1.Count-1)) * i;
+            unit.transform.position = new Vector3(posX, 1, posY);
+            FieldHandler.instance.GetTile(posX, posY);
+            i++;
+        }
+        i = 0;
+        foreach (UnitHandler unit in units2)
+        {
+            int posX = maxX;
+            int posY = (maxY / (units2.Count-1)) * i;
+            unit.transform.position = new Vector3(posX, 1, posY);
+            FieldHandler.instance.GetTile(posX, posY);
+            i++;
+        }
     }
 
     private void NextUnitTurn()
@@ -107,10 +136,10 @@ public class GameManager : MonoBehaviour
     public void CombatAttack(UnitHandler unit)
     {
         currentUnit.SetAnimatorAttacking();
-        unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.damage, currentUnit.amountOfUnits);
+        unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.minDamage, currentUnit.unitBase.maxDamage, currentUnit.amountOfUnits);
         if (unit.canRetaliate)
         {
-            currentUnit.GetHit(unit.unitBase.attack, unit.unitBase.damage, unit.amountOfUnits);
+            currentUnit.GetHit(unit.unitBase.attack, unit.unitBase.minDamage, unit.unitBase.maxDamage, unit.amountOfUnits);
             unit.canRetaliate = false;
         }
         endTurn = true;

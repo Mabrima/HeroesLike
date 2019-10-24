@@ -57,11 +57,11 @@ public class CombatTile : MonoBehaviour
         FieldHandler.instance.ResetSelectableLocations();
         if (fieldType == FieldType.Empty)
         {
-            GameManager.instance.currentUnit.Move(this);
+            CombatManager.instance.currentUnit.Move(this);
         }
         else if (fieldType == FieldType.Occupied)
         {
-            GameManager.instance.CombatAttack(unitOnTile);
+            CombatManager.instance.CombatAttack(unitOnTile);
         }
 
     }

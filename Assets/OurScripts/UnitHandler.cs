@@ -13,6 +13,8 @@ public class UnitHandler : MonoBehaviour
     public CombatTile currentTile;
     public int team = 1;
     public bool canRetaliate = true;
+    public bool flyer = false;
+    public bool shooter = false;
     [SerializeField] Text amountText;
 
     Animator animator;
@@ -25,7 +27,7 @@ public class UnitHandler : MonoBehaviour
         totalHealth = amountOfUnits * unitBase.baseHealth;
         amountText.text = "" + amountOfUnits;
         Invoke("FindFirstTile", .1f);
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void FindFirstTile()
@@ -41,7 +43,10 @@ public class UnitHandler : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed, true);
+        if (!flyer)
+            FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed, true);
+        else
+            FieldHandler.instance.FlyGetAvailableMovementTiles(currentTile, unitBase.speed, true);
         currentTile.OnMouseEnter();
     }
 
@@ -54,8 +59,8 @@ public class UnitHandler : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            GameManager.instance.statViewer.UpdateStats(currentUnitHealth, unitBase.baseHealth, unitBase.attack, unitBase.defence, unitBase.damage, unitBase.damage, unitBase.speed, unitBase.initiative);
-            GameManager.instance.statViewer.Show();
+            CombatManager.instance.statViewer.UpdateStats(currentUnitHealth, unitBase.baseHealth, unitBase.attack, unitBase.defence, unitBase.minDamage, unitBase.maxDamage, unitBase.speed, unitBase.initiative);
+            CombatManager.instance.statViewer.Show();
         }
     }
 
@@ -69,7 +74,7 @@ public class UnitHandler : MonoBehaviour
 
         startTime = Time.time;
         StartCoroutine(MoveUnit());
-        GameManager.instance.SetCannotWait(true);
+        CombatManager.instance.SetCannotWait(true);
     }
 
     public void GetAvailableMovementTiles()
@@ -81,19 +86,20 @@ public class UnitHandler : MonoBehaviour
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
     }
 
-    public void GetHit(int otherAttack, int otherDamage, int otherAmountOfUnits)
+    public void GetHit(int otherAttack, int otherMinDamage, int otherMaxDamage, int otherAmountOfUnits)
     {
-        int damageSustained = unitBase.CalculateDamage(otherAttack, otherDamage * otherAmountOfUnits);
+        int damageRolled = Random.Range(otherMinDamage * otherAmountOfUnits, (otherMaxDamage * otherAmountOfUnits) + 1);
+        int damageSustained = unitBase.CalculateDamage(otherAttack,  damageRolled);
         int amountKilled = 0;
         totalHealth -= damageSustained;
-        GameManager.instance.battleText.text += '\n' + unitBase.name + " " + team + " took " + damageSustained + " damage";
+        CombatManager.instance.battleText.text += '\n' + unitBase.name + " " + team + " took " + damageSustained + " damage";
         if (totalHealth <= 0)
         {
             animator.SetBool("Death", true);
             FieldHandler.instance.RemoveUnitFromTile(currentTile);
-            GameManager.instance.battleText.text += "\n All units of " + unitBase.name + " died";
+            CombatManager.instance.battleText.text += "\n All units of " + unitBase.name + " died";
             canRetaliate = false;
-            GameManager.instance.RemoveUnit(this);
+            CombatManager.instance.RemoveUnit(this);
             Invoke("KillThis", 1);
             return;
         }
@@ -111,7 +117,7 @@ public class UnitHandler : MonoBehaviour
         }
         amountText.text = "" + amountOfUnits;
 
-        GameManager.instance.battleText.text += "\n" + amountKilled + " units died";
+        CombatManager.instance.battleText.text += "\n" + amountKilled + " units died";
 
     }
 

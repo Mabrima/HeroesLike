@@ -8,11 +8,13 @@ public class UnitBase : ScriptableObject
 {
 
     public int baseHealth;
-    public int damage;
+    public int minDamage;
+    public int maxDamage;
     public int speed;
     public int initiative;
     public int attack;
     public int defence;
+    public List<AbilityBase> abilities;
 
     private float increasePerAttack = 0.05f;
     private float decreasePerDefence = 0.025f;
