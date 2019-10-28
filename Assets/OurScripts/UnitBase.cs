@@ -15,6 +15,8 @@ public class UnitBase : ScriptableObject
     public int attack;
     public int defence;
     public List<AbilityBase> abilities;
+    public bool flyer = false;
+    public bool shooter = false;
 
     private float increasePerAttack = 0.05f;
     private float decreasePerDefence = 0.025f;

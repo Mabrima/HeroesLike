@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnlimitedRetaliation : AbilityBase
+public class Regeneration : AbilityBase
 {
-
     public override void Initiate()
     {
-        timing = AbilityTiming.AfterDefence;
+        timing = AbilityTiming.StartOfTurn;
     }
 
     public override void TriggerAbility(UnitHandler unit)
     {
-        unit.canRetaliate = true;
+        unit.currentUnitHealth = unit.unitBase.baseHealth;
     }
 }

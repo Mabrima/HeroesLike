@@ -13,8 +13,7 @@ public class UnitHandler : MonoBehaviour
     public CombatTile currentTile;
     public int team = 1;
     public bool canRetaliate = true;
-    public bool flyer = false;
-    public bool shooter = false;
+
     [SerializeField] Text amountText;
 
     Animator animator;
@@ -43,7 +42,7 @@ public class UnitHandler : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!flyer)
+        if (!unitBase.flyer)
             FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed, true);
         else
             FieldHandler.instance.FlyGetAvailableMovementTiles(currentTile, unitBase.speed, true);
@@ -66,6 +65,11 @@ public class UnitHandler : MonoBehaviour
 
     public void Move(CombatTile tile)
     {
+        foreach (AbilityBase ability in unitBase.abilities)
+        {
+            if (ability.CheckIfApplicable(AbilityTiming.StartOfTurn))
+                ability.TriggerAbility(this);
+        }
         FieldHandler.instance.RemoveUnitFromTile(currentTile);
         currentTile = tile;
         FieldHandler.instance.PutUnitOnTile(currentTile, this);
@@ -88,11 +92,21 @@ public class UnitHandler : MonoBehaviour
 
     public void GetHit(int otherAttack, int otherMinDamage, int otherMaxDamage, int otherAmountOfUnits)
     {
+        foreach (AbilityBase ability in unitBase.abilities)
+        {
+            if (ability.CheckIfApplicable(AbilityTiming.DuringDefence))
+                ability.TriggerAbility(this);
+        }
         int damageRolled = Random.Range(otherMinDamage * otherAmountOfUnits, (otherMaxDamage * otherAmountOfUnits) + 1);
         int damageSustained = unitBase.CalculateDamage(otherAttack,  damageRolled);
         int amountKilled = 0;
         totalHealth -= damageSustained;
         CombatManager.instance.battleText.text += '\n' + unitBase.name + " " + team + " took " + damageSustained + " damage";
+        foreach (AbilityBase ability in unitBase.abilities)
+        {
+            if (ability.CheckIfApplicable(AbilityTiming.AfterDefence))
+                ability.TriggerAbility(this);
+        }
         if (totalHealth <= 0)
         {
             animator.SetBool("Death", true);
@@ -118,7 +132,6 @@ public class UnitHandler : MonoBehaviour
         amountText.text = "" + amountOfUnits;
 
         CombatManager.instance.battleText.text += "\n" + amountKilled + " units died";
-
     }
 
     private void KillThis()

@@ -15,6 +15,9 @@ public abstract class AbilityBase : MonoBehaviour
 
     public abstract void TriggerAbility(UnitHandler unit);
 
-    public abstract bool CheckIfApplicable(UnitHandler unit);
+    public virtual bool CheckIfApplicable(AbilityTiming time)
+    {
+        return time == timing;
+    }
 
 }
