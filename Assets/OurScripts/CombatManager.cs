@@ -8,6 +8,7 @@ public class CombatManager : MonoBehaviour
     public Button waitButton;
     public Text battleText;
     public static CombatManager instance;
+    public GameObject[] spawnGroups;
     public List<UnitHandler> unitsInCombat;
     public Stack<UnitHandler> waitStack = new Stack<UnitHandler>();
     public Stack<UnitHandler> actionStack = new Stack<UnitHandler>();
@@ -67,8 +68,7 @@ public class CombatManager : MonoBehaviour
         {
             int posX = 0;
             int posY = (maxY / (units1.Count-1)) * i;
-            unit.transform.position = new Vector3(posX, 1, posY);
-            FieldHandler.instance.GetTile(posX, posY);
+            InitiateNewUnit(posX, posY, unit);
             i++;
         }
         i = 0;
@@ -76,10 +76,18 @@ public class CombatManager : MonoBehaviour
         {
             int posX = maxX;
             int posY = (maxY / (units2.Count-1)) * i;
-            unit.transform.position = new Vector3(posX, 1, posY);
-            FieldHandler.instance.GetTile(posX, posY);
+            InitiateNewUnit(posX, posY, unit);
             i++;
         }
+    }
+
+    void InitiateNewUnit(int posX, int posY, UnitHandler unit)
+    {
+        UnitHandler temp = UnitDispenser.instance.SpawnUnit(unit);
+        temp.transform.position = new Vector3(posX, 1, posY);
+        temp.currentTile = FieldHandler.instance.GetTile(posX, posY);
+        temp.currentTile.PutUnitOnTile(temp);
+        unitsInCombat.Add(temp);
     }
 
     private void NextUnitTurn()
@@ -136,12 +144,15 @@ public class CombatManager : MonoBehaviour
     public void CombatAttack(UnitHandler unit)
     {
         currentUnit.SetAnimatorAttacking();
+        currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, unit); //TODO check if better at tile selection.
         unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.minDamage, currentUnit.unitBase.maxDamage, currentUnit.amountOfUnits);
         if (unit.canRetaliate)
         {
+            currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, currentUnit); //TODO check if better at tile selection.
             currentUnit.GetHit(unit.unitBase.attack, unit.unitBase.minDamage, unit.unitBase.maxDamage, unit.amountOfUnits);
             unit.canRetaliate = false;
         }
+        currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.AfterAttack, unit);
         endTurn = true;
     }
 

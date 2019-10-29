@@ -186,7 +186,7 @@ public class FieldHandler : MonoBehaviour
         {
             foreach (CombatTile tile in fieldObjects)
             {
-                Destroy(tile);
+                Destroy(tile.gameObject);
             }
         }
 
@@ -195,9 +195,9 @@ public class FieldHandler : MonoBehaviour
             fieldObjects[x, y] = Instantiate(battleTilePrefab, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<CombatTile>();
             fieldObjects[x, y].SetPositionValues(x, y);
 
-            x = (x + 1) % 12;
+            x = (x + 1) % X_SIZE;
             if (x == 0)
-                y = (y + 1) % 10;
+                y = (y + 1);
         }
     }
 

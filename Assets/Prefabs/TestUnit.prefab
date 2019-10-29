@@ -278,7 +278,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5776726455004917222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11, y: 0.6936798, z: 5}
+  m_LocalPosition: {x: 11, y: 1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1190172045}
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitBase: {fileID: 11400000, guid: 61ba6b44d13d7e74e850d5348fbd12e9, type: 2}
   amountOfUnits: 2
-  currentInitiative: 0
+  currentInitiative: 50
   totalHealth: 0
   currentUnitHealth: 0
   currentTile: {fileID: 0}
@@ -434,11 +434,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.4
       objectReference: {fileID: 0}
-    - target: {fileID: 95141765470247508, guid: 1e337205febf0bb4384ee08cc2e75c1d,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 43b37da68e9cf5b44a8e57262c59095d, type: 2}
     - target: {fileID: 459608, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.3501276
@@ -447,6 +442,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.6143377
       objectReference: {fileID: 0}
+    - target: {fileID: 95141765470247508, guid: 1e337205febf0bb4384ee08cc2e75c1d,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 43b37da68e9cf5b44a8e57262c59095d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
 --- !u!4 &6237342000341201130 stripped

@@ -17,8 +17,8 @@ MonoBehaviour:
   maxDamage: 2
   speed: 5
   initiative: 7
-  attack: 0
-  defence: 0
+  attack: 4
+  defence: 2
   abilities: []
   flyer: 0
   shooter: 0

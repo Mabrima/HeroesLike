@@ -25,8 +25,19 @@ public class UnitHandler : MonoBehaviour
         currentUnitHealth = unitBase.baseHealth;
         totalHealth = amountOfUnits * unitBase.baseHealth;
         amountText.text = "" + amountOfUnits;
-        Invoke("FindFirstTile", .1f);
+        //Invoke("FindFirstTile", .5f);
         animator = GetComponentInChildren<Animator>();
+    }
+
+    public void TriggerAbilitiesAtTiming(AbilityTiming timing, UnitHandler unitToTriggerOn)
+    {
+        foreach(AbilityBase ability in unitBase.abilities)
+        {
+            if (ability.timing == timing)
+            {
+                ability.TriggerAbility(unitToTriggerOn);
+            }
+        }
     }
 
     void FindFirstTile()
@@ -65,11 +76,6 @@ public class UnitHandler : MonoBehaviour
 
     public void Move(CombatTile tile)
     {
-        foreach (AbilityBase ability in unitBase.abilities)
-        {
-            if (ability.CheckIfApplicable(AbilityTiming.StartOfTurn))
-                ability.TriggerAbility(this);
-        }
         FieldHandler.instance.RemoveUnitFromTile(currentTile);
         currentTile = tile;
         FieldHandler.instance.PutUnitOnTile(currentTile, this);
@@ -81,8 +87,19 @@ public class UnitHandler : MonoBehaviour
         CombatManager.instance.SetCannotWait(true);
     }
 
+    private void ResetAbilities()
+    {
+        foreach(AbilityBase ability in unitBase.abilities)
+        {
+            ability.used = false;
+        }
+    }
+
     public void GetAvailableMovementTiles()
     {
+        ResetAbilities();
+        TriggerAbilitiesAtTiming(AbilityTiming.StartOfTurn, this);
+
         FieldHandler.instance.ResetSelectableLocations();
         FieldHandler.instance.ClearParents();
 
@@ -92,21 +109,13 @@ public class UnitHandler : MonoBehaviour
 
     public void GetHit(int otherAttack, int otherMinDamage, int otherMaxDamage, int otherAmountOfUnits)
     {
-        foreach (AbilityBase ability in unitBase.abilities)
-        {
-            if (ability.CheckIfApplicable(AbilityTiming.DuringDefence))
-                ability.TriggerAbility(this);
-        }
+        TriggerAbilitiesAtTiming(AbilityTiming.DuringDefence, this);
         int damageRolled = Random.Range(otherMinDamage * otherAmountOfUnits, (otherMaxDamage * otherAmountOfUnits) + 1);
         int damageSustained = unitBase.CalculateDamage(otherAttack,  damageRolled);
         int amountKilled = 0;
         totalHealth -= damageSustained;
         CombatManager.instance.battleText.text += '\n' + unitBase.name + " " + team + " took " + damageSustained + " damage";
-        foreach (AbilityBase ability in unitBase.abilities)
-        {
-            if (ability.CheckIfApplicable(AbilityTiming.AfterDefence))
-                ability.TriggerAbility(this);
-        }
+        TriggerAbilitiesAtTiming(AbilityTiming.AfterDefence, this);
         if (totalHealth <= 0)
         {
             animator.SetBool("Death", true);
