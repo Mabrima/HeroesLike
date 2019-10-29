@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class TileMap : MonoBehaviour
 {
@@ -13,8 +14,11 @@ public class TileMap : MonoBehaviour
     public int[,] tiles;
     public ClickableTile[,] clickableTiles;
 
-    public int mapSizeX = 50;
-    public int mapSizeY = 50;
+    public int mapSizeX;
+    public int mapSizeY;
+
+    public int highestX;
+    public int highestY;
 
     public static TileMap INSTANCE;
 
@@ -35,11 +39,25 @@ public class TileMap : MonoBehaviour
 
     void Start()
     {
+        foreach (Transform child in transform)
+        {
+            highestX = Mathf.Max((int)child.transform.position.x, highestX);
+            highestY = Mathf.Max((int)child.transform.position.y, highestY);
+        }
+        mapSizeX = highestX+1;
+        mapSizeY = highestY+1;
         clickableTiles = new ClickableTile[mapSizeX, mapSizeY];
 
-        GenerateMapData();
-        GenerateMapVisual();
+        foreach (Transform child in transform)
+        {
+            ClickableTile tile = child.GetComponent<ClickableTile>();
+            tile.tileX = (int)child.transform.position.x;
+            tile.tileY = (int)child.transform.position.y;
+            clickableTiles[tile.tileX, tile.tileY] = tile;
+        }
 
+        //GenerateMapData();
+        //GenerateMapVisual();
     }
 
     void GenerateMapData()
@@ -87,7 +105,7 @@ public class TileMap : MonoBehaviour
 
         for (int x = 0; x < mapSizeX; x++)
         {
-            for (int y = 0; y < mapSizeX; y++)
+            for (int y = 0; y < mapSizeY; y++)
             {
                 all.Add(clickableTiles[x, y]);
             }
