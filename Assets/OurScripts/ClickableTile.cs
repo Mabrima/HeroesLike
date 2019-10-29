@@ -35,6 +35,7 @@ public class ClickableTile : MonoBehaviour
         player = FindObjectOfType<Player>();
         sphereRend = transform.Find("Sphere").GetComponent<MeshRenderer>();
 
+
     }
 
     public void ResetPathfindingValues()

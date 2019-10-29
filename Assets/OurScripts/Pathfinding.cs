@@ -89,6 +89,7 @@ public class Pathfinding : MonoBehaviour
     {
         if (initialRun)
         {
+            Debug.Log("initial run");
             allTiles.AddRange(TileMap.INSTANCE.GetAllTiles());
             initialRun = false;
         }
