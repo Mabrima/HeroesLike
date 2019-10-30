@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitBase: {fileID: 11400000, guid: 61ba6b44d13d7e74e850d5348fbd12e9, type: 2}
-  amountOfUnits: 2
+  amountOfUnits: 3
   currentInitiative: 50
   totalHealth: 0
   currentUnitHealth: 0
@@ -396,7 +396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 457106, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 457106, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
       propertyPath: m_LocalRotation.z
@@ -404,7 +404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 457106, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 457106, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
       propertyPath: m_RootOrder
@@ -416,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 457106, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 457106, guid: 1e337205febf0bb4384ee08cc2e75c1d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

@@ -11,8 +11,8 @@ public class FieldHandler : MonoBehaviour
 {
     public static int X_SIZE = 12;
     public static int Y_SIZE = 10;
-    public static Quaternion ROTATION_TEAM_1 = Quaternion.Euler(0, -90, 0);
-    public static Quaternion ROTATION_TEAM_2 = Quaternion.Euler(0, 90, 0);
+    public static Quaternion ROTATION_TEAM_1 = Quaternion.Euler(0, 90, 0);
+    public static Quaternion ROTATION_TEAM_2 = Quaternion.Euler(0, -90, 0);
     public static FieldHandler instance;
     public CombatTile[,] fieldObjects = new CombatTile[X_SIZE, Y_SIZE];
     [SerializeField] GameObject battleTilePrefab;

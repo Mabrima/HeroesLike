@@ -61,12 +61,12 @@ public class CombatTile : MonoBehaviour
         }
         else if (fieldType == FieldType.Occupied)
         {
-            CombatManager.instance.CombatAttack(unitOnTile);
+            CombatManager.instance.StartCombatAttack(unitOnTile);
         }
 
     }
 
-    //Fake means it can't actually be clicked, just visual.
+    //"Fake" means it can't actually be clicked, just visual.
     public void SetAsSelectable(bool fake)
     {
         if (!fake)

@@ -44,7 +44,7 @@ public class CombatManager : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
 
-        InitiateUnits(players[0].GetComponent<Player>().units, players[1].GetComponent<Player>().units);
+        InitiateUnits(players[0].GetComponent<Player>().units, players[1].GetComponent<Player>().units, players[0].GetComponent<Player>().unitAmounts, players[1].GetComponent<Player>().unitAmounts);
 
     }
 
@@ -59,7 +59,7 @@ public class CombatManager : MonoBehaviour
         HandleInputs();
     }
 
-    private void InitiateUnits(List<UnitHandler> units1, List<UnitHandler> units2)
+    private void InitiateUnits(List<UnitHandler> units1, List<UnitHandler> units2, List<int> unitsAmount1, List<int> unitsAmount2)
     {
         int maxX = FieldHandler.X_SIZE-1;
         int maxY = FieldHandler.Y_SIZE-1;
@@ -68,7 +68,7 @@ public class CombatManager : MonoBehaviour
         {
             int posX = 0;
             int posY = (maxY / (units1.Count-1)) * i;
-            InitiateNewUnit(posX, posY, unit);
+            InitiateNewUnit(posX, posY, unit, 1, unitsAmount1[i]);
             i++;
         }
         i = 0;
@@ -76,14 +76,16 @@ public class CombatManager : MonoBehaviour
         {
             int posX = maxX;
             int posY = (maxY / (units2.Count-1)) * i;
-            InitiateNewUnit(posX, posY, unit);
+            InitiateNewUnit(posX, posY, unit, 2, unitsAmount2[i]);
             i++;
         }
     }
 
-    void InitiateNewUnit(int posX, int posY, UnitHandler unit)
+    void InitiateNewUnit(int posX, int posY, UnitHandler unit, int team, int amount)
     {
         UnitHandler temp = UnitDispenser.instance.SpawnUnit(unit);
+        temp.team = team;
+        temp.amountOfUnits = amount;
         temp.transform.position = new Vector3(posX, 1, posY);
         temp.currentTile = FieldHandler.instance.GetTile(posX, posY);
         temp.currentTile.PutUnitOnTile(temp);
@@ -141,17 +143,30 @@ public class CombatManager : MonoBehaviour
         currentUnit.InitiativeWait();
         endTurn = true;
     }
-    public void CombatAttack(UnitHandler unit)
+
+    public void StartCombatAttack(UnitHandler unit)
     {
-        currentUnit.SetAnimatorAttacking();
-        currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, unit); //TODO check if better at tile selection.
+        StartCoroutine(CombatAttack(unit));
+    }
+
+
+    public IEnumerator CombatAttack(UnitHandler unit)
+    {
+        currentUnit.TriggerAnimatorAttacking();
+        currentUnit.RotateUnitToTile(unit.currentTile);
+        //currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, unit); //TODO check if better at tile selection.
         unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.minDamage, currentUnit.unitBase.maxDamage, currentUnit.amountOfUnits);
         if (unit.canRetaliate)
         {
-            currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, currentUnit); //TODO check if better at tile selection.
+            yield return new WaitForSeconds(0.5f);
+
+            //currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, currentUnit); //TODO check if better at tile selection.
             currentUnit.GetHit(unit.unitBase.attack, unit.unitBase.minDamage, unit.unitBase.maxDamage, unit.amountOfUnits);
             unit.canRetaliate = false;
         }
+        unit.TriggerAbilitiesAtTiming(AbilityTiming.AfterDefence, currentUnit);
+        yield return new WaitForSeconds(0.1f);
+        currentUnit.RotateTeamDirection(currentUnit.team);
         currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.AfterAttack, unit);
         endTurn = true;
     }

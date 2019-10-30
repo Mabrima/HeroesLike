@@ -14,7 +14,7 @@ public class DoubleStrike : AbilityBase
         if (!used)
         {
             used = true;
-            CombatManager.instance.CombatAttack(unit);
+            CombatManager.instance.StartCombatAttack(unit);
         }
     }
 

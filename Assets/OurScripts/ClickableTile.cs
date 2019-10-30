@@ -9,10 +9,10 @@ public class ClickableTile : MonoBehaviour
 
     public TileData tileData;
 
-    public MeshRenderer sphereRend; //TODO Should be moved down to clickable tile.
-    public Material sphereStartMat; //
-    public Material sphereEndMat; //
-    public TileMap map; //
+    public MeshRenderer sphereRend; 
+    public Material sphereStartMat; 
+    public Material sphereEndMat; 
+    public TileMap map; 
 
     protected MeshRenderer rend;
     public Material mouseOverMaterial;
@@ -34,8 +34,6 @@ public class ClickableTile : MonoBehaviour
         defaultMaterial = rend.material;
         player = FindObjectOfType<Player>();
         sphereRend = transform.Find("Sphere").GetComponent<MeshRenderer>();
-
-
     }
 
     public void ResetPathfindingValues()

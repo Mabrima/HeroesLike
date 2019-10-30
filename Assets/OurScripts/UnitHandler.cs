@@ -42,7 +42,7 @@ public class UnitHandler : MonoBehaviour
 
     void FindFirstTile()
     {
-        currentTile = (CombatTile)FieldHandler.instance.GetTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+        currentTile = FieldHandler.instance.GetTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
         currentTile.PutUnitOnTile(this);
     }
 
@@ -80,7 +80,6 @@ public class UnitHandler : MonoBehaviour
         currentTile = tile;
         FieldHandler.instance.PutUnitOnTile(currentTile, this);
 
-        animator.SetBool("Moving", true);
 
         startTime = Time.time;
         StartCoroutine(MoveUnit());
@@ -115,10 +114,9 @@ public class UnitHandler : MonoBehaviour
         int amountKilled = 0;
         totalHealth -= damageSustained;
         CombatManager.instance.battleText.text += '\n' + unitBase.name + " " + team + " took " + damageSustained + " damage";
-        TriggerAbilitiesAtTiming(AbilityTiming.AfterDefence, this);
         if (totalHealth <= 0)
         {
-            animator.SetBool("Death", true);
+            SetAnimatorDying(true);
             FieldHandler.instance.RemoveUnitFromTile(currentTile);
             CombatManager.instance.battleText.text += "\n All units of " + unitBase.name + " died";
             canRetaliate = false;
@@ -127,7 +125,7 @@ public class UnitHandler : MonoBehaviour
             return;
         }
 
-        animator.SetTrigger("Hit");
+        TriggerAnimatorDefending();
         //calculates how many units die and how much health is left on the top unit.
         amountKilled = Mathf.Max(damageSustained, 0) / unitBase.baseHealth;
         amountOfUnits -= amountKilled;
@@ -160,6 +158,8 @@ public class UnitHandler : MonoBehaviour
 
     IEnumerator MoveUnit()
     {
+        SetAnimatorMoving(true);
+
         Stack<CombatTile> stack = new Stack<CombatTile>();
         CombatTile parent = currentTile;
         while (parent != null)
@@ -175,7 +175,7 @@ public class UnitHandler : MonoBehaviour
             nextMove = stack.Pop(); //Get next tile in stack we want to move too.
             startTime = Time.time;
             float journeyLength = Vector3.Distance(transform.position, nextMove.transform.position);
-            //RotateUnitToTile(nextMove);
+            RotateUnitToTile(nextMove);
             bool lerping = true;
 
             while (lerping)
@@ -194,22 +194,51 @@ public class UnitHandler : MonoBehaviour
 
         }
 
-        animator.SetBool("Moving", false);
+        SetAnimatorMoving(false);
+        RotateTeamDirection(team);
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
         Debug.Log("moving ended");
     }
 
     public void RotateUnitToTile(CombatTile nextMove)
     {
-        Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.transform.position, Vector3.forward);
+        Quaternion newRotation = Quaternion.LookRotation(transform.GetChild(1).position - nextMove.transform.position, Vector3.up);
         newRotation.x = 0f;
-        newRotation.y = 0f;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, Mathf.Infinity);
+        newRotation.z = 0f;
+        transform.GetChild(1).rotation = Quaternion.RotateTowards(transform.rotation, newRotation, 360);
+        transform.GetChild(1).rotation = transform.GetChild(1).rotation * Quaternion.Euler(0, 180, 0);
     }
 
-    public void SetAnimatorAttacking()
+    public void RotateTeamDirection(int team)
+    {
+        if (team == 1)
+        {
+            transform.GetChild(1).rotation = Quaternion.RotateTowards(transform.rotation, FieldHandler.ROTATION_TEAM_1, 360);
+        }
+        else if (team == 2)
+        {
+            transform.GetChild(1).rotation = Quaternion.RotateTowards(transform.rotation, FieldHandler.ROTATION_TEAM_2, 360);
+        }
+    }
+
+    public void TriggerAnimatorAttacking()
     {
         animator.SetTrigger("Attack");
+    }
+    
+    public void TriggerAnimatorDefending()
+    {
+        animator.SetTrigger("Hit");
+    }
+    
+    public void SetAnimatorMoving(bool set)
+    {
+        animator.SetBool("Moving", set);
+    }
+
+    public void SetAnimatorDying(bool set)
+    {
+        animator.SetBool("Death", set);
     }
 
 }

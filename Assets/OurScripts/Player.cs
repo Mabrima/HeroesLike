@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     private float startTime;
     private float journeyLength;
 
+
+    public List<int> unitAmounts;
     public List<UnitHandler> units = new List<UnitHandler>();
 
     bool showArmy = false;

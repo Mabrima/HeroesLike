@@ -9,7 +9,7 @@ public enum AbilityTiming
 
 public abstract class AbilityBase : MonoBehaviour
 {
-    public AbilityTiming timing;
+    [HideInInspector] public AbilityTiming timing;
     public bool used = false;
 
     public abstract void Initiate();
