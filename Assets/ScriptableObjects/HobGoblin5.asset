@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fb7a64277785d34a88610eae09f2a96, type: 3}
-  m_Name: Orc4
+  m_Name: HobGoblin5
   m_EditorClassIdentifier: 
-  baseHealth: 30
-  minDamage: 8
-  maxDamage: 10
-  speed: 6
-  initiative: 10
-  attack: 0
-  defence: 0
+  baseHealth: 25
+  minDamage: 3
+  maxDamage: 5
+  speed: 5
+  initiative: 8
+  attack: 6
+  defence: 8
   abilities: []
   flyer: 0
   shooter: 0

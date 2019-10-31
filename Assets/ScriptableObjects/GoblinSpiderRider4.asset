@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fb7a64277785d34a88610eae09f2a96, type: 3}
-  m_Name: HobGoblin3
+  m_Name: GoblinSpiderRider4
   m_EditorClassIdentifier: 
-  baseHealth: 25
-  minDamage: 3
-  maxDamage: 5
-  speed: 5
-  initiative: 8
-  attack: 6
-  defence: 8
-  abilities: []
+  baseHealth: 50
+  minDamage: 12
+  maxDamage: 15
+  speed: 8
+  initiative: 13
+  attack: 14
+  defence: 6
+  abilities:
+  - {fileID: 7078648344413427198, guid: a51b921c69a664b4897444b8f807f531, type: 3}
   flyer: 0
   shooter: 0

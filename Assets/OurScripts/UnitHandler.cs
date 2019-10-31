@@ -86,7 +86,7 @@ public class UnitHandler : MonoBehaviour
         CombatManager.instance.SetCannotWait(true);
     }
 
-    private void ResetAbilities()
+    public void ResetAbilities()
     {
         foreach(AbilityBase ability in unitBase.abilities)
         {
@@ -96,9 +96,6 @@ public class UnitHandler : MonoBehaviour
 
     public void GetAvailableMovementTiles()
     {
-        ResetAbilities();
-        TriggerAbilitiesAtTiming(AbilityTiming.StartOfTurn, this);
-
         FieldHandler.instance.ResetSelectableLocations();
         FieldHandler.instance.ClearParents();
 
@@ -125,7 +122,7 @@ public class UnitHandler : MonoBehaviour
             return;
         }
 
-        TriggerAnimatorDefending();
+        Invoke("TriggerAnimatorDefending", .2f);
         //calculates how many units die and how much health is left on the top unit.
         amountKilled = Mathf.Max(damageSustained, 0) / unitBase.baseHealth;
         amountOfUnits -= amountKilled;
@@ -168,7 +165,7 @@ public class UnitHandler : MonoBehaviour
             parent = parent.pfParent;
         }
 
-        CombatTile nextMove;
+        CombatTile nextMove = stack.Pop();
 
         while (stack.Count > 0) //Go through stack of the path until its empty.
         {
@@ -178,20 +175,21 @@ public class UnitHandler : MonoBehaviour
             RotateUnitToTile(nextMove);
             bool lerping = true;
 
+            Vector3 startPos = transform.position;
             while (lerping)
             {
                 float distCovered = (Time.time - startTime) * unitSpeed;
                 float fractionOfJourney = distCovered / journeyLength;
-                if (fractionOfJourney > 0.9)
+                
+                if (fractionOfJourney > 0.99f)
                 {
                     lerping = false;
                 }
 
-                transform.position = Vector3.Lerp(transform.position, new Vector3(nextMove.transform.position.x, 1, nextMove.transform.position.z), fractionOfJourney);
+                transform.position = Vector3.Lerp(startPos, new Vector3(nextMove.transform.position.x, 1, nextMove.transform.position.z), fractionOfJourney);
 
                 yield return new WaitForFixedUpdate();
             }
-
         }
 
         SetAnimatorMoving(false);

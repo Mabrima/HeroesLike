@@ -89,6 +89,11 @@ public class CombatManager : MonoBehaviour
         temp.transform.position = new Vector3(posX, 1, posY);
         temp.currentTile = FieldHandler.instance.GetTile(posX, posY);
         temp.currentTile.PutUnitOnTile(temp);
+        temp.RotateTeamDirection(temp.team);
+        if (temp.team == 1)
+            temp.GetComponentInChildren<Image>().color = Color.red;
+        if (temp.team == 2)
+            temp.GetComponentInChildren<Image>().color = Color.cyan;
         unitsInCombat.Add(temp);
     }
 
@@ -128,7 +133,9 @@ public class CombatManager : MonoBehaviour
 
     private void ReadyUnit()
     {
+        currentUnit.ResetAbilities();
         currentUnit.canRetaliate = true;
+        currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.StartOfTurn, currentUnit);
         currentUnit.GetAvailableMovementTiles();
         SetCannotWait(false);
     }
@@ -149,25 +156,29 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(CombatAttack(unit));
     }
 
-
     public IEnumerator CombatAttack(UnitHandler unit)
     {
         currentUnit.TriggerAnimatorAttacking();
         currentUnit.RotateUnitToTile(unit.currentTile);
+        unit.RotateUnitToTile(currentUnit.currentTile);
+
         //currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, unit); //TODO check if better at tile selection.
         unit.GetHit(currentUnit.unitBase.attack, currentUnit.unitBase.minDamage, currentUnit.unitBase.maxDamage, currentUnit.amountOfUnits);
         if (unit.canRetaliate)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
 
             //currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.DuringAttack, currentUnit); //TODO check if better at tile selection.
+            unit.TriggerAnimatorAttacking();
             currentUnit.GetHit(unit.unitBase.attack, unit.unitBase.minDamage, unit.unitBase.maxDamage, unit.amountOfUnits);
             unit.canRetaliate = false;
         }
+
         unit.TriggerAbilitiesAtTiming(AbilityTiming.AfterDefence, currentUnit);
-        yield return new WaitForSeconds(0.1f);
-        currentUnit.RotateTeamDirection(currentUnit.team);
+        yield return new WaitForSeconds(1f);
         currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.AfterAttack, unit);
+        currentUnit.RotateTeamDirection(currentUnit.team);
+        unit.RotateTeamDirection(unit.team);
         endTurn = true;
     }
 
