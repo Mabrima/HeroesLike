@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     public ClickableTile currentTileStandingOn;
     public float playerSpeed;
-    private Vector3 tileOffset = new Vector3(0, 0, -0.5f);
+    private Vector3 tileOffset = new Vector3(0, 0.5f, 0);
 
     public RectTransform armyWindow;
     public Texture2D armyIcon;
@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
             RotatePlayerToTile(nextMove);
             lerping = true;
 
+            Vector3 startpos = transform.position;
             while (lerping)
             {
                 float distCovered = (Time.time - startTime) * playerSpeed;
@@ -80,7 +81,7 @@ public class Player : MonoBehaviour
                     lerping = false;
                 }
                     
-                transform.position = Vector3.Lerp(transform.position, nextMove.transform.position + tileOffset, fractionOfJourney);
+                transform.position = Vector3.Lerp(startpos, nextMove.transform.position + tileOffset, fractionOfJourney);
                 
                 yield return new WaitForFixedUpdate();
                 nextMove.sphereRend.enabled = false; //Turn sphere off
@@ -93,9 +94,9 @@ public class Player : MonoBehaviour
 
     public void RotatePlayerToTile(ClickableTile nextMove)
     {
-        Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.sphereRend.transform.position, Vector3.forward);
+        Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.sphereRend.transform.position, Vector3.up);
         newRotation.x = 0f;
-        newRotation.y = 0f;
+        newRotation.z = 0f;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, Mathf.Infinity);
     }
 

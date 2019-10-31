@@ -12,6 +12,8 @@ public class MoveCamera : MonoBehaviour
     private int screenHeight;
     private Rect screenArea;
 
+    public float dragSpeed = 0.5f;
+    private Vector3 dragOrigin;
 
     public float minZoom = 15f;
     public float maxZoom = 90f;
@@ -20,7 +22,7 @@ public class MoveCamera : MonoBehaviour
 
     Camera mainCamera;
 
-    Vector3 cameraOffset = new Vector3(0, -5, -10);
+    Vector3 cameraOffset = new Vector3(0, 10, -7.5f);
 
     public Player player;
     // Start is called before the first frame update
@@ -50,16 +52,16 @@ public class MoveCamera : MonoBehaviour
                 transform.position -= new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
             }
 
-            if (Input.mousePosition.y > screenHeight - boundary && transform.position.y < TileMap.INSTANCE.mapSizeY / 2)
+            if (Input.mousePosition.y > screenHeight - boundary && transform.position.z < TileMap.INSTANCE.mapSizeZ / 2)
             {
                 //UP
-                transform.position += new Vector3(0, cameraMoveSpeed, 0) * Time.deltaTime;
+                transform.position += new Vector3(0, 0, cameraMoveSpeed) * Time.deltaTime;
             }
 
-            if (Input.mousePosition.y < 0 + boundary && transform.position.y > TileMap.INSTANCE.clickableTiles[0, 0].tileY - (TileMap.INSTANCE.mapSizeY / 4))
+            if (Input.mousePosition.y < 0 + boundary && transform.position.z > TileMap.INSTANCE.clickableTiles[0, 0].tileZ - (TileMap.INSTANCE.mapSizeZ / 4))
             {
                 //DOWN
-                transform.position -= new Vector3(0, cameraMoveSpeed, 0) * Time.deltaTime;
+                transform.position -= new Vector3(0, 0, cameraMoveSpeed) * Time.deltaTime;
             }
 
             float fov = mainCamera.fieldOfView;
@@ -73,6 +75,18 @@ public class MoveCamera : MonoBehaviour
             transform.position = player.transform.position + cameraOffset;
         }
 
-        
+        if (Input.GetMouseButtonDown(2))
+        {
+            dragOrigin = Input.mousePosition;
+            return;
+        }
+
+        if (!Input.GetMouseButton(2)) return;
+
+        Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+        Vector3 move = new Vector3(-pos.x * dragSpeed, 0, -pos.y * dragSpeed);
+
+        transform.Translate(move, Space.World);
+    
     }
 }

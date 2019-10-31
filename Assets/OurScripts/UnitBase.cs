@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class UnitBase : ScriptableObject
 {
-
+    public new string name;
     public int baseHealth;
     public int minDamage;
     public int maxDamage;
@@ -14,6 +14,7 @@ public class UnitBase : ScriptableObject
     public int initiative;
     public int attack;
     public int defence;
+    public Sprite sprite;
     public List<AbilityBase> abilities;
     public bool flyer = false;
     public bool shooter = false;

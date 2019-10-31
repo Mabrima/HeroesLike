@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb7a64277785d34a88610eae09f2a96, type: 3}
   m_Name: Cyclops6
   m_EditorClassIdentifier: 
+  name: Cyclops
   baseHealth: 80
   minDamage: 15
   maxDamage: 20
@@ -19,6 +20,7 @@ MonoBehaviour:
   initiative: 9
   attack: 12
   defence: 10
+  sprite: {fileID: 21300000, guid: 72dae9df14fced6438b607781cb34c84, type: 3}
   abilities: []
   flyer: 0
   shooter: 0

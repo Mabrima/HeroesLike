@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb7a64277785d34a88610eae09f2a96, type: 3}
   m_Name: Troll7
   m_EditorClassIdentifier: 
+  name: Troll
   baseHealth: 180
   minDamage: 30
   maxDamage: 50
@@ -19,6 +20,7 @@ MonoBehaviour:
   initiative: 8
   attack: 18
   defence: 22
+  sprite: {fileID: 21300000, guid: 03956fdc650fe3c4da201064913dda2f, type: 3}
   abilities: []
   flyer: 0
   shooter: 0

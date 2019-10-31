@@ -5,7 +5,7 @@ using UnityEngine;
 public class ClickableTile : MonoBehaviour
 {
     public int tileX;
-    public int tileY;
+    public int tileZ;
 
     public TileData tileData;
 
@@ -25,8 +25,8 @@ public class ClickableTile : MonoBehaviour
     public Texture2D blockedPathIcon;
     public Texture2D walkHereIcon;
 
-    public CursorMode cursorMode = CursorMode.Auto;
-    public Vector2 hotSpot = Vector2.zero;
+    private CursorMode cursorMode = CursorMode.Auto;
+    private Vector2 hotSpot = Vector2.zero;
 
     private void Start()
     {
@@ -52,7 +52,7 @@ public class ClickableTile : MonoBehaviour
 
         if (!Pathfinding.INSTANCE.ChoseNextTile(this) && this != player.currentTileStandingOn)
         {
-            map.FindPath(tileX, tileY, this);
+            map.FindPath(tileX, tileZ, this);
         }
            
     }
@@ -66,19 +66,7 @@ public class ClickableTile : MonoBehaviour
         }
         else if (fieldType == FieldType.Empty)
         {
-            foreach (ClickableTile neighbour in TileMap.INSTANCE.GetNeighbouringTiles(this)) //Go through an empty tiles neighbours. 
-            {
-                if (neighbour.fieldType == FieldType.Empty) //If even one of the neighbours are "open" we know there is a path there.
-                {
-                    Cursor.SetCursor(walkHereIcon, hotSpot, cursorMode);
-                    break;
-                }
-                else //If none of the neighbours are empty == all neighbours are closed, we know the path is blocked.
-                {
-                    Cursor.SetCursor(blockedPathIcon, hotSpot, cursorMode);
-                }
-            }
-            
+            Cursor.SetCursor(walkHereIcon, hotSpot, cursorMode);
         }
     }
 
@@ -86,6 +74,14 @@ public class ClickableTile : MonoBehaviour
     {
         rend.material = defaultMaterial;
         Cursor.SetCursor(null, Vector2.zero, cursorMode);
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Obstacle"))
+        {
+            fieldType = FieldType.Obstacle;
+        }
     }
 
 

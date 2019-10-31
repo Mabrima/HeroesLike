@@ -9,16 +9,14 @@ public class TileMap : MonoBehaviour
 
     public Player player;
 
-    public TileType[] tileTypes;
-
     public int[,] tiles;
     public ClickableTile[,] clickableTiles;
 
     public int mapSizeX;
-    public int mapSizeY;
+    public int mapSizeZ;
 
     public int highestX;
-    public int highestY;
+    public int highestZ;
 
     public static TileMap INSTANCE;
 
@@ -41,61 +39,19 @@ public class TileMap : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            highestX = Mathf.Max((int)child.transform.position.x, highestX);
-            highestY = Mathf.Max((int)child.transform.position.y, highestY);
+            highestX = Mathf.Max(Mathf.RoundToInt(child.transform.position.x), highestX);
+            highestZ = Mathf.Max(Mathf.RoundToInt(child.transform.position.z), highestZ);
         }
         mapSizeX = highestX+1;
-        mapSizeY = highestY+1;
-        clickableTiles = new ClickableTile[mapSizeX, mapSizeY];
+        mapSizeZ = highestZ+1;
+        clickableTiles = new ClickableTile[mapSizeX, mapSizeZ];
 
         foreach (Transform child in transform)
         {
             ClickableTile tile = child.GetComponent<ClickableTile>();
-            tile.tileX = (int)child.transform.position.x;
-            tile.tileY = (int)child.transform.position.y;
-            clickableTiles[tile.tileX, tile.tileY] = tile;
-        }
-
-        //GenerateMapData();
-        //GenerateMapVisual();
-    }
-
-    void GenerateMapData()
-    {
-        tiles = new int[mapSizeX, mapSizeY];
-
-        for (int x = 0; x < mapSizeX; x++)
-        {
-            for (int y = 0; y < mapSizeX; y++)
-            {
-                tiles[x, y] = 0;
-            }
-        }
-
-        tiles[1, 1] = 2;
-        tiles[1, 0] = 2;
-        tiles[1, 2] = 2;
-        tiles[2, 2] = 2;
-        tiles[3, 1] = 2;
-        tiles[3, 0] = 2;
-    }
-    
-    void GenerateMapVisual()
-    {
-        for (int x = 0; x < mapSizeX; x++)
-        {
-            for (int y = 0; y < mapSizeX; y++)
-            {
-                TileType tt = tileTypes[tiles[x, y]];
-
-                ClickableTile go = Instantiate(tt.tileVisualPrefab, new Vector3(x, y, 0), Quaternion.identity).GetComponent<ClickableTile>();
-                go.tileX = x;
-                go.tileY = y;
-                go.map = this;
-                go.fieldType = tt.CheckIfWalkable();
-
-                clickableTiles[x, y] = go;
-            }
+            tile.tileX = Mathf.RoundToInt(child.transform.position.x);
+            tile.tileZ = Mathf.RoundToInt(child.transform.position.z);
+            clickableTiles[tile.tileX, tile.tileZ] = tile;
         }
     }
    
@@ -105,9 +61,9 @@ public class TileMap : MonoBehaviour
 
         for (int x = 0; x < mapSizeX; x++)
         {
-            for (int y = 0; y < mapSizeY; y++)
+            for (int z = 0; z < mapSizeZ; z++)
             {
-                all.Add(clickableTiles[x, y]);
+                all.Add(clickableTiles[x, z]);
             }
         }
 
@@ -118,49 +74,49 @@ public class TileMap : MonoBehaviour
     {
         List<ClickableTile> neighbouringTiles = new List<ClickableTile>();
         int xCheck;
-        int yCheck;
+        int zCheck;
 
         //right side
         xCheck = a_Tile.tileX + 1;
-        yCheck = a_Tile.tileY;
+        zCheck = a_Tile.tileZ;
         if (xCheck >= 0 && xCheck < mapSizeX)
         {
-            if (yCheck >= 0 && yCheck < mapSizeY)
+            if (zCheck >= 0 && zCheck < mapSizeZ)
             {
-                neighbouringTiles.Add(clickableTiles[xCheck, yCheck]);
+                neighbouringTiles.Add(clickableTiles[xCheck, zCheck]);
             }
         }
 
         //left side
         xCheck = a_Tile.tileX - 1;
-        yCheck = a_Tile.tileY;
+        zCheck = a_Tile.tileZ;
         if (xCheck >= 0 && xCheck < mapSizeX)
         {
-            if (yCheck >= 0 && yCheck < mapSizeY)
+            if (zCheck >= 0 && zCheck < mapSizeZ)
             {
-                neighbouringTiles.Add(clickableTiles[xCheck, yCheck]);
+                neighbouringTiles.Add(clickableTiles[xCheck, zCheck]);
             }
         }
 
         //Top side
         xCheck = a_Tile.tileX;
-        yCheck = a_Tile.tileY + 1;
+        zCheck = a_Tile.tileZ + 1;
         if (xCheck >= 0 && xCheck < mapSizeX)
         {
-            if (yCheck >= 0 && yCheck < mapSizeY)
+            if (zCheck >= 0 && zCheck < mapSizeZ)
             {
-                neighbouringTiles.Add(clickableTiles[xCheck, yCheck]);
+                neighbouringTiles.Add(clickableTiles[xCheck, zCheck]);
             }
         }
 
         //Bottom side
         xCheck = a_Tile.tileX;
-        yCheck = a_Tile.tileY - 1;
+        zCheck = a_Tile.tileZ - 1;
         if (xCheck >= 0 && xCheck < mapSizeX)
         {
-            if (yCheck >= 0 && yCheck < mapSizeY)
+            if (zCheck >= 0 && zCheck < mapSizeZ)
             {
-                neighbouringTiles.Add(clickableTiles[xCheck, yCheck]);
+                neighbouringTiles.Add(clickableTiles[xCheck, zCheck]);
             }
         }
 

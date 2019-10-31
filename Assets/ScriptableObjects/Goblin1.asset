@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb7a64277785d34a88610eae09f2a96, type: 3}
   m_Name: Goblin1
   m_EditorClassIdentifier: 
+  name: Goblin
   baseHealth: 4
   minDamage: 1
   maxDamage: 2
@@ -19,6 +20,7 @@ MonoBehaviour:
   initiative: 7
   attack: 4
   defence: 2
+  sprite: {fileID: 21300000, guid: 2bffe2fec65047d439676dc897a8fd9a, type: 3}
   abilities: []
   flyer: 0
   shooter: 0

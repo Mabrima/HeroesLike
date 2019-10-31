@@ -41,9 +41,9 @@ public class Pathfinding : MonoBehaviour
         int calculatedH = 0;
 
         int xDis = Mathf.Abs(goal.tileX - tile.tileX);
-        int yDis = Mathf.Abs(goal.tileY - tile.tileY);
+        int zDis = Mathf.Abs(goal.tileZ - tile.tileZ);
 
-        calculatedH = (xDis + yDis) * ONE_G_STEP;
+        calculatedH = (xDis + zDis) * ONE_G_STEP;
     }
 
     private int CalculateGCost(ClickableTile calculatedTile, ClickableTile parentTile)
