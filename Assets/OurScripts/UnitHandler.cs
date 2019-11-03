@@ -12,6 +12,7 @@ public class UnitHandler : MonoBehaviour
     public int currentUnitHealth;
     public CombatTile currentTile;
     public int team = 1;
+    public bool computerControlled = false;
     public bool canRetaliate = true;
 
     [SerializeField] Text amountText;
@@ -19,6 +20,7 @@ public class UnitHandler : MonoBehaviour
     Animator animator;
     float startTime;
     [SerializeField] float unitSpeed = 10;
+
 
     void Start()
     {
@@ -80,7 +82,6 @@ public class UnitHandler : MonoBehaviour
         currentTile = tile;
         FieldHandler.instance.PutUnitOnTile(currentTile, this);
 
-
         startTime = Time.time;
         StartCoroutine(MoveUnit());
         CombatManager.instance.SetCannotWait(true);
@@ -96,11 +97,84 @@ public class UnitHandler : MonoBehaviour
 
     public void GetAvailableMovementTiles()
     {
+        if (computerControlled)
+        {
+            ComputerMove();
+            return;
+        }
         FieldHandler.instance.ResetSelectableLocations();
         FieldHandler.instance.ClearParents();
 
         FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed);
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
+    }
+
+    private void ComputerMove()
+    {
+        FieldHandler.instance.ResetSelectableLocations();
+        FieldHandler.instance.ClearParents();
+        FieldHandler.instance.GetAvailableMovementTiles(currentTile, 22);
+
+        CombatTile closestUnitTile = null;
+        int distanceToClosestUnit = 999;
+
+        int distanceToThisUnit;
+        foreach (UnitHandler unit in CombatManager.instance.unitsInCombat)
+        {
+            if (unit.team != team)
+            {
+                distanceToThisUnit = GetDistanceToTile(unit.currentTile);
+                if (distanceToThisUnit < distanceToClosestUnit)
+                {
+                    closestUnitTile = unit.currentTile;
+                    distanceToClosestUnit = distanceToThisUnit;
+                }
+            }
+        }
+
+        if (closestUnitTile == null)
+        {
+            return;
+        }
+        Debug.Log(closestUnitTile.position);
+        CombatTile parent = closestUnitTile.pfParent;
+        Debug.Log(parent);
+        Stack<CombatTile> stack = new Stack<CombatTile>();
+
+        while (parent != null)
+        {
+            stack.Push(parent);
+            parent = parent.pfParent;
+        }
+
+        int i = unitBase.speed;
+        CombatTile tileToGoTo = null;
+        while (stack.Count > 0 && i > 0)
+        {
+            tileToGoTo = stack.Pop();
+            i--;
+        }
+
+
+        FieldHandler.instance.RemoveUnitFromTile(currentTile);
+        currentTile = tileToGoTo;
+        FieldHandler.instance.PutUnitOnTile(currentTile, this);
+
+        startTime = Time.time;
+        StartCoroutine(MoveUnit());
+        CombatManager.instance.endTurn = true;
+    }
+
+    private int GetDistanceToTile(CombatTile tile)
+    {
+        int i = 0;
+        CombatTile next = tile.pfParent;
+        while (next != null)
+        {
+            i++;
+            next = next.pfParent;
+        }
+        return i;
     }
 
     public void GetHit(int otherAttack, int otherMinDamage, int otherMaxDamage, int otherAmountOfUnits)
@@ -159,6 +233,8 @@ public class UnitHandler : MonoBehaviour
 
         Stack<CombatTile> stack = new Stack<CombatTile>();
         CombatTile parent = currentTile;
+
+
         while (parent != null)
         {
             stack.Push(parent);
@@ -166,6 +242,7 @@ public class UnitHandler : MonoBehaviour
         }
 
         CombatTile nextMove = stack.Pop();
+
 
         while (stack.Count > 0) //Go through stack of the path until its empty.
         {

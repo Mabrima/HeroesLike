@@ -35,17 +35,21 @@ public class CombatManager : MonoBehaviour
             Destroy(this);
         }
     }
-    
-    private void Start()
+
+    //Testing of without overworld
+    void Start()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        StartCombat(players[0].GetComponent<Player>(), players[1].GetComponent<Player>());
+    }
+
+    public void StartCombat(Player player1, Player player2)
     {
         statViewer.StopShow();
         combatCounter = -1;
         battleText.text = "Combat initiated, press 'D' to begin";
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-
-        InitiateUnits(players[0].GetComponent<Player>().units, players[1].GetComponent<Player>().units, players[0].GetComponent<Player>().unitAmounts, players[1].GetComponent<Player>().unitAmounts);
-
+        InitiateUnits(player1.GetComponent<Player>(), player2.GetComponent<Player>());
     }
 
     private void Update()
@@ -53,39 +57,59 @@ public class CombatManager : MonoBehaviour
         //really doesn't need an update could be made to be called whenever it's actually relevant
         if (endTurn)
         {
-            NextUnitTurn();
+            if (!CheckCombatEnd())
+                NextUnitTurn();
         }
         
         HandleInputs();
     }
 
-    private void InitiateUnits(List<UnitHandler> units1, List<UnitHandler> units2, List<int> unitsAmount1, List<int> unitsAmount2)
+    private bool CheckCombatEnd()
+    {
+        int winTeam = unitsInCombat[0].team;
+
+        foreach (UnitHandler unit in unitsInCombat)
+        {
+            if (unit.team != winTeam)
+            {
+                //no winner yet
+                return false;
+            }
+        }
+
+        battleText.text += '\n' + "Battle has ended. \nWinningTeam is " + winTeam;
+        endTurn = false;
+        return true;
+    }
+
+    private void InitiateUnits(Player player1, Player player2)
     {
         int maxX = FieldHandler.X_SIZE-1;
         int maxY = FieldHandler.Y_SIZE-1;
         int i = 0;
-        foreach (UnitHandler unit in units1)
+        foreach (UnitHandler unit in player1.units)
         {
             int posX = 0;
-            int posY = (maxY / (units1.Count-1)) * i;
-            InitiateNewUnit(posX, posY, unit, 1, unitsAmount1[i]);
+            int posY = (maxY / (player1.units.Count-1)) * i;
+            InitiateNewUnit(posX, posY, unit, player1, i);
             i++;
         }
         i = 0;
-        foreach (UnitHandler unit in units2)
+        foreach (UnitHandler unit in player2.units)
         {
             int posX = maxX;
-            int posY = (maxY / (units2.Count-1)) * i;
-            InitiateNewUnit(posX, posY, unit, 2, unitsAmount2[i]);
+            int posY = (maxY / (player2.units.Count-1)) * i;
+            InitiateNewUnit(posX, posY, unit, player2, i);
             i++;
         }
     }
 
-    void InitiateNewUnit(int posX, int posY, UnitHandler unit, int team, int amount)
+    void InitiateNewUnit(int posX, int posY, UnitHandler unit, Player player, int i)
     {
         UnitHandler temp = UnitDispenser.instance.SpawnUnit(unit);
-        temp.team = team;
-        temp.amountOfUnits = amount;
+        temp.team = player.team;
+        temp.amountOfUnits = player.unitAmounts[i];
+        temp.computerControlled = player.computerControlled;
         temp.transform.position = new Vector3(posX, 1, posY);
         temp.currentTile = FieldHandler.instance.GetTile(posX, posY);
         temp.currentTile.PutUnitOnTile(temp);

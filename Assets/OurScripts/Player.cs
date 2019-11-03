@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
 
     public bool isMoving;
     public int team;
+    public bool computerControlled;
 
     public bool lerping;
 

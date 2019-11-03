@@ -223,7 +223,7 @@ PrefabInstance:
         type: 3}
       propertyPath: units.Array.data[2]
       value: 
-      objectReference: {fileID: 4650132934722954691, guid: 62eed3ae0f38c534285bbb6c8909ea8b,
+      objectReference: {fileID: 3098413859871490228, guid: 2e63601d77444f84db2b0edd05145e79,
         type: 3}
     - target: {fileID: 2951717332565223900, guid: 38209f6ee162e4e45942e2baeef2bc0d,
         type: 3}
@@ -827,7 +827,7 @@ RectTransform:
   - {fileID: 694814842}
   - {fileID: 351478671}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1585,7 +1585,7 @@ PrefabInstance:
     - target: {fileID: 2951717332565223903, guid: 38209f6ee162e4e45942e2baeef2bc0d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2951717332565223903, guid: 38209f6ee162e4e45942e2baeef2bc0d,
         type: 3}
@@ -1638,6 +1638,11 @@ PrefabInstance:
         type: 3}
       propertyPath: unitAmounts.Array.data[1]
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951717332565223900, guid: 38209f6ee162e4e45942e2baeef2bc0d,
+        type: 3}
+      propertyPath: computerControlled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38209f6ee162e4e45942e2baeef2bc0d, type: 3}
@@ -1788,8 +1793,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1869508337}
   m_HandleRect: {fileID: 1869508336}
   m_Direction: 2
-  m_Value: -0.000000050862624
-  m_Size: 0.1044776
+  m_Value: 0
+  m_Size: 0.104477614
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
