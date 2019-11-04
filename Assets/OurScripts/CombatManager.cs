@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CombatManager : MonoBehaviour
 {
     public Button waitButton;
+    public Button defendButton;
     public Text battleText;
     public static CombatManager instance;
     public GameObject[] spawnGroups;
@@ -15,6 +16,7 @@ public class CombatManager : MonoBehaviour
     public UnitHandler currentUnit;
     public bool endTurn = false;
     public bool canWait = false;
+    public bool canDefend = true;
     int combatCounter = 0;
 
     public StatViewer statViewer;
@@ -77,7 +79,7 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        battleText.text += '\n' + "Battle has ended. \nWinningTeam is " + winTeam;
+        battleText.text += '\n' + "<b><color=red>Battle has ended!</color></b> \nWinningTeam is " + winTeam;
         endTurn = false;
         return true;
     }
@@ -138,14 +140,12 @@ public class CombatManager : MonoBehaviour
 
     private void HandleInputs()
     {
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) && canDefend)
         {
             Defend();
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W) && canWait)
         {
-            if (!canWait)
-                return;
             Wait();
         }
 
@@ -180,8 +180,10 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(CombatAttack(unit));
     }
 
-    public IEnumerator CombatAttack(UnitHandler unit)
+    private IEnumerator CombatAttack(UnitHandler unit)
     {
+        SetCannotDefend(true);
+        SetCannotWait(true);
         currentUnit.TriggerAnimatorAttacking();
         currentUnit.RotateUnitToTile(unit.currentTile);
         unit.RotateUnitToTile(currentUnit.currentTile);
@@ -203,6 +205,8 @@ public class CombatManager : MonoBehaviour
         currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.AfterAttack, unit);
         currentUnit.RotateTeamDirection(currentUnit.team);
         unit.RotateTeamDirection(unit.team);
+        SetCannotDefend(false);
+        SetCannotWait(false);
         endTurn = true;
     }
 
@@ -210,6 +214,12 @@ public class CombatManager : MonoBehaviour
     {
         waitButton.interactable = !set;
         canWait = !set;
+    }
+    
+    public void SetCannotDefend(bool set)
+    {
+        defendButton.interactable = !set;
+        canDefend = !set;
     }
 
     private void ForwardInitiatives()

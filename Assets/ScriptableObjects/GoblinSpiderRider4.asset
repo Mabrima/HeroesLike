@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb7a64277785d34a88610eae09f2a96, type: 3}
   m_Name: GoblinSpiderRider4
   m_EditorClassIdentifier: 
+  name: Goblin Spider Rider
   baseHealth: 50
   minDamage: 12
   maxDamage: 15
@@ -19,6 +20,7 @@ MonoBehaviour:
   initiative: 13
   attack: 14
   defence: 6
+  sprite: {fileID: 0}
   abilities:
   - {fileID: 7078648344413427198, guid: a51b921c69a664b4897444b8f807f531, type: 3}
   flyer: 0

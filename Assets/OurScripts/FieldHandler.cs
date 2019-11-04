@@ -11,8 +11,8 @@ public class FieldHandler : MonoBehaviour
 {
     public static int X_SIZE = 12;
     public static int Y_SIZE = 10;
-    public static Quaternion ROTATION_TEAM_1 = Quaternion.Euler(0, 90, 0);
-    public static Quaternion ROTATION_TEAM_2 = Quaternion.Euler(0, -90, 0);
+    public static Quaternion ROTATION_TEAM_1 = Quaternion.Euler(0, -90, 0);
+    public static Quaternion ROTATION_TEAM_2 = Quaternion.Euler(0, 90, 0);
     public static FieldHandler instance;
     public CombatTile[,] fieldObjects = new CombatTile[X_SIZE, Y_SIZE];
     [SerializeField] GameObject battleTilePrefab;
@@ -61,16 +61,16 @@ public class FieldHandler : MonoBehaviour
         {
             if (i % 2 == 0) 
             {
-                GetNeighbours(neighbourList1, neighbourList2, asFake);
+                GetNeighbours(neighbourList1, neighbourList2, asFake, tile);
             }
             else
             {
-                GetNeighbours(neighbourList2, neighbourList1, asFake);
+                GetNeighbours(neighbourList2, neighbourList1, asFake, tile);
             }
         }
     }
 
-    private void GetNeighbours(List<CombatTile> useList, List<CombatTile> addList, bool asFake)
+    private void GetNeighbours(List<CombatTile> useList, List<CombatTile> addList, bool asFake, CombatTile originalTile)
     {
         foreach (CombatTile tile in useList)
         {
@@ -93,6 +93,10 @@ public class FieldHandler : MonoBehaviour
                                 neighbourTile.SetAsSelectable(asFake);
                                 neighbourTile.pfParent = tile;
                                 addList.Add(neighbourTile);
+                            }
+                            if (neighbourTile.fieldType == FieldType.Occupied && neighbourTile.pfParent == null && neighbourTile != originalTile)
+                            {
+                                neighbourTile.pfParent = tile;
                             }
                         }
                         else
@@ -218,6 +222,35 @@ public class FieldHandler : MonoBehaviour
         }
     }
 
+
+    //TODO add "find all" when ranged
+    public List<UnitHandler> GetEnemyUnitsInRange(CombatTile tile, bool ranged, int team)
+    {
+        List<UnitHandler> units = new List<UnitHandler>();
+        CombatTile tempTile;
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+                tempTile = fieldObjects[tile.position.x + x, tile.position.y + y];
+                try
+                {
+                    if (tempTile.fieldType == FieldType.Occupied && tempTile.unitOnTile.team != team)
+                    {
+                        units.Add(tempTile.unitOnTile);
+                    }
+                }
+                catch
+                {
+                    //Do nothing, just out of bounds
+                }
+            }
+        }
+
+        return units;
+    }
 
     public void FlyGetAvailableMovementTiles(CombatTile tile, int range, bool asFake = false)
     {

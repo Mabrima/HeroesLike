@@ -111,13 +111,13 @@ public class UnitHandler : MonoBehaviour
 
     private void ComputerMove()
     {
-        FieldHandler.instance.ResetSelectableLocations();
         FieldHandler.instance.ClearParents();
+
         FieldHandler.instance.GetAvailableMovementTiles(currentTile, 22);
+        FieldHandler.instance.ResetSelectableLocations();
 
         CombatTile closestUnitTile = null;
         int distanceToClosestUnit = 999;
-
         int distanceToThisUnit;
         foreach (UnitHandler unit in CombatManager.instance.unitsInCombat)
         {
@@ -132,13 +132,11 @@ public class UnitHandler : MonoBehaviour
             }
         }
 
-        if (closestUnitTile == null)
+        if (closestUnitTile == null || closestUnitTile.pfParent == null)
         {
             return;
         }
-        Debug.Log(closestUnitTile.position);
         CombatTile parent = closestUnitTile.pfParent;
-        Debug.Log(parent);
         Stack<CombatTile> stack = new Stack<CombatTile>();
 
         while (parent != null)
@@ -162,7 +160,6 @@ public class UnitHandler : MonoBehaviour
 
         startTime = Time.time;
         StartCoroutine(MoveUnit());
-        CombatManager.instance.endTurn = true;
     }
 
     private int GetDistanceToTile(CombatTile tile)
@@ -273,6 +270,27 @@ public class UnitHandler : MonoBehaviour
         RotateTeamDirection(team);
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
         Debug.Log("moving ended");
+        if (computerControlled)
+        {
+            ComputerChooseAttack();
+        }
+    }
+
+    private void ComputerChooseAttack()
+    {
+        List<UnitHandler> units = FieldHandler.instance.GetEnemyUnitsInRange(currentTile, false, team);
+
+
+        if (units.Count > 0)
+        {
+            Debug.Log(units[0]);
+            CombatManager.instance.StartCombatAttack(units[Random.Range(0, units.Count)]);
+        }
+        else
+        {
+            CombatManager.instance.endTurn = true;
+        }
+
     }
 
     public void RotateUnitToTile(CombatTile nextMove)
