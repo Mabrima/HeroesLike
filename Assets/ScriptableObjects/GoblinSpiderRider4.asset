@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: GoblinSpiderRider4
   m_EditorClassIdentifier: 
   name: Goblin Spider Rider
-  baseHealth: 50
-  minDamage: 12
-  maxDamage: 15
+  baseHealth: 30
+  minDamage: 8
+  maxDamage: 10
   speed: 8
   initiative: 13
   attack: 14

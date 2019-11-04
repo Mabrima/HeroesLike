@@ -18,8 +18,8 @@ MonoBehaviour:
   maxDamage: 20
   speed: 6
   initiative: 9
-  attack: 12
-  defence: 10
+  attack: 16
+  defence: 12
   sprite: {fileID: 21300000, guid: 72dae9df14fced6438b607781cb34c84, type: 3}
   abilities: []
   flyer: 0

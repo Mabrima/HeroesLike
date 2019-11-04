@@ -199,12 +199,16 @@ public class CombatManager : MonoBehaviour
             currentUnit.GetHit(unit.unitBase.attack, unit.unitBase.minDamage, unit.unitBase.maxDamage, unit.amountOfUnits);
             unit.canRetaliate = false;
         }
-
-        unit.TriggerAbilitiesAtTiming(AbilityTiming.AfterDefence, currentUnit);
+        if(unit != null)
+            unit.TriggerAbilitiesAtTiming(AbilityTiming.AfterDefence, currentUnit);
         yield return new WaitForSeconds(1f);
-        currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.AfterAttack, unit);
-        currentUnit.RotateTeamDirection(currentUnit.team);
-        unit.RotateTeamDirection(unit.team);
+        if (currentUnit != null)
+        {
+            currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.AfterAttack, unit);
+            currentUnit.RotateTeamDirection(currentUnit.team);
+        }
+        if (unit != null)
+            unit.RotateTeamDirection(unit.team);
         SetCannotDefend(false);
         SetCannotWait(false);
         endTurn = true;

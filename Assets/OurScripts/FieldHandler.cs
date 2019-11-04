@@ -234,9 +234,9 @@ public class FieldHandler : MonoBehaviour
             {
                 if (x == 0 && y == 0)
                     continue;
-                tempTile = fieldObjects[tile.position.x + x, tile.position.y + y];
                 try
                 {
+                    tempTile = fieldObjects[tile.position.x + x, tile.position.y + y];
                     if (tempTile.fieldType == FieldType.Occupied && tempTile.unitOnTile.team != team)
                     {
                         units.Add(tempTile.unitOnTile);

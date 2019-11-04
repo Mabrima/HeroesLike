@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Orc
   baseHealth: 30
-  minDamage: 8
-  maxDamage: 10
+  minDamage: 5
+  maxDamage: 8
   speed: 6
   initiative: 10
-  attack: 0
-  defence: 0
+  attack: 8
+  defence: 6
   sprite: {fileID: 21300000, guid: 5d085852b5dde6b4986787957d6b8d86, type: 3}
   abilities: []
   flyer: 0
