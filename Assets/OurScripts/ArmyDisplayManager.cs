@@ -21,11 +21,6 @@ public class ArmyDisplayManager : MonoBehaviour
 
     public List<GameObject> unitHolders = new List<GameObject>(); 
 
-    private void Start()
-    {
-        ShowUnits();
-
-    }
 
 
     public void ShowUnits()
@@ -34,8 +29,9 @@ public class ArmyDisplayManager : MonoBehaviour
         {
             foreach (GameObject unitHolder in unitHolders)
             {
-                if (unitHolder.transform.Find("Image").GetComponent<Image>().sprite == null)
+                if (unitHolder.GetComponent<EmptyOrFull>().empty == true)
                 {
+                    unitHolder.GetComponent<EmptyOrFull>().empty = false;
                     unitHolder.transform.Find("Image").GetComponent<Image>().sprite = player.units[i].unitBase.sprite;
                     unitHolder.transform.Find("Amount").GetComponent<Text>().text = player.unitAmounts[i].ToString();
                     Transform unitChild = unitHolder.transform.Find("Stats").GetComponent<Transform>();
@@ -46,6 +42,14 @@ public class ArmyDisplayManager : MonoBehaviour
             }
         }
         
+    }
+
+    public void UpdateArmy() //Set all holders bool to true so we update them next time we open window.
+    {
+        foreach (GameObject unitHolder in unitHolders)
+        {
+            unitHolder.GetComponent<EmptyOrFull>().empty = true;
+        }
     }
 
 

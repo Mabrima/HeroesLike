@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private Vector3 tileOffset = new Vector3(0, 0.5f, 0);
 
     public RectTransform armyWindow;
+    public ArmyDisplayManager aw;
     public Texture2D armyIcon;
 
     public bool isMoving;
@@ -26,6 +27,11 @@ public class Player : MonoBehaviour
     public List<UnitHandler> units = new List<UnitHandler>();
 
     bool showArmy = false;
+
+    private void Start()
+    {
+        aw = armyWindow.GetComponent<ArmyDisplayManager>();
+    }
 
     private void Update()
     {
@@ -106,10 +112,12 @@ public class Player : MonoBehaviour
         if (showArmy == true)
         {
             armyWindow.gameObject.SetActive(true);
+            aw.ShowUnits();
         }
         else if (showArmy == false)
         {
             armyWindow.gameObject.SetActive(false);
+            aw.UpdateArmy();
         }
         
     }
