@@ -260,7 +260,7 @@ public class UnitHandler : MonoBehaviour
                     lerping = false;
                 }
 
-                transform.position = Vector3.Lerp(startPos, new Vector3(nextMove.transform.position.x, 1, nextMove.transform.position.z), fractionOfJourney);
+                transform.position = Vector3.Lerp(startPos, new Vector3(nextMove.transform.position.x, .5f, nextMove.transform.position.z), fractionOfJourney);
 
                 yield return new WaitForFixedUpdate();
             }
