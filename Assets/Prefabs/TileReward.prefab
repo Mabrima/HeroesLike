@@ -91,8 +91,9 @@ GameObject:
   - component: {fileID: 5427313241313294857}
   - component: {fileID: 5427313241313294862}
   - component: {fileID: 267387878508959144}
+  - component: {fileID: 1704528974}
   m_Layer: 0
-  m_Name: TileGrassland
+  m_Name: TileReward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,7 +139,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6e0bb0be2b40def41932c36308742ddf, type: 2}
+  - {fileID: 2100000, guid: 5e39438787e410a46927584eb866e187, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -199,7 +200,15 @@ MonoBehaviour:
   fieldType: 0
   blockedPathIcon: {fileID: 2800000, guid: 00046408e0bd9d74aa6cbd895fea1ab7, type: 3}
   walkHereIcon: {fileID: 2800000, guid: d71254939d0b53a4fa83ba4f65b63251, type: 3}
-  isCombatTile: 0
-  isRewardTile: 0
-  addUnitWindow: {fileID: 551890998420526770, guid: 7980baa551141db44be9a67f9e07fd40,
-    type: 3}
+--- !u!114 &1704528974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5427313241313294863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5796efef5986b94590300484daf52cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

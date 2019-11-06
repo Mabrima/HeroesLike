@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     private Vector3 tileOffset = new Vector3(0, 0.5f, 0);
 
     public RectTransform armyWindow;
-    public ArmyDisplayManager aw;
+    private ArmyDisplayManager aw;
     public Texture2D armyIcon;
 
     public bool isMoving;
