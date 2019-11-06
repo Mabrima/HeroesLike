@@ -41,6 +41,11 @@ public class CombatManager : MonoBehaviour
     //Testing of without overworld
     void Start()
     {
+        Invoke("InvokeStartCombat", .4f);
+    }
+
+    void InvokeStartCombat()
+    {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         StartCombat(players[0].GetComponent<Player>(), players[1].GetComponent<Player>());
     }
