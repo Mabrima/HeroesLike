@@ -112,7 +112,7 @@ public class CombatManager : MonoBehaviour
         temp.team = player.team;
         temp.amountOfUnits = player.unitAmounts[i];
         temp.computerControlled = player.computerControlled;
-        temp.transform.position = new Vector3(posX, 1, posY);
+        temp.transform.position = new Vector3(posX, 0.5f, posY);
         temp.currentTile = FieldHandler.instance.GetTile(posX, posY);
         temp.currentTile.PutUnitOnTile(temp);
         temp.RotateTeamDirection(temp.team);

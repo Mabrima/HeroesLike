@@ -30,7 +30,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        aw = armyWindow.GetComponent<ArmyDisplayManager>();
+        if (armyWindow)
+            aw = armyWindow.GetComponent<ArmyDisplayManager>();
     }
 
     private void Update()
