@@ -17,6 +17,6 @@ public class CombatStarter : MonoBehaviour
 
     public void StartCombat(Player player1, Player player2)
     {
-        GameManager.instance.SceneSwitch(player1, player2)
+        GameManager.instance.SceneSwitch(player1, player2);
     }
 }
