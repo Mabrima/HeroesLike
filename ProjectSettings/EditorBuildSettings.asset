@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/KianWorldMovement.unity
+    guid: f966d7d4533c1804b9a804d035bfdb10
   m_configObjects: {}
