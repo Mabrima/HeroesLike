@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 5427313241313294857}
   - component: {fileID: 5427313241313294862}
   - component: {fileID: 267387878508959144}
+  - component: {fileID: 1858697618241492026}
   m_Layer: 0
   m_Name: TileCombat
   m_TagString: Untagged
@@ -199,7 +200,15 @@ MonoBehaviour:
   fieldType: 0
   blockedPathIcon: {fileID: 2800000, guid: 00046408e0bd9d74aa6cbd895fea1ab7, type: 3}
   walkHereIcon: {fileID: 2800000, guid: d71254939d0b53a4fa83ba4f65b63251, type: 3}
-  isCombatTile: 0
-  isRewardTile: 0
-  addUnitWindow: {fileID: 551890998420526770, guid: 7980baa551141db44be9a67f9e07fd40,
-    type: 3}
+--- !u!114 &1858697618241492026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5427313241313294863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e242e81b4619a044898b553df75df74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

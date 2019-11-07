@@ -34,6 +34,5 @@ public class RewardTile : MonoBehaviour
     {
 
         //Called through YES-Button
-        Debug.Log("hej");
     }
 }
