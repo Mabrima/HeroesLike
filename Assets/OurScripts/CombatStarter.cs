@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class CombatStarter : MonoBehaviour
 {
+    public Player ArmyOnTile;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            StartCombat();
+            StartCombat(other.GetComponent<Player>(), ArmyOnTile);
         }
     }
 
 
-    public void StartCombat()
+    public void StartCombat(Player player1, Player player2)
     {
-        //go to combat.
+        GameManager.instance.SceneSwitch(player1, player2)
     }
 }
