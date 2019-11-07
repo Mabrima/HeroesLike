@@ -46,8 +46,7 @@ public class CombatManager : MonoBehaviour
 
     void InvokeStartCombat()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        StartCombat(players[0].GetComponent<Player>(), players[1].GetComponent<Player>());
+        StartCombat(GameManager.instance.player, GameManager.instance.opponent);
     }
 
     public void StartCombat(Player player1, Player player2)
@@ -56,7 +55,7 @@ public class CombatManager : MonoBehaviour
         combatCounter = -1;
         battleText.text = "Combat initiated, press 'D' to begin";
 
-        InitiateUnits(player1.GetComponent<Player>(), player2.GetComponent<Player>());
+        InitiateUnits(player1, player2);
     }
 
     private void Update()
@@ -94,19 +93,19 @@ public class CombatManager : MonoBehaviour
         int maxX = FieldHandler.X_SIZE-1;
         int maxY = FieldHandler.Y_SIZE-1;
         int i = 0;
-        foreach (UnitHandler unit in player1.units)
+        foreach (UnitHandler unit in player2.units)
         {
             int posX = 0;
-            int posY = (maxY / (player1.units.Count-1)) * i;
-            InitiateNewUnit(posX, posY, unit, player1, i);
+            int posY = (maxY / (player2.units.Count-1)) * i;
+            InitiateNewUnit(posX, posY, unit, player2, i);
             i++;
         }
         i = 0;
-        foreach (UnitHandler unit in player2.units)
+        foreach (UnitHandler unit in player1.units)
         {
             int posX = maxX;
-            int posY = (maxY / (player2.units.Count-1)) * i;
-            InitiateNewUnit(posX, posY, unit, player2, i);
+            int posY = (maxY / (player1.units.Count-1)) * i;
+            InitiateNewUnit(posX, posY, unit, player1, i);
             i++;
         }
     }

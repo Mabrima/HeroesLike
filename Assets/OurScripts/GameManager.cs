@@ -7,18 +7,19 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    Player player;
-    Player opponent;
+    public Player player;
+    public Player opponent;
     
     void Awake() 
     { 
         if (instance)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
             instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
     }
 
@@ -27,12 +28,6 @@ public class GameManager : MonoBehaviour
         this.player = player1;
         this.opponent = player2;
         SceneManager.LoadScene("BaseScene");
-        Invoke("StartCombat", .5f);
-    }
-
-    private void StartCombat()
-    {
-        CombatManager.instance.StartCombat(player, opponent);
     }
 
 }

@@ -13726,7 +13726,7 @@ MonoBehaviour:
   armyWindow: {fileID: 1998891840}
   armyIcon: {fileID: 2800000, guid: 273d2b66e398c8644b038d034802113e, type: 3}
   isMoving: 0
-  team: 0
+  team: 1
   computerControlled: 0
   lerping: 0
   unitAmounts: 03000000020000000100000005000000010000000a000000
@@ -33420,6 +33420,11 @@ PrefabInstance:
       propertyPath: armyWindow
       value: 
       objectReference: {fileID: 1998891840}
+    - target: {fileID: 6011434953619391725, guid: e23e9464b0a9e67419525ab8ff7ea5bb,
+        type: 3}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e23e9464b0a9e67419525ab8ff7ea5bb, type: 3}
 --- !u!54 &6541513088900827157
@@ -33488,10 +33493,10 @@ MonoBehaviour:
   armyWindow: {fileID: 0}
   armyIcon: {fileID: 0}
   isMoving: 0
-  team: 0
-  computerControlled: 0
+  team: 2
+  computerControlled: 1
   lerping: 0
-  unitAmounts: 010000000100000001000000
+  unitAmounts: 030000000200000001000000
   units:
   - {fileID: 3098413859871490228, guid: b16840ffb4e7e2443a45b50ab0e66aee, type: 3}
   - {fileID: 3098413859871490228, guid: cdd5cbf1799e65849a9bce6ed64140c4, type: 3}
