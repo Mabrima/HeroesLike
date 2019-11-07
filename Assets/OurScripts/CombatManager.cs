@@ -83,7 +83,7 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        battleText.text += '\n' + "<b><color=red>Battle has ended!</color></b> \nWinningTeam is " + winTeam;
+        battleText.text += '\n' + "<b><color=red>Battle has ended!</color></b> \nWinningTeam is " + winTeam + "\nPress 'D' to continue";
         endTurn = false;
         return true;
     }
@@ -146,6 +146,16 @@ public class CombatManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D) && canDefend)
         {
+            if (CheckCombatEnd())
+            {
+                Player player = GameManager.instance.player;
+                player.units.Clear();
+                foreach(UnitHandler unit in unitsInCombat)
+                {
+                    player.units.Add(unit);
+                }
+                GameManager.instance.SceneSwitchToOverWorld();
+            }
             Defend();
         }
         else if (Input.GetKeyDown(KeyCode.W) && canWait)
@@ -170,6 +180,7 @@ public class CombatManager : MonoBehaviour
 
     public void Defend()
     {
+        currentUnit.Defend();
         endTurn = true;
     }
 

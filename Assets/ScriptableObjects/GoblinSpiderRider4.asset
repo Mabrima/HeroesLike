@@ -21,7 +21,6 @@ MonoBehaviour:
   attack: 14
   defence: 6
   sprite: {fileID: 0}
-  abilities:
-  - {fileID: 7078648344413427198, guid: a51b921c69a664b4897444b8f807f531, type: 3}
+  abilities: []
   flyer: 0
   shooter: 0

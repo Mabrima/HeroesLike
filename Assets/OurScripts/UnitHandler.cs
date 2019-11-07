@@ -14,6 +14,7 @@ public class UnitHandler : MonoBehaviour
     public int team = 1;
     public bool computerControlled = false;
     public bool canRetaliate = true;
+    public bool defended = false;
 
     [SerializeField] Text amountText;
 
@@ -40,6 +41,11 @@ public class UnitHandler : MonoBehaviour
                 ability.TriggerAbility(unitToTriggerOn);
             }
         }
+    }
+
+    public void Defend()
+    {
+        defended = true;
     }
 
     void FindFirstTile()
@@ -97,6 +103,7 @@ public class UnitHandler : MonoBehaviour
 
     public void GetAvailableMovementTiles()
     {
+        StartOfTurn();
         if (computerControlled)
         {
             ComputerMove();
@@ -107,6 +114,12 @@ public class UnitHandler : MonoBehaviour
 
         FieldHandler.instance.GetAvailableMovementTiles(currentTile, unitBase.speed);
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
+    }
+
+    private void StartOfTurn()
+    {
+        TriggerAbilitiesAtTiming(AbilityTiming.StartOfTurn, this);
+        defended = false;
     }
 
     private void ComputerMove()
@@ -177,7 +190,15 @@ public class UnitHandler : MonoBehaviour
     public void GetHit(int otherAttack, int otherMinDamage, int otherMaxDamage, int otherAmountOfUnits)
     {
         TriggerAbilitiesAtTiming(AbilityTiming.DuringDefence, this);
+        if (defended)
+        {
+            unitBase.defence =(int) (unitBase.defence * 1.3f);
+        }
         int damageRolled = Random.Range(otherMinDamage * otherAmountOfUnits, (otherMaxDamage * otherAmountOfUnits) + 1);
+        if (defended)
+        {
+            unitBase.defence = (int)(unitBase.defence / 1.3f);
+        }
         int damageSustained = unitBase.CalculateDamage(otherAttack,  damageRolled);
         int amountKilled = 0;
         totalHealth -= damageSustained;

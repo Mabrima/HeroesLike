@@ -23,11 +23,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SceneSwitch(Player player1, Player player2)
+    public void SceneSwitchToCombat(Player player1, Player player2)
     {
         this.player = player1;
         this.opponent = player2;
         SceneManager.LoadScene("BaseScene");
     }
 
+    public void SceneSwitchToOverWorld()
+    {
+        SceneManager.LoadScene("KianWorldMovement");
+    }
 }
