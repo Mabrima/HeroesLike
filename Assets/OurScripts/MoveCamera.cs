@@ -40,19 +40,19 @@ public class MoveCamera : MonoBehaviour
         
         if (screenArea.Contains(Input.mousePosition)) //If our mouse is in our "Screen Area".
         {
-            if (Input.mousePosition.x > screenWidth - boundary && transform.position.x < TileMap.INSTANCE.mapSizeX - 1)
+            if (Input.mousePosition.x > screenWidth - boundary && transform.position.x < TileMap.INSTANCE.mapSizeX - 5)
             {
                 //RIGHT
                 transform.position += new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
             }
 
-            if (Input.mousePosition.x < 0 + boundary && transform.position.x > TileMap.INSTANCE.clickableTiles[0, 0].tileX)
+            if (Input.mousePosition.x < 0 + boundary && transform.position.x > TileMap.INSTANCE.clickableTiles[0, 0].tileX + 5)
             {
                 //LEFT
                 transform.position -= new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
             }
 
-            if (Input.mousePosition.y > screenHeight - boundary && transform.position.z < TileMap.INSTANCE.mapSizeZ / 2)
+            if (Input.mousePosition.y > screenHeight - boundary && transform.position.z < TileMap.INSTANCE.mapSizeZ / 4)
             {
                 //UP
                 transform.position += new Vector3(0, 0, cameraMoveSpeed) * Time.deltaTime;
@@ -75,7 +75,7 @@ public class MoveCamera : MonoBehaviour
             transform.position = player.transform.position + cameraOffset;
         }
 
-        if (Input.GetMouseButtonDown(2))
+        /*if (Input.GetMouseButtonDown(2))
         {
             dragOrigin = Input.mousePosition;
             return;
@@ -86,7 +86,7 @@ public class MoveCamera : MonoBehaviour
         Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
         Vector3 move = new Vector3(-pos.x * dragSpeed, 0, -pos.y * dragSpeed);
 
-        transform.Translate(move, Space.World);
+        transform.Translate(move, Space.World);*/
     
     }
 }

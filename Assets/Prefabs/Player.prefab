@@ -52,7 +52,9 @@ MonoBehaviour:
   armyIcon: {fileID: 0}
   isMoving: 0
   team: 0
+  computerControlled: 0
   lerping: 0
+  unitAmounts: 
   units: []
 --- !u!54 &2951717332565223906
 Rigidbody:

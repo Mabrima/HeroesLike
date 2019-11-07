@@ -8,6 +8,8 @@ public class RewardTile : MonoBehaviour
     public List<int> unitAmounts;
     public List<UnitHandler> rewardUnits = new List<UnitHandler>();
 
+    public Player player;
+
     public RectTransform addUnitWindow;
     private Text text;
 
@@ -32,7 +34,12 @@ public class RewardTile : MonoBehaviour
 
     public void AddUnitsToPlayer()
     {
-
         //Called through YES-Button
+
+        for (int i = 0; i < rewardUnits.Count; i++)
+        {
+                player.units.Add(rewardUnits[i]);
+                player.unitAmounts.Add(unitAmounts[i]);
+        }
     }
 }

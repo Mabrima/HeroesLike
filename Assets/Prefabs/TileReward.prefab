@@ -212,3 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5796efef5986b94590300484daf52cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitAmounts: 
+  rewardUnits: []
+  player: {fileID: 2951717332565223900, guid: 38209f6ee162e4e45942e2baeef2bc0d, type: 3}
+  addUnitWindow: {fileID: 0}
