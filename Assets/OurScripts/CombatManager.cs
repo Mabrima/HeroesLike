@@ -180,7 +180,8 @@ public class CombatManager : MonoBehaviour
 
     public void Defend()
     {
-        currentUnit.Defend();
+        if (currentUnit)
+            currentUnit.Defend();
         endTurn = true;
     }
 

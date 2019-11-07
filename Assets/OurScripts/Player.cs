@@ -43,12 +43,12 @@ public class Player : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.CompareTag("Player") && showArmy == false)
+                if (hit.transform.gameObject == gameObject && showArmy == false)
                 {
                     showArmy = true;
                     ShowArmy();
                 }
-                else if (hit.transform.CompareTag("Player") && showArmy == true)
+                else if (hit.transform.gameObject == gameObject && showArmy == true)
                 {
                     showArmy = false;
                     ShowArmy();
