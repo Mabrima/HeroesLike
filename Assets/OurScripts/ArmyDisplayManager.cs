@@ -33,7 +33,7 @@ public class ArmyDisplayManager : MonoBehaviour
                 {
                     unitHolder.GetComponent<EmptyOrFull>().empty = false;
                     unitHolder.transform.Find("Image").GetComponent<Image>().sprite = player.units[i].unitBase.sprite;
-                    unitHolder.transform.Find("Amount").GetComponent<Text>().text = player.unitAmounts[i].ToString();
+                    unitHolder.transform.Find("Amount").GetComponent<Text>().text = player.initialUnitsAmount[i].ToString();
                     Transform unitChild = unitHolder.transform.Find("Stats").GetComponent<Transform>();
                     SetStats(unitChild, i);
                     break;

@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public Player player;
     public Player opponent;
-    
+    List<ClickableTile> specialTiles = new List<ClickableTile>();
+
     void Awake() 
     { 
         if (instance)
@@ -34,4 +35,19 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("KianWorldMovement");
     }
+
+
+    //TODO: Keep for now, might be a dud and useless
+    public ClickableTile GetClickableTileAtPosition(int x, int z)
+    {
+        foreach(ClickableTile tile in specialTiles)
+        {
+            if (tile.tileX == x && tile.tileZ == z)
+            {
+                return tile;
+            }
+        }
+        return null;
+    }
+
 }

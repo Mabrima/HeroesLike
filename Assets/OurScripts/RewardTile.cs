@@ -11,6 +11,7 @@ public class RewardTile : MonoBehaviour
     public Player player;
 
     public RectTransform addUnitWindow;
+    int randomNumber = 999;
     private Text text;
 
     private void Start()
@@ -29,17 +30,24 @@ public class RewardTile : MonoBehaviour
     public void openWindow()
     {
         addUnitWindow.gameObject.SetActive(true);
-        text.text = "A group of " + unitAmounts[0].ToString() + ", " + rewardUnits[0].name + "s" + " wants to join your cause!";
+        if (randomNumber == 999)
+            NewRandom();
+        text.text = "A group of " + unitAmounts[randomNumber].ToString() + ", " + rewardUnits[randomNumber].name + "s" + " wants to join your cause!";
+        
+    }
+
+    public void NewRandom()
+    {
+        randomNumber = Random.Range(0, rewardUnits.Count);
     }
 
     public void AddUnitsToPlayer()
     {
         //Called through YES-Button
+        addUnitWindow.gameObject.SetActive(false);
+        //TODO: needs to be reworked into a function on the player that checks if the player already has the unit and then adds the unit amounts to that unit. 
+        //Or adds a new unit if it's not already existing, or does nothing if the players army is full
 
-        for (int i = 0; i < rewardUnits.Count; i++)
-        {
-                player.units.Add(rewardUnits[i]);
-                player.unitAmounts.Add(unitAmounts[i]);
-        }
+        //player.AddFunction(rewardUnits[randomNumber], unitAmounts[randomNumber]);
     }
 }

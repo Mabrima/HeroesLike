@@ -15,6 +15,7 @@ public class UnitHandler : MonoBehaviour
     public bool computerControlled = false;
     public bool canRetaliate = true;
     public bool defended = false;
+    public Color[] teamColors = { Color.red, Color.cyan };
 
     [SerializeField] Text amountText;
 
@@ -209,7 +210,7 @@ public class UnitHandler : MonoBehaviour
             FieldHandler.instance.RemoveUnitFromTile(currentTile);
             CombatManager.instance.battleText.text += "\n All units of " + unitBase.name + " died";
             canRetaliate = false;
-            CombatManager.instance.RemoveUnit(this);
+            CombatManager.instance.RemoveDeadUnitFromCombat(this);
             Invoke("KillThis", 1);
             return;
         }

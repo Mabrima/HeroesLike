@@ -13,7 +13,7 @@ public class ClickableTile : MonoBehaviour
     public MeshRenderer sphereRend; 
     public Material sphereStartMat; 
     public Material sphereEndMat; 
-    public TileMap map; 
+    public TileMap map;
 
     protected MeshRenderer rend;
     public Material mouseOverMaterial;

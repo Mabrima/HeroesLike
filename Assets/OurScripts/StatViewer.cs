@@ -15,7 +15,7 @@ public class StatViewer : MonoBehaviour
 
     public void UpdateStats(int currentHealth, int maxHealth, int attack, int defence, int minDamage, int maxDamage, int speed, int initiative)
     {
-        healthText.text = currentHealth + " / " + maxHealth;
+        healthText.text = currentHealth + "/" + maxHealth;
         attackText.text = "" + attack;
         defenceText.text = "" + defence;
         damageText.text = "" + minDamage + " - " + maxDamage;

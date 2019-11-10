@@ -11,14 +11,19 @@ public class CombatManager : MonoBehaviour
     public static CombatManager instance;
     public GameObject[] spawnGroups;
     public List<UnitHandler> unitsInCombat;
-    public Stack<UnitHandler> waitStack = new Stack<UnitHandler>();
-    public Stack<UnitHandler> actionStack = new Stack<UnitHandler>();
+    public List<UnitHandler> initiativeList = new List<UnitHandler>();
     public UnitHandler currentUnit;
     public bool endTurn = false;
     public bool canWait = false;
     public bool canDefend = true;
     int combatCounter = 0;
 
+    [SerializeField] GameObject unitTimeLinePrefab;
+    [SerializeField] GameObject timeLinePanel;
+    [SerializeField] int timeLineLength = 11;
+    [SerializeField] Vector3 imageDisplacement = new Vector3(110, 0);
+    List<Image> unitsImageInTimeline = new List<Image>();
+    List<Text> unitsAmountInTimeline = new List<Text>();
     public StatViewer statViewer;
 
     public enum GameState
@@ -56,6 +61,7 @@ public class CombatManager : MonoBehaviour
         battleText.text = "Combat initiated, press 'D' to begin";
 
         InitiateUnits(player1, player2);
+        InitiateTimeLine();
     }
 
     private void Update()
@@ -110,35 +116,56 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    void InitiateTimeLine()
+    {
+        for (int i = 0; i < timeLineLength; i++)
+        {
+            GameObject temp = Instantiate(unitTimeLinePrefab, timeLinePanel.transform);
+            temp.transform.localPosition = unitTimeLinePrefab.transform.position + imageDisplacement * i;
+            unitsImageInTimeline.Add(temp.GetComponentInChildren<Image>());
+            unitsAmountInTimeline.Add(temp.GetComponentInChildren<Text>());
+        }
+    }
+
     void InitiateNewUnit(int posX, int posY, UnitHandler unit, Player player, int i)
     {
         UnitHandler temp = UnitDispenser.instance.SpawnUnit(unit);
         temp.team = player.team;
-        temp.amountOfUnits = player.unitAmounts[i];
+        temp.amountOfUnits = player.initialUnitsAmount[i];
         temp.computerControlled = player.computerControlled;
         temp.transform.position = new Vector3(posX, 0.5f, posY);
         temp.currentTile = FieldHandler.instance.GetTile(posX, posY);
         temp.currentTile.PutUnitOnTile(temp);
         temp.RotateTeamDirection(temp.team);
-        if (temp.team == 1)
-            temp.GetComponentInChildren<Image>().color = Color.red;
-        if (temp.team == 2)
-            temp.GetComponentInChildren<Image>().color = Color.cyan;
+        temp.GetComponentInChildren<Image>().color = temp.teamColors[temp.team-1];
         unitsInCombat.Add(temp);
     }
 
     private void NextUnitTurn()
     {
-        while (actionStack.Count < 1)
+        while (initiativeList.Count < timeLineLength)
         {
             ForwardInitiatives();
         }
 
-        currentUnit = actionStack.Pop();
+        HandleTimeLine();
+
+        currentUnit = initiativeList[0];
+        initiativeList.RemoveAt(0);
         if (unitsInCombat.Contains(currentUnit))
         {
             ReadyUnit();
             endTurn = false;
+        }
+    }
+
+    private void HandleTimeLine()
+    {
+        for (int i = 0; i < timeLineLength; i++)
+        {
+            unitsImageInTimeline[i].sprite = initiativeList[i].unitBase.sprite;
+            unitsAmountInTimeline[i].text = initiativeList[i].amountOfUnits.ToString();
+            unitsAmountInTimeline[i].color = initiativeList[i].teamColors[initiativeList[i].team-1];
         }
     }
 
@@ -250,14 +277,16 @@ public class CombatManager : MonoBehaviour
             if (unit.currentInitiative > 100)
             {
                 unit.currentInitiative -= 100;
-                actionStack.Push(unit);
+                initiativeList.Add(unit);
             }
         }
     }
 
-    public void RemoveUnit(UnitHandler unit)
+    public void RemoveDeadUnitFromCombat(UnitHandler unit)
     {
         unitsInCombat.Remove(unit);
+        while (initiativeList.Contains(unit))
+            initiativeList.Remove(unit);
     }
 
 }

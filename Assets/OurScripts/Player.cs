@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     private float journeyLength;
 
 
-    public List<int> unitAmounts;
+    public List<int> initialUnitsAmount;
     public List<UnitHandler> units = new List<UnitHandler>();
 
     bool showArmy = false;
@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     {
         if (armyWindow)
             aw = armyWindow.GetComponent<ArmyDisplayManager>();
+        if (currentTileStandingOn)
+            transform.position = currentTileStandingOn.transform.position + tileOffset;
     }
 
     private void Update()
