@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
-    public Button waitButton;
+    public Button endTurnButton;
     public Button defendButton;
     public Text battleText;
     public static CombatManager instance;
@@ -14,8 +14,8 @@ public class CombatManager : MonoBehaviour
     public List<UnitHandler> initiativeList = new List<UnitHandler>();
     public UnitHandler currentUnit;
     public bool endTurn = false;
-    public bool canWait = false;
     public bool canDefend = true;
+    public bool canEndTurn = true;
     int combatCounter = 0;
 
     [SerializeField] GameObject unitTimeLinePrefab;
@@ -185,9 +185,9 @@ public class CombatManager : MonoBehaviour
             }
             Defend();
         }
-        else if (Input.GetKeyDown(KeyCode.W) && canWait)
+        else if (Input.GetKeyDown(KeyCode.E) && canEndTurn)
         {
-            Wait();
+            EndTurn();
         }
 
         if (Input.GetMouseButtonUp(1))
@@ -201,20 +201,23 @@ public class CombatManager : MonoBehaviour
         currentUnit.ResetAbilities();
         currentUnit.canRetaliate = true;
         currentUnit.TriggerAbilitiesAtTiming(AbilityTiming.StartOfTurn, currentUnit);
+        SetCannotEndTurn(false);
+        SetCannotDefend(false);
         currentUnit.GetAvailableMovementTiles();
-        SetCannotWait(false);
     }
 
     public void Defend()
     {
         if (currentUnit)
+        {
             currentUnit.Defend();
+            battleText.text += '\n' + currentUnit.unitBase.name + ' ' + currentUnit.team + " put up their guard";
+        }
         endTurn = true;
     }
 
-    public void Wait()
+    public void EndTurn()
     {
-        currentUnit.InitiativeWait();
         endTurn = true;
     }
 
@@ -226,7 +229,7 @@ public class CombatManager : MonoBehaviour
     private IEnumerator CombatAttack(UnitHandler unit)
     {
         SetCannotDefend(true);
-        SetCannotWait(true);
+        SetCannotEndTurn(true);
         currentUnit.TriggerAnimatorAttacking();
         currentUnit.RotateUnitToTile(unit.currentTile);
         unit.RotateUnitToTile(currentUnit.currentTile);
@@ -253,14 +256,14 @@ public class CombatManager : MonoBehaviour
         if (unit != null)
             unit.RotateTeamDirection(unit.team);
         SetCannotDefend(false);
-        SetCannotWait(false);
+        SetCannotEndTurn(false);
         endTurn = true;
     }
 
-    public void SetCannotWait(bool set)
+    public void SetCannotEndTurn(bool set)
     {
-        waitButton.interactable = !set;
-        canWait = !set;
+        endTurnButton.interactable = !set;
+        canEndTurn = !set;
     }
     
     public void SetCannotDefend(bool set)

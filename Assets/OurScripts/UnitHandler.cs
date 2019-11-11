@@ -29,7 +29,6 @@ public class UnitHandler : MonoBehaviour
         currentUnitHealth = unitBase.baseHealth;
         totalHealth = amountOfUnits * unitBase.baseHealth;
         amountText.text = "" + amountOfUnits;
-        //Invoke("FindFirstTile", .5f);
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -47,12 +46,6 @@ public class UnitHandler : MonoBehaviour
     public void Defend()
     {
         defended = true;
-    }
-
-    void FindFirstTile()
-    {
-        currentTile = FieldHandler.instance.GetTile(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
-        currentTile.PutUnitOnTile(this);
     }
 
     private void OnMouseUp()
@@ -91,7 +84,7 @@ public class UnitHandler : MonoBehaviour
 
         startTime = Time.time;
         StartCoroutine(MoveUnit());
-        CombatManager.instance.SetCannotWait(true);
+        CombatManager.instance.SetCannotDefend(true);
     }
 
     public void ResetAbilities()
@@ -241,17 +234,14 @@ public class UnitHandler : MonoBehaviour
         currentInitiative += unitBase.initiative;
     }
 
-    public void InitiativeWait()
-    {
-        currentInitiative = 50;
-    }
-
     IEnumerator MoveUnit()
     {
         SetAnimatorMoving(true);
 
         Stack<CombatTile> stack = new Stack<CombatTile>();
         CombatTile parent = currentTile;
+        CombatManager.instance.SetCannotDefend(true);
+        CombatManager.instance.SetCannotEndTurn(true);
 
 
         while (parent != null)
@@ -291,7 +281,7 @@ public class UnitHandler : MonoBehaviour
         SetAnimatorMoving(false);
         RotateTeamDirection(team);
         FieldHandler.instance.GetAvailableAttackTiles(currentTile, team);
-        Debug.Log("moving ended");
+        CombatManager.instance.SetCannotEndTurn(false);
         if (computerControlled)
         {
             ComputerChooseAttack();
@@ -301,6 +291,7 @@ public class UnitHandler : MonoBehaviour
     private void ComputerChooseAttack()
     {
         List<UnitHandler> units = FieldHandler.instance.GetEnemyUnitsInRange(currentTile, false, team);
+        FieldHandler.instance.ResetSelectableLocations();
 
 
         if (units.Count > 0)
