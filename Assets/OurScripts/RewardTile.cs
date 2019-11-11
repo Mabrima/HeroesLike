@@ -48,6 +48,6 @@ public class RewardTile : MonoBehaviour
         //TODO: needs to be reworked into a function on the player that checks if the player already has the unit and then adds the unit amounts to that unit. 
         //Or adds a new unit if it's not already existing, or does nothing if the players army is full
 
-        //player.AddFunction(rewardUnits[randomNumber], unitAmounts[randomNumber]);
+        player.CheckPlayersArmy(rewardUnits[randomNumber], unitAmounts[randomNumber]);
     }
 }

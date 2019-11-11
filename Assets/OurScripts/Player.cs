@@ -24,7 +24,8 @@ public class Player : MonoBehaviour
 
 
     public List<int> initialUnitsAmount;
-    public List<UnitHandler> units = new List<UnitHandler>();
+    [SerializeField] List<UnitBase> initialUnitBases;
+    [HideInInspector] public List<UnitHandler> units = new List<UnitHandler>();
 
     bool showArmy = false;
 
@@ -34,6 +35,17 @@ public class Player : MonoBehaviour
             aw = armyWindow.GetComponent<ArmyDisplayManager>();
         if (currentTileStandingOn)
             transform.position = currentTileStandingOn.transform.position + tileOffset;
+
+        int i = 0;
+        units.Clear();
+        foreach (UnitBase unitBase in initialUnitBases)
+        {
+            UnitHandler unit = new UnitHandler();
+            unit.unitBase = unitBase;
+            unit.amountOfUnits = initialUnitsAmount[i];
+            units.Add(unit);
+            i++;
+        }
     }
 
     private void Update()
@@ -133,6 +145,20 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         currentTileStandingOn = other.GetComponent<ClickableTile>();
+    }
+
+    public void CheckPlayersArmy(UnitHandler currentUnit, int unitAmount)
+    {
+        foreach (UnitHandler unit in units)
+        {
+            
+            if (unit.unitBase.name == currentUnit.unitBase.name)
+            {
+                unit.amountOfUnits += unitAmount;
+                aw.UpdateArmy();
+                aw.ShowUnits();
+            }
+        }
     }
 
 }
