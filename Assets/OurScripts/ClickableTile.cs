@@ -25,6 +25,10 @@ public class ClickableTile : MonoBehaviour
 
     public Texture2D blockedPathIcon;
     public Texture2D walkHereIcon;
+    public Texture2D standingHorseIcon;
+    public Texture2D swordIcon;
+
+    public bool showMouseIcons;
 
     private CursorMode cursorMode = CursorMode.Auto;
     private Vector2 hotSpot = Vector2.zero;
@@ -60,15 +64,27 @@ public class ClickableTile : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        rend.material = mouseOverMaterial;
-        if (fieldType == FieldType.Obstacle)
+        if (showMouseIcons)
         {
-            Cursor.SetCursor(blockedPathIcon, hotSpot, cursorMode);
+            rend.material = mouseOverMaterial;
+            if (fieldType == FieldType.Obstacle)
+            {
+                Cursor.SetCursor(blockedPathIcon, hotSpot, cursorMode);
+            }
+            else if (fieldType == FieldType.Empty)
+            {
+                Cursor.SetCursor(walkHereIcon, hotSpot, cursorMode);
+            }
+            else if (fieldType == FieldType.Reward)
+            {
+                Cursor.SetCursor(standingHorseIcon, hotSpot, cursorMode);
+            }
+            else if (fieldType == FieldType.Combat)
+            {
+                Cursor.SetCursor(swordIcon, hotSpot, cursorMode);
+            }
         }
-        else if (fieldType == FieldType.Empty)
-        {
-            Cursor.SetCursor(walkHereIcon, hotSpot, cursorMode);
-        }
+        
     }
 
     public void OnMouseExit()

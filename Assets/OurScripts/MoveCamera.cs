@@ -46,7 +46,7 @@ public class MoveCamera : MonoBehaviour
                 transform.position += new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
             }
 
-            if (Input.mousePosition.x < 0 + boundary && transform.position.x > TileMap.INSTANCE.clickableTiles[0, 0].tileX + 5)
+            if (Input.mousePosition.x < boundary && transform.position.x > TileMap.INSTANCE.clickableTiles[0, 0].tileX + 5)
             {
                 //LEFT
                 transform.position -= new Vector3(cameraMoveSpeed, 0, 0) * Time.deltaTime;
@@ -58,7 +58,7 @@ public class MoveCamera : MonoBehaviour
                 transform.position += new Vector3(0, 0, cameraMoveSpeed) * Time.deltaTime;
             }
 
-            if (Input.mousePosition.y < 0 + boundary && transform.position.z > TileMap.INSTANCE.clickableTiles[0, 0].tileZ - (TileMap.INSTANCE.mapSizeZ / 4))
+            if (Input.mousePosition.y < boundary && transform.position.z > TileMap.INSTANCE.clickableTiles[0, 0].tileZ - (TileMap.INSTANCE.mapSizeZ / 4))
             {
                 //DOWN
                 transform.position -= new Vector3(0, 0, cameraMoveSpeed) * Time.deltaTime;
@@ -75,18 +75,21 @@ public class MoveCamera : MonoBehaviour
             transform.position = player.transform.position + cameraOffset;
         }
 
-        /*if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2))
         {
             dragOrigin = Input.mousePosition;
             return;
         }
 
-        if (!Input.GetMouseButton(2)) return;
+        if (!Input.GetMouseButton(2)) 
+        {
+            return;
+        }
 
         Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
         Vector3 move = new Vector3(-pos.x * dragSpeed, 0, -pos.y * dragSpeed);
 
-        transform.Translate(move, Space.World);*/
-    
+        transform.Translate(move, Space.World);
+
     }
 }

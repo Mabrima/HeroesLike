@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum FieldType
 {
-    Empty, Occupied, Obstacle
+    Empty, Occupied, Obstacle, Reward, Combat
 }
 
 public class FieldHandler : MonoBehaviour

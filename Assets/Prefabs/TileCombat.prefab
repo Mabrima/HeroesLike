@@ -197,9 +197,11 @@ MonoBehaviour:
   sphereEndMat: {fileID: 2100000, guid: 6955a623631a78048b6ecbadcdc4b9d5, type: 2}
   map: {fileID: 0}
   mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
-  fieldType: 0
+  fieldType: 4
   blockedPathIcon: {fileID: 2800000, guid: 00046408e0bd9d74aa6cbd895fea1ab7, type: 3}
   walkHereIcon: {fileID: 2800000, guid: d71254939d0b53a4fa83ba4f65b63251, type: 3}
+  standingHorseIcon: {fileID: 2800000, guid: 11c15be26e6a15c46a4a647243df052f, type: 3}
+  swordIcon: {fileID: 2800000, guid: 8df7aef87dc86914a80f749818d3671a, type: 3}
 --- !u!114 &1858697618241492026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,3 +214,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e242e81b4619a044898b553df75df74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ArmyOnTile: {fileID: 0}
