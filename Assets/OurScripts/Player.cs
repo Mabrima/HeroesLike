@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     private float startTime;
     private float journeyLength;
 
+    public bool allowedToMove = true;
+
 
     public List<int> initialUnitsAmount;
     [SerializeField] List<UnitBase> initialUnitBases;
@@ -145,6 +147,11 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         currentTileStandingOn = other.GetComponent<ClickableTile>();
+
+        if (other.GetComponent<ClickableTile>().fieldType == FieldType.Reward)
+        {
+            Debug.Log("walked on reward tile");
+        }
     }
 
     public void CheckPlayersArmy(UnitHandler currentUnit, int unitAmount)

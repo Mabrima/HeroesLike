@@ -68,6 +68,7 @@ public class ArmyDisplayManager : MonoBehaviour
     {
         if (isMoving == false)
         {
+            player.allowedToMove = false; //So player dont move while clicking.
             isMoving = true;
             StartCoroutine(MoveDisplay(unit));
         }
@@ -113,6 +114,7 @@ public class ArmyDisplayManager : MonoBehaviour
             positionSaved = false; //Turn bool off when we have moved the unit so we can save the next units position.
             yield return new WaitForSeconds(1f);
             isMoving = false;
+            player.allowedToMove = true;
         }
         else if (showInfo == false) //Move to middle of screen
         {

@@ -29,6 +29,7 @@ public class RewardTile : MonoBehaviour
 
     public void openWindow()
     {
+        player.allowedToMove = false;
         addUnitWindow.gameObject.SetActive(true);
         if (randomNumber == 999)
             NewRandom();
@@ -43,6 +44,7 @@ public class RewardTile : MonoBehaviour
 
     public void AddUnitsToPlayer()
     {
+        player.allowedToMove = true;
         //Called through YES-Button
         addUnitWindow.gameObject.SetActive(false);
         //TODO: needs to be reworked into a function on the player that checks if the player already has the unit and then adds the unit amounts to that unit. 

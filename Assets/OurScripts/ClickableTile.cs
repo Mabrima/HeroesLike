@@ -28,7 +28,7 @@ public class ClickableTile : MonoBehaviour
     public Texture2D standingHorseIcon;
     public Texture2D swordIcon;
 
-    public bool showMouseIcons;
+    bool showMouseIcons = true;
 
     private CursorMode cursorMode = CursorMode.Auto;
     private Vector2 hotSpot = Vector2.zero;
@@ -55,7 +55,7 @@ public class ClickableTile : MonoBehaviour
             return;
         }
 
-        if (!Pathfinding.INSTANCE.ChoseNextTile(this) && this != player.currentTileStandingOn)
+        if (!Pathfinding.INSTANCE.ChoseNextTile(this) && this != player.currentTileStandingOn && player.allowedToMove == true)
         {
             map.FindPath(tileX, tileZ, this);
         }
@@ -64,7 +64,7 @@ public class ClickableTile : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        if (showMouseIcons)
+        if (showMouseIcons == true && player.allowedToMove == true)
         {
             rend.material = mouseOverMaterial;
             if (fieldType == FieldType.Obstacle)

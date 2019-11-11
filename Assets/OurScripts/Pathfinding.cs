@@ -146,7 +146,7 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 }
 
-                if (neighbour.fieldType != FieldType.Empty)
+                if (neighbour.fieldType == FieldType.Obstacle)
                 {
                     Debug.Log("Not walkable");
                     continue;
@@ -179,7 +179,6 @@ public class Pathfinding : MonoBehaviour
     {
         if (chosenTile != null && chosenTile == tile)
         {
-            Debug.Log("move player");
             player.StartMovePlayer(player.isMoving);
             return true;
         }
