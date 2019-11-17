@@ -27,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24656101437452538}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -3.8006504}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 18f13f3c9391b5f42b398808bb9e51c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,25 +105,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb0f25c5fb5395b4ead2a176de309733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileX: 0
-  tileY: 0
-  tileData:
-    gCost: 0
-    hCost: 0
-    fCost: 0
-    pfParent: {fileID: 0}
-  sphereRend: {fileID: 0}
-  sphereStartMat: {fileID: 0}
-  sphereEndMat: {fileID: 0}
-  mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
-  isWalkable: 0
-  map: {fileID: 0}
-  fieldType: 0
   potentialMaterial: {fileID: 2100000, guid: 195a5f14570f5dc4e949fc4c6f00f999, type: 2}
   fakePotentialMaterial: {fileID: 2100000, guid: 1cc5b33c754845047849e8dfff4a422d,
     type: 2}
   overLappingPotentialMaterial: {fileID: 2100000, guid: d92ec135fcc4e47479a965746584161f,
     type: 2}
-  x: 0
-  y: 0
+  mouseOverMaterial: {fileID: 2100000, guid: af1bf202bebd71a41b42c39e62235d94, type: 2}
+  pfParent: {fileID: 0}
+  perishableParent: {fileID: 0}
+  position: {x: 0, y: 0}
+  fieldType: 0
+  rend: {fileID: 0}
   unitOnTile: {fileID: 0}
