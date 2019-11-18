@@ -31,6 +31,7 @@ public class ArmyDisplayManager : MonoBehaviour
             {
                 if (unitHolder.GetComponent<EmptyOrFull>().empty == true)
                 {
+                    unitHolder.SetActive(true);
                     unitHolder.GetComponent<EmptyOrFull>().empty = false;
                     unitHolder.transform.Find("Image").GetComponent<Image>().sprite = player.units[i].unitBase.sprite;
                     unitHolder.transform.Find("Amount").GetComponent<Text>().text = player.units[i].amountOfUnits.ToString();

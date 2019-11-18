@@ -51,7 +51,7 @@ public class CombatManager : MonoBehaviour
 
     void InvokeStartCombat()
     {
-        StartCombat(GameManager.instance.player, GameManager.instance.opponent);
+        StartCombat(GameManager.info.player, GameManager.info.opponent);
     }
 
     public void StartCombat(Player player1, Player player2)
@@ -131,7 +131,7 @@ public class CombatManager : MonoBehaviour
     {
         UnitHandler temp = UnitDispenser.instance.SpawnUnit(unit);
         temp.team = player.team;
-        temp.amountOfUnits = player.initialUnitsAmount[i];
+        temp.amountOfUnits = player.units[i].amountOfUnits;
         temp.computerControlled = player.computerControlled;
         temp.transform.position = new Vector3(posX, 0.5f, posY);
         temp.currentTile = FieldHandler.instance.GetTile(posX, posY);
@@ -175,13 +175,13 @@ public class CombatManager : MonoBehaviour
         {
             if (CheckCombatEnd())
             {
-                Player player = GameManager.instance.player;
+                Player player = GameManager.info.player;
                 player.units.Clear();
                 foreach(UnitHandler unit in unitsInCombat)
                 {
                     player.units.Add(unit);
                 }
-                GameManager.instance.SceneSwitchToOverWorld();
+                GameManager.instance.SceneSwitchToOverWorld(player);
             }
             Defend();
         }

@@ -47,17 +47,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTileStandingOn: {fileID: 0}
-  playerSpeed: 10
+  playerSpeed: 5
   armyWindow: {fileID: 0}
-  armyIcon: {fileID: 0}
+  armyIcon: {fileID: 2800000, guid: 273d2b66e398c8644b038d034802113e, type: 3}
   isMoving: 0
-  team: 0
-  computerControlled: 0
+  team: 1
+  computerControlled: 1
   lerping: 0
   allowedToMove: 1
-  initialUnitsAmount: 
-  initialUnitBases: []
-  units: []
+  initialUnitsAmount: 0200000002000000
+  initialUnitBases:
+  - {fileID: 11400000, guid: b6929080be6503549b98b59f46f76beb, type: 2}
+  - {fileID: 11400000, guid: 3ba9a6110b246b245aa3c9b2a5f27616, type: 2}
+  units:
+  - {fileID: 3098413859871490228, guid: b16840ffb4e7e2443a45b50ab0e66aee, type: 3}
+  - {fileID: 3098413859871490228, guid: cdd5cbf1799e65849a9bce6ed64140c4, type: 3}
+  - {fileID: 3098413859871490228, guid: 00bb23d9866bf294198a7b735cb13f17, type: 3}
+  - {fileID: 3098413859871490228, guid: 321365a77db29ae47beb538e3d2b55ad, type: 3}
+  - {fileID: 3098413859871490228, guid: 256fb829527375c49865fa193c808c45, type: 3}
+  - {fileID: 3098413859871490228, guid: f5fec2bd78efb0f449e0564c55081c7a, type: 3}
 --- !u!54 &2951717332565223906
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -84,10 +92,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 1.1246309
   m_Height: 5.5650434
   m_Direction: 1
-  m_Center: {x: 0, y: 2.2825217, z: 0}
+  m_Center: {x: 0.034243584, y: 2.2825217, z: 0}
 --- !u!1001 &2951717332543862171
 PrefabInstance:
   m_ObjectHideFlags: 0

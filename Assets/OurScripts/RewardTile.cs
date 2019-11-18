@@ -10,9 +10,16 @@ public class RewardTile : MonoBehaviour
 
     public Player player;
 
+    public int tileX;
+    public int tileZ;
+
     public RectTransform addUnitWindow;
     int randomNumber = 999;
     private Text text;
+
+    public bool hasBeenUsed = false;
+
+    public new Light light;
 
     private void Start()
     {
@@ -21,7 +28,7 @@ public class RewardTile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && hasBeenUsed != true)
         {
             openWindow();
         }
@@ -51,5 +58,10 @@ public class RewardTile : MonoBehaviour
         //Or adds a new unit if it's not already existing, or does nothing if the players army is full
 
         player.CheckPlayersArmy(rewardUnits[randomNumber], unitAmounts[randomNumber]);
+        hasBeenUsed = true;
+        light.gameObject.SetActive(false);
+        tileX = GetComponent<ClickableTile>().tileX;
+        tileZ = GetComponent<ClickableTile>().tileZ;
+        GameManager.info.rewardTiles.Add(this);
     }
 }

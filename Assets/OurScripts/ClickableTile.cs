@@ -55,7 +55,7 @@ public class ClickableTile : MonoBehaviour
             return;
         }
 
-        if (!Pathfinding.INSTANCE.ChoseNextTile(this) && this != player.currentTileStandingOn && player.allowedToMove == true)
+        if (!Pathfinding.INSTANCE.ChoseNextTile(this) && this != player.currentTileStandingOn && player.allowedToMove == true && player.isMoving == false)
         {
             map.FindPath(tileX, tileZ, this);
         }

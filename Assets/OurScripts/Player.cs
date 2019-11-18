@@ -61,6 +61,7 @@ public class Player : MonoBehaviour
             {
                 if (hit.transform.gameObject == gameObject && showArmy == false)
                 {
+                    aw.UpdateArmy();
                     showArmy = true;
                     ShowArmy();
                 }
@@ -156,16 +157,24 @@ public class Player : MonoBehaviour
 
     public void CheckPlayersArmy(UnitHandler currentUnit, int unitAmount)
     {
+        bool found = false;
         foreach (UnitHandler unit in units)
         {
-            
             if (unit.unitBase.name == currentUnit.unitBase.name)
             {
                 unit.amountOfUnits += unitAmount;
-                aw.UpdateArmy();
-                aw.ShowUnits();
+                found = true;
             }
         }
+
+        if (!found)
+        {
+            currentUnit.amountOfUnits = unitAmount;
+            units.Add(currentUnit);
+        }
+
+        aw.UpdateArmy();
+        aw.ShowUnits();
     }
 
 }

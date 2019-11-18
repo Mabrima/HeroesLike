@@ -125,6 +125,9 @@ public class TileMap : MonoBehaviour
 
     public void FindPath(int x, int y, ClickableTile tile)
     {
-        Pathfinding.INSTANCE.PathFinding(player.currentTileStandingOn, tile);
+        if (player.isMoving == false)
+        {
+            Pathfinding.INSTANCE.PathFinding(player.currentTileStandingOn, tile);
+        }
     }
 }

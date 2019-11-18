@@ -36,6 +36,12 @@ public class Pathfinding : MonoBehaviour
         playerPath = new Stack<ClickableTile>();
     }
 
+    public void UpdteToNewPlayer(Player newPlayer, Vector3 position)
+    {
+        player.transform.position = position;
+        player.units = newPlayer.units;
+    }
+
     private void CalculateH(ClickableTile tile, ClickableTile goal)
     {
         int calculatedH = 0;
