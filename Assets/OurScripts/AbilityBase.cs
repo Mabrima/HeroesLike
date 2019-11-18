@@ -7,6 +7,10 @@ public enum AbilityTiming
     DuringAttack, AfterAttack, PreDefence, DuringDefence, AfterDefence, StartOfTurn
 }
 
+
+/// <summary>
+/// WIP, never got finished so it does nothing.
+/// </summary>
 public abstract class AbilityBase : MonoBehaviour
 {
     [HideInInspector] public AbilityTiming timing;

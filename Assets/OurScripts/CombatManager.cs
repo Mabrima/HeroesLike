@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Made by Robin Arkblad
+/// </summary>
+
 public class CombatManager : MonoBehaviour
 {
     public Button endTurnButton;
@@ -46,12 +50,21 @@ public class CombatManager : MonoBehaviour
     //Testing of without overworld
     void Start()
     {
-        Invoke("InvokeStartCombat", .4f);
+        Invoke("InvokeStartCombat", .6f);
     }
 
     void InvokeStartCombat()
     {
+        if (GameManager.info.player == null || GameManager.info.opponent == null)
+            StartFromCombat();
         StartCombat(GameManager.info.player, GameManager.info.opponent);
+    }
+
+    void StartFromCombat()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameManager.info.player = players[0].GetComponent<Player>();
+        GameManager.info.opponent = players[1].GetComponent<Player>();
     }
 
     public void StartCombat(Player player1, Player player2)
@@ -102,6 +115,8 @@ public class CombatManager : MonoBehaviour
         foreach (UnitHandler unit in player2.units)
         {
             int posX = 0;
+            if (player2.team == 1)
+                posX = maxX;
             int posY = (maxY / (player2.units.Count-1)) * i;
             InitiateNewUnit(posX, posY, unit, player2, i);
             i++;
@@ -109,7 +124,9 @@ public class CombatManager : MonoBehaviour
         i = 0;
         foreach (UnitHandler unit in player1.units)
         {
-            int posX = maxX;
+            int posX = 0;
+            if (player1.team == 1)
+                posX = maxX;
             int posY = (maxY / (player1.units.Count-1)) * i;
             InitiateNewUnit(posX, posY, unit, player1, i);
             i++;

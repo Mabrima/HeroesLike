@@ -7,6 +7,9 @@ public enum FieldType
     Empty, Occupied, Obstacle, Reward, Combat
 }
 
+/// <summary>
+/// Made by Robin Arkblad
+/// </summary>
 public class FieldHandler : MonoBehaviour
 {
     public static int X_SIZE = 12;

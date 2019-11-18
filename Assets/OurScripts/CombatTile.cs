@@ -22,6 +22,9 @@ public class CombatTile : MonoBehaviour
     private bool selectable = false;
     public UnitHandler unitOnTile;
 
+    /// <summary>
+    /// Made by Robin Arkblad
+    /// </summary>
     private void Start()
     {
         rend = GetComponent<MeshRenderer>();

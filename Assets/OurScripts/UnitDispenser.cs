@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Made by Robin Arkblad
+/// </summary>
 public class UnitDispenser : MonoBehaviour
 {
     [SerializeField] List<GameObject> spawnableUnits;
