@@ -299,7 +299,6 @@ public class UnitHandler : MonoBehaviour
 
         if (units.Count > 0)
         {
-            Debug.Log(units[0]);
             CombatManager.instance.StartCombatAttack(units[Random.Range(0, units.Count)]);
         }
         else
