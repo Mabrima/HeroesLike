@@ -55,7 +55,7 @@ public class CombatManager : MonoBehaviour
 
     void InvokeStartCombat()
     {
-        if (GameManager.info.player == null || GameManager.info.opponent == null)
+        if (GameManager.info.combatTiles.Count == 0)
             StartFromCombat();
         StartCombat(GameManager.info.player, GameManager.info.opponent);
     }

@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
 
     public void RotatePlayerToTile(ClickableTile nextMove)
     {
-        Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.sphereRend.transform.position, Vector3.up);
+        Quaternion newRotation = Quaternion.LookRotation(transform.position - nextMove.sphereRend.transform.position, Vector3.up ) * Quaternion.Euler(0, 180, 0);
         newRotation.x = 0f;
         newRotation.z = 0f;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, Mathf.Infinity);
