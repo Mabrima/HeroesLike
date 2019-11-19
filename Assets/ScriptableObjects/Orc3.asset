@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Orc3
   m_EditorClassIdentifier: 
   name: Orc
-  baseHealth: 30
-  minDamage: 5
-  maxDamage: 8
+  baseHealth: 25
+  minDamage: 3
+  maxDamage: 6
   speed: 6
   initiative: 10
   attack: 8

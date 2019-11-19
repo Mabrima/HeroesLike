@@ -157,7 +157,7 @@ public class UnitHandler : MonoBehaviour
 
         int i = unitBase.speed;
         CombatTile tileToGoTo = null;
-        while (stack.Count > 0 && i > 0)
+        while (stack.Count > 0 && i => 0)
         {
             tileToGoTo = stack.Pop();
             i--;

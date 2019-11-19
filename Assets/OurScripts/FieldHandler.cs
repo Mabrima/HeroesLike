@@ -60,7 +60,7 @@ public class FieldHandler : MonoBehaviour
         neighbourList2.Clear();
         neighbourList1.Add(tile);
 
-        for (int i = 0; i < range - 1; i++)
+        for (int i = 0; i < range; i++)
         {
             if (i % 2 == 0) 
             {
