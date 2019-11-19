@@ -48,13 +48,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitBase: {fileID: 11400000, guid: 3442c76c0f312314caa1724f373dc04c, type: 2}
   amountOfUnits: 1
-  currentInitiative: 63
+  currentInitiative: 0
   totalHealth: 0
   currentUnitHealth: 0
   currentTile: {fileID: 0}
   team: 1
   computerControlled: 0
   canRetaliate: 1
+  defended: 0
+  teamColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 1, b: 1, a: 1}
   amountText: {fileID: 2857525337477783976}
   unitSpeed: 5
 --- !u!135 &-7489542934614772942
@@ -322,11 +326,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4205341308751136925}
     m_Modifications:
-    - target: {fileID: 6846231349107781237, guid: 26bdeb4ad8c21854e919e334ed44c451,
-        type: 3}
-      propertyPath: m_Name
-      value: ArmyAmountImage
-      objectReference: {fileID: 0}
     - target: {fileID: 6846231349107781236, guid: 26bdeb4ad8c21854e919e334ed44c451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -431,6 +430,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6846231349107781237, guid: 26bdeb4ad8c21854e919e334ed44c451,
+        type: 3}
+      propertyPath: m_Name
+      value: ArmyAmountImage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26bdeb4ad8c21854e919e334ed44c451, type: 3}

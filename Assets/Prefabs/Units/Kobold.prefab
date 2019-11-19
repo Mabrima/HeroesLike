@@ -48,13 +48,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitBase: {fileID: 11400000, guid: be398a470593de648ba6007025608e3b, type: 2}
   amountOfUnits: 3
-  currentInitiative: 50
+  currentInitiative: 0
   totalHealth: 0
   currentUnitHealth: 0
   currentTile: {fileID: 0}
   team: 1
   computerControlled: 0
   canRetaliate: 1
+  defended: 0
+  teamColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 1, b: 1, a: 1}
   amountText: {fileID: 2432591354819651804}
   unitSpeed: 5
 --- !u!135 &6793285594627880946
@@ -77,10 +81,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5776726455004917226}
     m_Modifications:
-    - target: {fileID: 121202, guid: 90d641864f25fd14bbb9c882b2d00fc0, type: 3}
-      propertyPath: m_Name
-      value: KOBOLD_PBR
-      objectReference: {fileID: 0}
     - target: {fileID: 495250, guid: 90d641864f25fd14bbb9c882b2d00fc0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -137,6 +137,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 121202, guid: 90d641864f25fd14bbb9c882b2d00fc0, type: 3}
+      propertyPath: m_Name
+      value: KOBOLD_PBR
+      objectReference: {fileID: 0}
     - target: {fileID: 9520568, guid: 90d641864f25fd14bbb9c882b2d00fc0, type: 3}
       propertyPath: m_Controller
       value: 
@@ -156,11 +160,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5776726455004917226}
     m_Modifications:
-    - target: {fileID: 6846231349107781237, guid: 26bdeb4ad8c21854e919e334ed44c451,
-        type: 3}
-      propertyPath: m_Name
-      value: ArmyAmountImage
-      objectReference: {fileID: 0}
     - target: {fileID: 6846231349107781236, guid: 26bdeb4ad8c21854e919e334ed44c451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -265,6 +264,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6846231349107781237, guid: 26bdeb4ad8c21854e919e334ed44c451,
+        type: 3}
+      propertyPath: m_Name
+      value: ArmyAmountImage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26bdeb4ad8c21854e919e334ed44c451, type: 3}

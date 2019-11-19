@@ -353,7 +353,7 @@ Animator:
   m_GameObject: {fileID: 2824798851347720711}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0a9f5e7df291bf24595a81da45266507, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -410,13 +410,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitBase: {fileID: 11400000, guid: 61ba6b44d13d7e74e850d5348fbd12e9, type: 2}
   amountOfUnits: 3
-  currentInitiative: 50
+  currentInitiative: 0
   totalHealth: 0
   currentUnitHealth: 0
   currentTile: {fileID: 0}
   team: 1
   computerControlled: 0
   canRetaliate: 1
+  defended: 0
+  teamColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 1, b: 1, a: 1}
   amountText: {fileID: 20788520}
   unitSpeed: 5
 --- !u!135 &-4703872350072345703
