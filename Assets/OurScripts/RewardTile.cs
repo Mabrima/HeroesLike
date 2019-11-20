@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RewardTile : MonoBehaviour
 {
     public List<int> unitAmounts;
-    public List<UnitHandler> rewardUnits = new List<UnitHandler>();
+    public List<UnitBase> rewardUnits = new List<UnitBase>();
 
     public Player player;
 
@@ -57,7 +57,7 @@ public class RewardTile : MonoBehaviour
         //TODO: needs to be reworked into a function on the player that checks if the player already has the unit and then adds the unit amounts to that unit. 
         //Or adds a new unit if it's not already existing, or does nothing if the players army is full
 
-        player.CheckPlayersArmy(rewardUnits[randomNumber], unitAmounts[randomNumber]);
+        player.AddToPlayerArmy(rewardUnits[randomNumber], unitAmounts[randomNumber]);
         hasBeenUsed = true;
         light.gameObject.SetActive(false);
         tileX = GetComponent<ClickableTile>().tileX;

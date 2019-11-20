@@ -155,12 +155,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void CheckPlayersArmy(UnitHandler currentUnit, int unitAmount)
+    public void AddToPlayerArmy(UnitBase addUnit, int unitAmount)
     {
         bool found = false;
         foreach (UnitHandler unit in units)
         {
-            if (unit.unitBase.name == currentUnit.unitBase.name)
+            if (unit.unitBase.name == addUnit.name)
             {
                 unit.amountOfUnits += unitAmount;
                 found = true;
@@ -169,8 +169,10 @@ public class Player : MonoBehaviour
 
         if (!found)
         {
-            currentUnit.amountOfUnits = unitAmount;
-            units.Add(currentUnit);
+            UnitHandler unit = new UnitHandler();
+            unit.unitBase = addUnit;
+            unit.amountOfUnits = unitAmount;
+            units.Add(unit);
         }
 
         aw.UpdateArmy();
